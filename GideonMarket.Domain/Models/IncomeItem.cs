@@ -5,7 +5,6 @@ namespace GideonMarket.Domain.Models
 {
     public class IncomeItem : Entity
     {
-
         public int IncomeId { get; private set; }
         public int ProductId { get; private set; }
         public string Description { get; private set; }

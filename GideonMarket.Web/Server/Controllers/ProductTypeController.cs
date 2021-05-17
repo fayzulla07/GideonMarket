@@ -1,6 +1,6 @@
-﻿using GideonMarket.UseCases.Handlers.ProductType.Commands;
-using GideonMarket.UseCases.Handlers.ProductType.Dto;
-using GideonMarket.UseCases.Handlers.ProductType.Queries;
+﻿using GideonMarket.UseCases.Handlers.ProductTypes.Commands;
+using GideonMarket.UseCases.Handlers.ProductTypes.Dto;
+using GideonMarket.UseCases.Handlers.ProductTypes.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -30,9 +30,9 @@ namespace GideonMarket.Web.Server.Controllers
 
         
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ProductTypeDto> Get(int id)
         {
-            return "value";
+            return await mediator.Send(new GetProductTypeRequest());
         }
 
     

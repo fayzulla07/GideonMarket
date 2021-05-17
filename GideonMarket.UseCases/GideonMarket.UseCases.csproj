@@ -5,10 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="10.1.1" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="FluentValidation" Version="10.1.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.1.0" />
+    <PackageReference Include="Mapster" Version="7.2.0" />
+    <PackageReference Include="Mapster.DependencyInjection" Version="1.0.0" />
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.4" />
@@ -20,10 +20,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Handlers\Product\Commands\" />
-    <Folder Include="Handlers\Product\Dto\" />
-    <Folder Include="Handlers\Product\Mappings\" />
-    <Folder Include="Handlers\Product\Queries\" />
+    <Folder Include="Handlers\Orders\Commands\" />
+    <Folder Include="Handlers\Orders\Dto\" />
+    <Folder Include="Handlers\Orders\Mappings\" />
+    <Folder Include="Handlers\Orders\Queries\" />
+    <Folder Include="Handlers\Clients\Commands\" />
+    <Folder Include="Handlers\Clients\Dto\" />
+    <Folder Include="Handlers\Clients\Mappings\" />
+    <Folder Include="Handlers\Clients\Queries\" />
+    <Folder Include="Handlers\Users\Commands\" />
+    <Folder Include="Handlers\Users\Dto\" />
+    <Folder Include="Handlers\Users\Mappings\" />
+    <Folder Include="Handlers\Users\Queries\" />
+    <Folder Include="Handlers\Places\Commands\" />
+    <Folder Include="Handlers\Places\Dto\" />
+    <Folder Include="Handlers\Places\Queries\" />
   </ItemGroup>
 
 </Project>

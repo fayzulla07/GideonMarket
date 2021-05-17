@@ -3,7 +3,7 @@ namespace GideonMarket.Domain.Enums
 {
     public enum OrderItemStatus
     {
-        Complated,
+        Completed,
         Returned,
         Broned
     }

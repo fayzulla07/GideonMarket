@@ -1,5 +1,4 @@
-﻿using GideonMarket.Domain.Exceptions;
-using GideonMarket.Domain.Shared;
+﻿using GideonMarket.Domain.Shared;
 
 namespace GideonMarket.Domain.Models
 {
@@ -9,16 +8,24 @@ namespace GideonMarket.Domain.Models
         public string Description { get; private set; }
         public int? ProductTypeId { get; private set; }
         public int UnitId { get; private set; }
+        public decimal Price { get; private set; }
 
-        public ProductType ProductType { get; private set; }
-        public Unit  Unit { get; private set; }
+        public Product()
+        {
 
-        public Product(string name, string description, int? productTypeId, int unitId)
+        }
+        public Product(string name, string description, int? productTypeId, int unitId, decimal price)
         {
             Name = name;
             Description = description;
             ProductTypeId = productTypeId;
             UnitId = unitId;
+            Price = price;
+        }
+
+        public void SetPrice(decimal price)
+        {
+            Price = price;
         }
     }
 }

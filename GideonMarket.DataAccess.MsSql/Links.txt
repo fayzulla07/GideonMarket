@@ -1,0 +1,3 @@
+﻿Add-Migration InitialCreate -context AppContext -o Migrations -p GideonMarket.DataAccess.MsSql
+
+update-database -context AppContext -p GideonMarket.DataAccess.MsSql

@@ -13,7 +13,7 @@ namespace GideonMarket.Domain.Tests
         [Test]
         public void Test1()
         {
-            Product product = new Product("wefwe", "werfgwe", 1, 1);
+           // Product product = new Product("wefwe", "werfgwe", 1, 1);
                
         }
     }

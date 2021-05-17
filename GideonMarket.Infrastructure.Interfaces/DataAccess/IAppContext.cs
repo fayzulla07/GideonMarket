@@ -9,6 +9,12 @@ namespace GideonMarket.Infrastructure.Interfaces.DataAccess
     public interface IAppContext
     {
         DbSet<ProductType> ProductTypes { get; }
+        DbSet<Unit> Units { get; }
+        DbSet<Product> Products { get; }
+        public DbSet<Place> Places { get; }
+        public DbSet<Income> Incomes { get; }
+        public DbSet<Order> Orders { get; }
+        public DbSet<Client> Clients { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 

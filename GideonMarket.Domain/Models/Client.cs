@@ -6,10 +6,13 @@ namespace GideonMarket.Domain.Models
 {
     public class Client : Entity, MainEntity
     {
-        public string FullName { get; private set; }
-        public string Email { get; private set; }
+        public string FullName { get; }
+        public string Email { get; }
 
+        public Client()
+        {
 
+        }
         public Client(string fullName, string email)
         {
             FullName = fullName;
