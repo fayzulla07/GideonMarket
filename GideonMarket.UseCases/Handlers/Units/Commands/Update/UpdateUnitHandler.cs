@@ -1,5 +1,5 @@
 ﻿using MapsterMapper;
-using GideonMarket.Infrastructure.Interfaces.DataAccess;
+using GideonMarket.UseCases.DataAccess;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,7 +23,7 @@ namespace GideonMarket.UseCases.Handlers.Units.Commands
             {
                 return;
             }
-            appContext.Entry(entity).CurrentValues.SetValues(new Domain.Models.Unit(request.dto.Id, request.dto.Name));
+            appContext.Entry(entity).CurrentValues.SetValues(new Entities.Models.Unit(request.dto.Id, request.dto.Name));
             await appContext.SaveChangesAsync();
         }
     }

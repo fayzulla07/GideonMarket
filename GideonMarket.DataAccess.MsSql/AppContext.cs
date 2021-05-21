@@ -1,6 +1,6 @@
-﻿using GideonMarket.Domain.Enums;
-using GideonMarket.Domain.Models;
-using GideonMarket.Infrastructure.Interfaces.DataAccess;
+﻿using GideonMarket.Entities.Enums;
+using GideonMarket.Entities.Models;
+using GideonMarket.UseCases.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -15,6 +15,8 @@ namespace GideonMarket.DataAccess.MsSql
         public DbSet<Income> Incomes { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Client> Clients { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         public AppContext(DbContextOptions<AppContext> options) : base(options)
         {
@@ -235,6 +237,45 @@ namespace GideonMarket.DataAccess.MsSql
                 x.HasIndex(i => i.Email)
                 .IsUnique();
 
+            });
+
+            modelBuilder.Entity<User>(x =>
+            {
+                x.HasKey(p => p.Id);
+                x.Property(p => p.Id)
+                .ValueGeneratedOnAdd()
+                .IsRequired();
+
+                x.Property(p => p.Login)
+                .HasMaxLength(150)
+                .IsRequired(true);
+                x.HasIndex(i => i.Login)
+               .IsUnique();
+
+                x.Property(p => p.Email);
+                x.HasIndex(i => i.Email)
+               .IsUnique();
+
+                x.Property(p => p.Password)
+                .HasMaxLength(50)
+                .IsRequired(true);
+
+                x.HasOne(x => x.UserRole)
+               .WithMany()
+               .HasForeignKey(x => x.RoleId);
+
+            });
+
+            modelBuilder.Entity<Role>(x =>
+            {
+                x.HasKey(p => p.Id);
+                x.Property(p => p.Id)
+                .ValueGeneratedOnAdd()
+                .IsRequired();
+
+                x.Property(p => p.Name)
+               .HasMaxLength(150)
+               .IsRequired();
             });
         }
     }

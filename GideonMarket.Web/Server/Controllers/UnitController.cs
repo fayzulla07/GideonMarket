@@ -1,7 +1,6 @@
 ﻿using GideonMarket.UseCases.Handlers.Units.Commands;
-using GideonMarket.UseCases.Handlers.Units.Dto;
-using GideonMarket.UseCases.Handlers.Units.Queries.Get;
-using GideonMarket.UseCases.Handlers.Units.Queries.GetAll;
+using GideonMarket.UseCases.Handlers.Units;
+using GideonMarket.UseCases.Handlers.Units.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

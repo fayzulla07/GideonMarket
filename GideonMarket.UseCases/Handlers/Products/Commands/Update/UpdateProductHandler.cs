@@ -1,8 +1,9 @@
 ﻿using MapsterMapper;
-using GideonMarket.Infrastructure.Interfaces.DataAccess;
+using GideonMarket.UseCases.DataAccess;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using GideonMarket.Entities.Models;
 
 namespace GideonMarket.UseCases.Handlers.Products.Commands
 {
@@ -23,7 +24,7 @@ namespace GideonMarket.UseCases.Handlers.Products.Commands
             {
                 return;
             }
-            var product = mapper.Map<Domain.Models.Product>(request.dto);
+            var product = mapper.Map<Product>(request.dto);
             appContext.Entry(entity).CurrentValues.SetValues(product);
             await appContext.SaveChangesAsync();
         }

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace GideonMarket.UseCases.Handlers.Products.Commands.Create
+namespace GideonMarket.UseCases.Handlers.Products.Commands
 {
     public class CreatProductValidation : AbstractValidator<CreateProductRequest>
     {

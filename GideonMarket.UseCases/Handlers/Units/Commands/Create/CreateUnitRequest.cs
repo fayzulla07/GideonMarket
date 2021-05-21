@@ -1,5 +1,4 @@
-﻿using GideonMarket.UseCases.Handlers.Units.Dto;
-using MediatR;
+﻿using MediatR;
 
 namespace GideonMarket.UseCases.Handlers.Units.Commands
 {

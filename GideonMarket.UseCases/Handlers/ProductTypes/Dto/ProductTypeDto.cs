@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GideonMarket.UseCases.Handlers.ProductTypes.Dto
+namespace GideonMarket.UseCases.Handlers.ProductTypes
 {
     public class ProductTypeDto 
     {

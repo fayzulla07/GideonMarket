@@ -1,6 +1,6 @@
 ﻿
 
-namespace GideonMarket.UseCases.Handlers.Units.Dto
+namespace GideonMarket.UseCases.Handlers.Units
 {
     public  class UnitDto
     {

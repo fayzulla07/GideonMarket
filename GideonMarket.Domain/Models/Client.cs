@@ -1,8 +1,8 @@
-﻿using GideonMarket.Domain.Exceptions;
-using GideonMarket.Domain.Shared;
+﻿using GideonMarket.Entities.Exceptions;
+using GideonMarket.Entities.Shared;
 
 
-namespace GideonMarket.Domain.Models
+namespace GideonMarket.Entities.Models
 {
     public class Client : Entity, MainEntity
     {

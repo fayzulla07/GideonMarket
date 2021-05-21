@@ -7,7 +7,7 @@
 <SfGrid DataSource="@Data" AllowPaging="true" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" Height="315">
     <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" ShowDeleteConfirmDialog="true"></GridEditSettings>
     <GridEvents OnActionComplete="ActionComplete"  TValue="ProductTypeViewModel"></GridEvents>
-    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Normal"></GridEditSettings>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Batch"></GridEditSettings>
     <GridColumns>
         <GridColumn Field=@nameof(ProductTypeViewModel.Id) HeaderText="ID" IsPrimaryKey="true" ValidationRules="@(new ValidationRules{ Required=true})" TextAlign="TextAlign.Right" Width="120"></GridColumn>
         <GridColumn Field=@nameof(ProductTypeViewModel.Name) HeaderText="Имя" ValidationRules="@(new ValidationRules{ Required=true})" Width="120"></GridColumn>

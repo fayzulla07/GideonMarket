@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -35,6 +36,13 @@ namespace GideonMarket.Web.Server.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpGet("/getram")]
+        public string GetRam()
+        {
+            var value = Process.GetCurrentProcess();
+            return $"Used: {value.PrivateMemorySize64.ToString()}";
         }
     }
 }

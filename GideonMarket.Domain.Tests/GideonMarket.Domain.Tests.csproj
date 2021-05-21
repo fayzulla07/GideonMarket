@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GideonMarket.Domain\GideonMarket.Domain.csproj" />
+    <ProjectReference Include="..\GideonMarket.Domain\GideonMarket.Entities.csproj" />
   </ItemGroup>
 
 </Project>

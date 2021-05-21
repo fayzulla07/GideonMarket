@@ -1,7 +1,7 @@
-using GideonMarket.Domain.Models;
+using GideonMarket.Entities.Models;
 using NUnit.Framework;
 
-namespace GideonMarket.Domain.Tests
+namespace GideonMarket.Entities.Tests
 {
     public class ProductTest
     {

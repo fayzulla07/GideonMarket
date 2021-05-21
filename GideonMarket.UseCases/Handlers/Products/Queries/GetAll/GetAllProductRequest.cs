@@ -1,9 +1,7 @@
-﻿using GideonMarket.UseCases.Handlers.Products.Dto;
-using MediatR;
-using System.Collections;
+﻿using MediatR;
 using System.Collections.Generic;
 
-namespace GideonMarket.UseCases.Handlers.Products.Queries.GetAll
+namespace GideonMarket.UseCases.Handlers.Products.Queries
 {
     public class GetAllProductRequest : IRequest<IEnumerable<GetProductDto>>
     {

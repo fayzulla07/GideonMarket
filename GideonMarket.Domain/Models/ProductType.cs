@@ -1,8 +1,8 @@
-﻿using GideonMarket.Domain.Exceptions;
-using GideonMarket.Domain.Shared;
+﻿using GideonMarket.Entities.Exceptions;
+using GideonMarket.Entities.Shared;
 using GideonMarket.Utils;
 
-namespace GideonMarket.Domain.Models
+namespace GideonMarket.Entities.Models
 {
     public class ProductType: Entity, MainEntity
     {

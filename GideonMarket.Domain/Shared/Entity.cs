@@ -1,5 +1,5 @@
 ﻿
-namespace GideonMarket.Domain.Shared
+namespace GideonMarket.Entities.Shared
 {
     public abstract class Entity
     {

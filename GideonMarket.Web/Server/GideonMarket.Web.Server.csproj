@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.4">
@@ -24,11 +25,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\GideonMarket.DataAccess.MsSql\GideonMarket.DataAccess.MsSql.csproj" />
-    <ProjectReference Include="..\..\GideonMarket.Infrastructure\GideonMarket.Infrastructure.csproj" />
     <ProjectReference Include="..\..\GideonMarket.UseCases\GideonMarket.UseCases.csproj" />
     <ProjectReference Include="..\..\GideonMarket.Utils\GideonMarket.Utils.csproj" />
     <ProjectReference Include="..\Client\GideonMarket.Web.Client.csproj" />
-    <ProjectReference Include="..\Shared\GideonMarket.Web.Shared.csproj" />
   </ItemGroup>
 
 

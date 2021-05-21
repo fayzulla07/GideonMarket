@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace GideonMarket.UseCases.Handlers.ProductTypes.Commands.Create
+namespace GideonMarket.UseCases.Handlers.ProductTypes.Commands
 {
     public class UpdateProductTypeValidation : AbstractValidator<UpdateProductTypeRequest>
     {

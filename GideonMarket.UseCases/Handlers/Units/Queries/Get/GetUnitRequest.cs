@@ -1,7 +1,6 @@
-﻿using GideonMarket.UseCases.Handlers.Units.Dto;
-using MediatR;
+﻿using MediatR;
 
-namespace GideonMarket.UseCases.Handlers.Units.Queries.Get
+namespace GideonMarket.UseCases.Handlers.Units.Queries
 {
     public class GetUnitRequest : IRequest<UnitDto>
     {

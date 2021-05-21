@@ -1,6 +1,5 @@
 ﻿using MapsterMapper;
-using GideonMarket.Infrastructure.Interfaces.DataAccess;
-using GideonMarket.UseCases.Handlers.Units.Dto;
+using GideonMarket.UseCases.DataAccess;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;

@@ -1,5 +1,5 @@
 ﻿
-namespace GideonMarket.Domain.Enums
+namespace GideonMarket.Entities.Enums
 {
     public enum OrderItemStatus
     {

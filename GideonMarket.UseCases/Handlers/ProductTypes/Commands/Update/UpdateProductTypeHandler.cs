@@ -1,5 +1,4 @@
-﻿using MapsterMapper;
-using GideonMarket.Infrastructure.Interfaces.DataAccess;
+﻿using GideonMarket.UseCases.DataAccess;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,12 +8,10 @@ namespace GideonMarket.UseCases.Handlers.ProductTypes.Commands
     internal class UpdateProductTypeHandler : AsyncRequestHandler<UpdateProductTypeRequest>
     {
         private readonly IAppContext appContext;
-        private readonly IMapper mapper;
 
-        public UpdateProductTypeHandler(IAppContext appContext, IMapper mapper)
+        public UpdateProductTypeHandler(IAppContext appContext)
         {
             this.appContext = appContext;
-            this.mapper = mapper;
         }
         protected async override Task Handle(UpdateProductTypeRequest request, CancellationToken cancellationToken)
         {
@@ -23,7 +20,7 @@ namespace GideonMarket.UseCases.Handlers.ProductTypes.Commands
             {
                 return;
             }
-            appContext.Entry(entity).CurrentValues.SetValues(new Domain.Models.ProductType(request.dto.Id, request.dto.Name));
+            appContext.Entry(entity).CurrentValues.SetValues(new Entities.Models.ProductType(request.dto.Id, request.dto.Name));
             await appContext.SaveChangesAsync();
         }
     }

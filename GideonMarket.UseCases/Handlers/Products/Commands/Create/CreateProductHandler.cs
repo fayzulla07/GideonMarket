@@ -1,10 +1,9 @@
-﻿using GideonMarket.Infrastructure.Interfaces.DataAccess;
-using MapsterMapper;
+﻿using GideonMarket.UseCases.DataAccess;
 using Mapster;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using GideonMarket.Domain.Models;
+using GideonMarket.Entities.Models;
 
 namespace GideonMarket.UseCases.Handlers.Products.Commands
 {

@@ -1,6 +1,5 @@
 ﻿using MapsterMapper;
-using GideonMarket.Infrastructure.Interfaces.DataAccess;
-using GideonMarket.UseCases.Handlers.ProductTypes.Dto;
+using GideonMarket.UseCases.DataAccess;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -12,12 +11,10 @@ namespace GideonMarket.UseCases.Handlers.ProductTypes.Queries
     internal class GetAllProductTypeHandler : IRequestHandler<GetAllProductTypeRequest, IEnumerable<ProductTypeDto>>
     {
         private readonly IAppContext appContext;
-        private readonly IMapper mapper;
 
-        public GetAllProductTypeHandler(IAppContext appContext, IMapper mapper)
+        public GetAllProductTypeHandler(IAppContext appContext)
         {
             this.appContext = appContext;
-            this.mapper = mapper;
         }
         public async Task<IEnumerable<ProductTypeDto>> Handle(GetAllProductTypeRequest request, CancellationToken cancellationToken)
         {

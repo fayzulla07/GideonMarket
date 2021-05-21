@@ -1,5 +1,5 @@
 ﻿
-using GideonMarket.Infrastructure.Interfaces.DataAccess;
+using GideonMarket.UseCases.DataAccess;
 using MapsterMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,12 +12,10 @@ namespace GideonMarket.UseCases.Handlers.Products.Commands
     internal class DeleteProductHandler : AsyncRequestHandler<DeleteProductRequest>
     {
         private readonly IAppContext appContext;
-        private readonly IMapper mapper;
 
-        public DeleteProductHandler(IAppContext appContext, IMapper mapper)
+        public DeleteProductHandler(IAppContext appContext)
         {
             this.appContext = appContext;
-            this.mapper = mapper;
         }
         protected async override Task Handle(DeleteProductRequest request, CancellationToken cancellationToken)
         {

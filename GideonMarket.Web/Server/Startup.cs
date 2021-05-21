@@ -1,19 +1,18 @@
 using GideonMarket.DataAccess.MsSql;
-using GideonMarket.Infrastructure;
 using GideonMarket.Utils.Modules;
+using GideonMarket.Web.Server.Filters;
 using GideonMarket.Web.Server.IdentityServer;
-using GideonMarket.Web.Server.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace GideonMarket.Web.Server
 {
@@ -30,22 +29,64 @@ namespace GideonMarket.Web.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationContext>();
-
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(x =>
+            {
+                x.Filters.Add<ValidationFilter>();
+            }     
+            );
             services.AddRazorPages();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme.",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                     {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header
+
+                        },
+                            new List<string>()
+                     }
+                 });
             });
 
             services.RegisterModule<UseCaseModule>(Configuration);
             services.RegisterModule<DataAccessModule>(Configuration);
-            services.RegisterModule<InfrastructureModule>(Configuration);
+            services.AddScoped<AuthService>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
+                        .GetBytes(Configuration.GetSection("AuthSettings:Key").Value)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero,
+                    ValidateLifetime = true
+                };
+            });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,8 +109,8 @@ namespace GideonMarket.Web.Server
 
             app.UseRouting();
 
-            // app.UseAuthentication();    // подключение аутентификации
-            //  app.UseAuthorization();
+             app.UseAuthentication();    // подключение аутентификации
+             app.UseAuthorization();
 
             app.UseSwaggerUI(c =>
             {

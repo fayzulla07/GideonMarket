@@ -1,6 +1,6 @@
 ﻿
 
-namespace GideonMarket.UseCases.Handlers.Products.Dto
+namespace GideonMarket.UseCases.Handlers.Products
 {
     public class SetProductDto
     {

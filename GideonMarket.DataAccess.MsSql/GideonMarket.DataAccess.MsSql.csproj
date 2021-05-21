@@ -13,8 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GideonMarket.Domain\GideonMarket.Domain.csproj" />
-    <ProjectReference Include="..\GideonMarket.Infrastructure.Interfaces\GideonMarket.Infrastructure.Interfaces.csproj" />
+    <ProjectReference Include="..\GideonMarket.UseCases\GideonMarket.UseCases.csproj" />
     <ProjectReference Include="..\GideonMarket.Utils\GideonMarket.Utils.csproj" />
   </ItemGroup>
 

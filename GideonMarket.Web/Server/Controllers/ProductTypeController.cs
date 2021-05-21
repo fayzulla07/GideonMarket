@@ -1,15 +1,17 @@
 ﻿using GideonMarket.UseCases.Handlers.ProductTypes.Commands;
-using GideonMarket.UseCases.Handlers.ProductTypes.Dto;
+using GideonMarket.UseCases.Handlers.ProductTypes;
 using GideonMarket.UseCases.Handlers.ProductTypes.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace GideonMarket.Web.Server.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductTypeController : ControllerBase

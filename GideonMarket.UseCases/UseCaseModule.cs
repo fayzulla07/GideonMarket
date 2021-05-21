@@ -3,8 +3,6 @@ using GideonMarket.Utils.Modules;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
-using GideonMarket.UseCases.Handlers.ProductTypes.Commands;
-using GideonMarket.UseCases.Pipelines;
 using Mapster;
 using MapsterMapper;
 
@@ -22,7 +20,6 @@ namespace GideonMarket.DataAccess.MsSql
             var config = new TypeAdapterConfig();
             services.AddSingleton(config);
             services.AddScoped<IMapper, ServiceMapper>();
-            //  services.AddTransient<IPipelineBehavior<CreateProductTypeRequest, int>, TransactionBehavior<CreateProductTypeRequest, int>>();
         }
     }
 }

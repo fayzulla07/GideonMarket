@@ -1,4 +1,4 @@
-﻿using GideonMarket.Infrastructure.Interfaces.DataAccess;
+﻿using GideonMarket.UseCases.DataAccess;
 using GideonMarket.Utils.Modules;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

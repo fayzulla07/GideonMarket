@@ -1,9 +1,9 @@
-﻿using GideonMarket.Domain.Shared;
+﻿using GideonMarket.Entities.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GideonMarket.Domain.Models
+namespace GideonMarket.Entities.Models
 {
    public class Income : Entity, MainEntity
     {

@@ -1,13 +1,12 @@
 ﻿using MapsterMapper;
-using GideonMarket.Infrastructure.Interfaces.DataAccess;
-using GideonMarket.UseCases.Handlers.Products.Dto;
+using GideonMarket.UseCases.DataAccess;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GideonMarket.UseCases.Handlers.Products.Queries.Get
+namespace GideonMarket.UseCases.Handlers.Products.Queries
 {
     internal class GetProductHandler : IRequestHandler<GetProductRequest, GetProductDto>
     {

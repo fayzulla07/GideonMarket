@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace GideonMarket.UseCases.Handlers.Units.Commands.Create
+namespace GideonMarket.UseCases.Handlers.Units.Commands
 {
     public class DeleteUnitValidation : AbstractValidator<DeleteUnitRequest>
     {

@@ -1,6 +1,5 @@
-﻿using GideonMarket.UseCases.Handlers.ProductTypes.Dto;
-using MediatR;
-using System.ComponentModel.DataAnnotations;
+﻿using MediatR;
+
 
 namespace GideonMarket.UseCases.Handlers.ProductTypes.Commands
 {

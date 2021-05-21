@@ -15,6 +15,8 @@ namespace GideonMarket.Infrastructure.Interfaces.DataAccess
         public DbSet<Income> Incomes { get; }
         public DbSet<Order> Orders { get; }
         public DbSet<Client> Clients { get; }
+        public DbSet<User> Users { get; }
+        public DbSet<Role> Roles { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 

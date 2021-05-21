@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GideonMarket.Domain.Exceptions
+namespace GideonMarket.Entities.Exceptions
 {
     public class EntityException : Exception
     {

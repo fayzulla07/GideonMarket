@@ -1,8 +1,8 @@
-﻿using GideonMarket.Domain.Enums;
-using GideonMarket.Domain.Shared;
+﻿using GideonMarket.Entities.Enums;
+using GideonMarket.Entities.Shared;
 using System.Collections.Generic;
 
-namespace GideonMarket.Domain.Models
+namespace GideonMarket.Entities.Models
 {
     public class Place : Entity, MainEntity
     {

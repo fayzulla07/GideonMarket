@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GideonMarket.Infrastructure.Interfaces\GideonMarket.Infrastructure.Interfaces.csproj" />
+    <ProjectReference Include="..\GideonMarket.Domain\GideonMarket.Entities.csproj" />
     <ProjectReference Include="..\GideonMarket.Utils\GideonMarket.Utils.csproj" />
   </ItemGroup>
 
@@ -29,9 +29,6 @@
     <Folder Include="Handlers\Clients\Mappings\" />
     <Folder Include="Handlers\Clients\Queries\" />
     <Folder Include="Handlers\Users\Commands\" />
-    <Folder Include="Handlers\Users\Dto\" />
-    <Folder Include="Handlers\Users\Mappings\" />
-    <Folder Include="Handlers\Users\Queries\" />
     <Folder Include="Handlers\Places\Commands\" />
     <Folder Include="Handlers\Places\Dto\" />
     <Folder Include="Handlers\Places\Queries\" />

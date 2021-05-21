@@ -1,5 +1,4 @@
-﻿using GideonMarket.UseCases.Handlers.ProductTypes.Dto;
-using MediatR;
+﻿using MediatR;
 using System.Collections.Generic;
 
 namespace GideonMarket.UseCases.Handlers.ProductTypes.Queries
