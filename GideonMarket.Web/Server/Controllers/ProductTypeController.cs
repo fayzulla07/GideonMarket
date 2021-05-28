@@ -23,7 +23,6 @@ namespace GideonMarket.Web.Server.Controllers
             this.mediator = mediator;
         }
 
-        
         [HttpGet]
         public async Task<IEnumerable<ProductTypeDto>> Get()
         {
