@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GideonMarket.Web.Shared
+namespace GideonMarket.Web.Pages
 {
     public class ProductTypeViewModel
     {
