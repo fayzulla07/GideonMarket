@@ -14,7 +14,7 @@ namespace GideonMarket.DataAccess.MsSql
         public DbSet<Place> Places { get; set; }
         public DbSet<Income> Incomes { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<Client> Clients { get; set; }
+        public DbSet<Customers> Customers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
 
@@ -47,6 +47,23 @@ namespace GideonMarket.DataAccess.MsSql
 
             });
 
+            modelBuilder.Entity<Customers>(x =>
+            {
+                x.HasKey(p => p.Id);
+                x.Property(p => p.Id)
+                .ValueGeneratedOnAdd()
+                .IsRequired();
+
+                x.Property(p => p.FullName)
+                .HasMaxLength(150)
+                .IsRequired(true);
+                x.HasIndex(i => i.FullName)
+                .IsUnique();
+
+                x.Property(p => p.Email)
+                .HasMaxLength(150)
+                .IsRequired(false);
+            });
 
             modelBuilder.Entity<Unit>(x =>
             {
@@ -219,7 +236,7 @@ namespace GideonMarket.DataAccess.MsSql
 
             });
 
-            modelBuilder.Entity<Client>(x =>
+            modelBuilder.Entity<Customers>(x =>
             {
                 x.HasKey(p => p.Id);
                 x.Property(p => p.Id)
