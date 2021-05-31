@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace GideonMarket.Web.Server.Controllers
 {
-    [Authorize]
+   // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductTypeController : ControllerBase
@@ -23,7 +23,6 @@ namespace GideonMarket.Web.Server.Controllers
             this.mediator = mediator;
         }
 
-        
         [HttpGet]
         public async Task<IEnumerable<ProductTypeDto>> Get()
         {

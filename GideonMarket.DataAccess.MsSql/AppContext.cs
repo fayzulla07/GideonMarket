@@ -188,7 +188,7 @@ namespace GideonMarket.DataAccess.MsSql
                .IsUnique();
 
 
-                x.Property(x => x.RegDt).HasDefaultValue(DateTime.Now);
+                x.Property(x => x.RegDt);
             });
 
             modelBuilder.Entity<OrderItem>(x =>

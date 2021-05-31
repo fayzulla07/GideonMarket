@@ -5,11 +5,11 @@ namespace GideonMarket.Entities.Models
 {
     public class OrderItem : Entity
     {
-        public int OrderId { get; }
-        public string Description { get;}
-        public double Count { get; }
-        public decimal Price { get; }
-        public int ProductId { get; }
+        public int OrderId { get; private set; }
+        public string Description { get; private set; }
+        public double Count { get; private set; }
+        public decimal Price { get; private set; }
+        public int ProductId { get; private set; }
         public OrderItemStatus OrderItemStatus { get; private set; }
         public OrderItem(int orderId, string description, int productId, double count, decimal price, OrderItemStatus orderItemStatus)
         {
