@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GideonMarket.UseCases.Handlers.Customers.Queries.GetAll
 {
-    internal class GetAllCutomerHandler:
+    internal class GetAllCutomerHandler
     {
     }
 }

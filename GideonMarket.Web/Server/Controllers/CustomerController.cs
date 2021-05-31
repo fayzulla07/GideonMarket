@@ -23,7 +23,7 @@ namespace GideonMarket.Web.Server.Controllers
         [HttpGet]
         public async Task<IEnumerable<CustomerDto>> Get()
         {
-            return await mediator.Send(new ());
+            return null;
         }
 
         // GET api/<CustomerController>/5
