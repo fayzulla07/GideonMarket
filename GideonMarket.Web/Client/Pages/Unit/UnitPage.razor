@@ -1,32 +1,30 @@
-﻿@page "/productType"
-@using GideonMarket.Web.Pages
+﻿@page "/unit"
 
 <div class="h3">Тип продукта</div>
 
 @using Syncfusion.Blazor.Grids
 
-
-<SfGrid DataSource="Data" AllowPaging="true" 
+<SfGrid DataSource="Data" AllowPaging="true"
         Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" Height="315">
-    <GridEvents OnActionComplete="ActionComplete" TValue="ProductTypeViewModel"></GridEvents>
+    <GridEvents OnActionComplete="ActionComplete" TValue="UnitViewModel"></GridEvents>
     <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Normal" ShowDeleteConfirmDialog="true"></GridEditSettings>
-    
+
     <GridColumns>
-        <GridColumn Field=@nameof(ProductTypeViewModel.Id) Visible="false" HeaderText="ID" IsPrimaryKey="true" IsIdentity="true" ValidationRules="@(new ValidationRules{ Required=true})" TextAlign="TextAlign.Right" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(ProductTypeViewModel.Name) HeaderText="Наименование" ValidationRules="@(new ValidationRules{ Required=true})" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(UnitViewModel.Id) Visible="false" HeaderText="ID" IsPrimaryKey="true" IsIdentity="true" ValidationRules="@(new ValidationRules{ Required=true})" TextAlign="TextAlign.Right" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(UnitViewModel.Name) HeaderText="Наименование" ValidationRules="@(new ValidationRules{ Required=true})" Width="120"></GridColumn>
     </GridColumns>
 </SfGrid>
 
 @code{
     [Inject]
     public HttpClient client { get; set; }
-    public List<ProductTypeViewModel> Data { get; set; }
+    public List<UnitViewModel> Data { get; set; }
     EditModified editType;
     protected async override Task OnInitializedAsync()
     {
-        Data = await client.GetFromJsonAsync<List<ProductTypeViewModel>>("/api/productType");
+        Data = await client.GetFromJsonAsync<List<UnitViewModel>>("/api/Unit");
     }
-    public async void ActionComplete(ActionEventArgs<ProductTypeViewModel> args)
+    public async void ActionComplete(ActionEventArgs<UnitViewModel> args)
     {
         if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
         {
@@ -40,16 +38,16 @@
         {
             if (editType == EditModified.Added)
             {
-                var result = await client.PostAsJsonAsync<string>("/api/productType", args.Data.Name);
+                var result = await client.PostAsJsonAsync<string>("/api/Unit", args.Data.Name);
             }
             else if (editType == EditModified.Updated)
             {
-                var result = await client.PutAsJsonAsync<string>($"/api/productType/{args.Data.Id}", args.Data.Name);
+                var result = await client.PutAsJsonAsync<string>($"/api/Unit/{args.Data.Id}", args.Data.Name);
             }
         }
         else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
         {
-            await client.DeleteAsync($"/api/productType/{args.Data.Id}");
+            await client.DeleteAsync($"/api/Unit/{args.Data.Id}");
         }
     }
 
