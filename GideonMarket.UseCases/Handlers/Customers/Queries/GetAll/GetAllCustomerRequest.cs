@@ -1,12 +1,9 @@
-﻿using System;
+﻿using MediatR;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace GideonMarket.UseCases.Handlers.Customers.Queries.GetAll
+namespace GideonMarket.UseCases.Handlers.Customers.Queries
 {
-    class GetAllCustomerRequest
+    public class GetAllCustomerRequest : IRequest<IEnumerable<CustomerDto>>
     {
     }
 }

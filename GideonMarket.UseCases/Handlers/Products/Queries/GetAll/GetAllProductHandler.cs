@@ -1,5 +1,4 @@
-﻿
-using GideonMarket.UseCases.DataAccess;
+﻿using GideonMarket.UseCases.DataAccess;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

@@ -1,4 +1,4 @@
-﻿namespace GideonMarket.UseCases.Handlers.Customers.Dto
+﻿namespace GideonMarket.UseCases.Handlers.Customers
 {
     public class CustomerDto
     {

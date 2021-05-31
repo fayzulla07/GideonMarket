@@ -14,7 +14,7 @@ namespace GideonMarket.UseCases.DataAccess
         public DbSet<Place> Places { get; }
         public DbSet<Income> Incomes { get; }
         public DbSet<Order> Orders { get; }
-        public DbSet<Customers> Customers { get; }
+        public DbSet<Customer> Customers { get; }
         public DbSet<User> Users { get; }
         public DbSet<Role> Roles { get; }
 

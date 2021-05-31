@@ -14,7 +14,7 @@ namespace GideonMarket.DataAccess.MsSql
         public DbSet<Place> Places { get; set; }
         public DbSet<Income> Incomes { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<Customers> Customers { get; set; }
+        public DbSet<Customer> Customers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
 
@@ -47,7 +47,7 @@ namespace GideonMarket.DataAccess.MsSql
 
             });
 
-            modelBuilder.Entity<Customers>(x =>
+            modelBuilder.Entity<Customer>(x =>
             {
                 x.HasKey(p => p.Id);
                 x.Property(p => p.Id)
@@ -96,6 +96,8 @@ namespace GideonMarket.DataAccess.MsSql
                 x.Property(p => p.Description)
                 .HasMaxLength(150);
 
+                x.Property(p => p.IsMaterial);
+
                 x.Property(c => c.ProductTypeId).IsRequired();
                 x.Property(c => c.UnitId).IsRequired();
 
@@ -107,7 +109,7 @@ namespace GideonMarket.DataAccess.MsSql
                 .WithMany()
                 .HasForeignKey(x => x.UnitId);
 
-                x.Property(x => x.Price).HasDefaultValue(0);
+                x.Property(x => x.Price);
 
             });
 
@@ -236,7 +238,7 @@ namespace GideonMarket.DataAccess.MsSql
 
             });
 
-            modelBuilder.Entity<Customers>(x =>
+            modelBuilder.Entity<Customer>(x =>
             {
                 x.HasKey(p => p.Id);
                 x.Property(p => p.Id)
