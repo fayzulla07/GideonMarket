@@ -6,10 +6,14 @@ namespace GideonMarket.Entities.Models
 {
     public class Place : Entity, MainEntity
     {
-        public string Name { get;  }
-        public PlaceType PlaceType { get; }
-        public List<PlaceItem> PlaceItems { get; }
+        public string Name { get; private set; }
+        public PlaceType PlaceType { get; private set; }
+        public List<PlaceItem> PlaceItems { get; private set; }
 
+        public Place()
+        {
+
+        }
         public Place(string name, PlaceType placeType)
         {
             Name = name;

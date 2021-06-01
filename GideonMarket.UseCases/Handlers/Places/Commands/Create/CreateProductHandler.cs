@@ -17,9 +17,10 @@ namespace GideonMarket.UseCases.Handlers.Places.Commands
         }
         public async Task<int> Handle(CreatePlaceRequest request, CancellationToken cancellationToken)
         {
-            using var scope = new TransactionScope();
             var Place = request.dto.Adapt<Place>();
+            using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             await appContext.Places.AddAsync(Place);
+           
             await appContext.SaveChangesAsync();
             scope.Complete();
             return Place.Id;
