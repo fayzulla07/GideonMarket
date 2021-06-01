@@ -26,12 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Handlers\Incomes\" />
     <Folder Include="Handlers\Orders\Commands\" />
     <Folder Include="Handlers\Orders\Dto\" />
     <Folder Include="Handlers\Orders\Mappings\" />
     <Folder Include="Handlers\Orders\Queries\" />
     <Folder Include="Handlers\Users\Commands\" />
-    <Folder Include="Handlers\Places\Commands\" />
   </ItemGroup>
 
 </Project>
