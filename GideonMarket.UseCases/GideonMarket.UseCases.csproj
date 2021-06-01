@@ -32,8 +32,6 @@
     <Folder Include="Handlers\Orders\Queries\" />
     <Folder Include="Handlers\Users\Commands\" />
     <Folder Include="Handlers\Places\Commands\" />
-    <Folder Include="Handlers\Places\Dto\" />
-    <Folder Include="Handlers\Places\Queries\" />
   </ItemGroup>
 
 </Project>
