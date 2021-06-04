@@ -1,0 +1,67 @@
+﻿@page "/Product"
+
+<div class="h3">Продукты</div>
+
+@using Syncfusion.Blazor.Grids
+
+<SfGrid DataSource="Data" AllowPaging="true"
+        Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" Height="315">
+    <GridEvents OnActionComplete="ActionComplete" TValue="ProductViewModel"></GridEvents>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Normal" ShowDeleteConfirmDialog="true"></GridEditSettings>
+
+    <GridColumns>
+        <GridColumn Field=@nameof(ProductViewModel.Id) Visible="false" HeaderText="ID" IsPrimaryKey="true" IsIdentity="true" ValidationRules="@(new ValidationRules{ Required=true})" TextAlign="TextAlign.Right" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(ProductViewModel.Name) HeaderText="Наименование" ValidationRules="@(new ValidationRules{ Required=true})" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(ProductViewModel.Description) HeaderText="Описание" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(ProductViewModel.ProductTypeId) HeaderText="Тип продукта" Width="120"
+                    ForeignKeyField="Id" ForeignKeyValue="Name" DataSource="@lstProductType"></GridColumn>
+        <GridColumn Field=@nameof(ProductViewModel.UnitId) HeaderText="Единица" Width="120"
+                    ForeignKeyField="Id" ForeignKeyValue="Name" DataSource="@lstUnits"></GridColumn>
+        <GridColumn Field=@nameof(ProductViewModel.IsMaterial) HeaderText="Материал?" DisplayAsCheckBox="true"
+                    EditType="EditType.BooleanEdit" Width="120">
+        </GridColumn>
+    </GridColumns>
+</SfGrid>
+
+@code{
+    [Inject]
+    public HttpClient client { get; set; }
+    public List<ProductViewModel> Data { get; set; }
+    public List<UnitViewModel> lstUnits { get; set; }
+    public List<ProductViewModel> lstProductType { get; set; }
+    EditModified editType;
+    protected async override Task OnInitializedAsync()
+    {
+        Data = await client.GetFromJsonAsync<List<ProductViewModel>>($"/api/product");
+        lstUnits = await client.GetFromJsonAsync<List<UnitViewModel>>($"/api/unit");
+        lstProductType = await client.GetFromJsonAsync<List<ProductViewModel>>($"/api/producttype");
+    }
+
+    public async void ActionComplete(ActionEventArgs<ProductViewModel> args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+            editType = EditModified.Updated;
+        }
+        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
+        {
+            editType = EditModified.Added;
+        }
+        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (editType == EditModified.Added)
+            {
+                var result = await client.PostAsJsonAsync<ProductViewModel>($"/api/product", args.Data);
+            }
+            else if (editType == EditModified.Updated)
+            {
+                var result = await client.PutAsJsonAsync<ProductViewModel>($"/api/product/{args.Data.Id}", args.Data);
+            }
+        }
+        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            await client.DeleteAsync($"/api/product/{args.Data.Id}");
+        }
+    }
+
+}

@@ -28,7 +28,7 @@ namespace GideonMarket.Web.Server.Controllers
             return await mediator.Send(new GetAllPlaceRequest());
         }
 
-        // GET api/<PlaceController>/5
+        //GET api/<PlaceController>/5
         //[HttpGet("{id}")]
         //public async Task<PlaceDto> Get(int id)
         //{

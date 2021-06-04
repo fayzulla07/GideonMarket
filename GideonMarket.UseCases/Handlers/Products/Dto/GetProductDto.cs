@@ -10,5 +10,6 @@ namespace GideonMarket.UseCases.Handlers.Products
         public int? ProductTypeId { get; set; }
         public int UnitId { get; set; }
         public decimal Price { get; set; }
+        public bool IsMaterial { get; set; }
     }
 }

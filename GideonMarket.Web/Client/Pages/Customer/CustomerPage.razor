@@ -23,8 +23,9 @@
     EditModified editType;
     protected async override Task OnInitializedAsync()
     {
-        Data = await client.GetFromJsonAsync<List<CustomerViewModel>>("/api/Client");
+        Data = await client.GetFromJsonAsync<List<CustomerViewModel>>("/api/customer");
     }
+
     public async void ActionComplete(ActionEventArgs<CustomerViewModel> args)
     {
         if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
@@ -39,16 +40,16 @@
         {
             if (editType == EditModified.Added)
             {
-                var result = await client.PostAsJsonAsync<string>("/api/Customer", args.Data.FullName);
+                var result = await client.PostAsJsonAsync<CustomerViewModel>("/api/Customer", args.Data);
             }
             else if (editType == EditModified.Updated)
             {
-                var result = await client.PutAsJsonAsync<string>($"/api/Customer/{args.Data.Id}", args.Data.FullName);
+                var result = await client.PutAsJsonAsync<CustomerViewModel>($"/api/Customer/{args.Data.Id}", args.Data);
             }
         }
         else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
         {
-            await client.DeleteAsync($"/api/Client/{args.Data.Id}");
+            await client.DeleteAsync($"/api/customer/{args.Data.Id}");
         }
     }
 
