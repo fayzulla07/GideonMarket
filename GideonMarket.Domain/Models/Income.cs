@@ -13,6 +13,10 @@ namespace GideonMarket.Entities.Models
 
         public List<IncomeItem> IncomeItems { get; private set; }
 
+        public Income()
+        {
+
+        }
         public Income(string description, int number, DateTime regDt)
         {
             Description = description;
@@ -21,7 +25,6 @@ namespace GideonMarket.Entities.Models
         }
         public void AddItem(IncomeItem orderItem)
         {
-            ValidateItem(orderItem);
             IncomeItems.Add(orderItem);
         }
 
@@ -30,12 +33,6 @@ namespace GideonMarket.Entities.Models
             return IncomeItems.Sum(x => x.Total);
         }
 
-        private void ValidateItem(IncomeItem incomeItem)
-        {
-            //if (incomeItem == null)
-            //    throw new IncomeItemException($"{nameof(IncomeItem)} не может быть Null");
-            //if (incomeItem.IncomeId != Id)
-            //    throw new IncomeItemException($"не возможно добавить запись прихода который не принадлежит этому приходу");
-        }
+
     }
 }

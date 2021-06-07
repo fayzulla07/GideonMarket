@@ -10,6 +10,10 @@ namespace GideonMarket.Entities.Models
         public string Description { get; private set; }
         public double Count { get; private set; }
         public decimal Price { get; private set; }
+        public IncomeItem()
+        {
+
+        }
         public IncomeItem(int incomeId, int productId, string description, double count, decimal price)
         {
             IncomeId = incomeId;

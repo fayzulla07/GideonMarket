@@ -12,11 +12,10 @@ namespace GideonMarket.Entities.Models
         {
 
         }
-        public PlaceItem(int placeId, int productId, double remainCount)
+        public PlaceItem(int placeId, int productId)
         {
             PlaceId = placeId;
             ProductId = productId;
-            RemainCount = remainCount;
         }
 
         public void AddCount(double count)
