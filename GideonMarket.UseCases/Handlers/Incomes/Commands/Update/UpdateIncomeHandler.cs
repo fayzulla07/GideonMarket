@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using GideonMarket.Entities.Models;
 using System.Transactions;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace GideonMarket.UseCases.Handlers.Incomes.Commands
 {
@@ -20,15 +22,24 @@ namespace GideonMarket.UseCases.Handlers.Incomes.Commands
         }
         protected async override Task Handle(UpdateIncomeRequest request, CancellationToken cancellationToken)
         {
-            using var scope = new TransactionScope();
-            var entity = await appContext.Incomes.FindAsync(request.dto.Id);
+            using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+            var income = mapper.Map<Income>(request);
+            var entity = await appContext.Incomes.Where(x => x.Id == income.Id).FirstOrDefaultAsync();
             if (entity == null)
             {
                 return;
             }
-             var Income = mapper.Map<Income>(request.dto);
-             appContext.Entry(entity).CurrentValues.SetValues(Income);
-             await appContext.SaveChangesAsync();
+            appContext.Entry(entity).CurrentValues.SetValues(income);
+            appContext.IncomeItems.UpdateRange(income.IncomeItems);
+
+            // Добавить товар на склад
+            var place = await appContext.Places.Include(x => x.PlaceItems).Where(x => x.Id == request.PlaceId).FirstOrDefaultAsync();
+            foreach (var item in income.IncomeItems)
+            {
+                place.UpdateProductInPlace(item.ProductId, item.Count);
+            }
+
+            await appContext.SaveChangesAsync();
              scope.Complete();
         }
     }

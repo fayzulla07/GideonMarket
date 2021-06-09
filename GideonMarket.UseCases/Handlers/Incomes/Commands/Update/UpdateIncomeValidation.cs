@@ -6,7 +6,7 @@ namespace GideonMarket.UseCases.Handlers.Incomes.Commands
     {
         public UpdateIncomeValidation()
         {
-            RuleFor(s => s.dto.Description)
+            RuleFor(s => s.Description)
                 .NotEmpty();
         }
 

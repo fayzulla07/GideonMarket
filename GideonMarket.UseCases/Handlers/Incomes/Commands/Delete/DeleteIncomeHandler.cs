@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace GideonMarket.UseCases.Handlers.Incomes.Commands
 {
@@ -19,9 +20,12 @@ namespace GideonMarket.UseCases.Handlers.Incomes.Commands
         }
         protected async override Task Handle(DeleteIncomeRequest request, CancellationToken cancellationToken)
         {
+            using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             var Income = await appContext.Incomes.Where(x => x.Id == request.Id).FirstOrDefaultAsync();
             appContext.Incomes.Remove(Income);
             await appContext.SaveChangesAsync();
+            
+            scope.Complete();
         }
     }
 }

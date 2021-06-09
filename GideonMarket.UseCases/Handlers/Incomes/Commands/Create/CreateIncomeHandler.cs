@@ -20,7 +20,7 @@ namespace GideonMarket.UseCases.Handlers.Incomes.Commands
         }
         public async Task<int> Handle(CreateIncomeRequest request, CancellationToken cancellationToken)
         {
-            var income = request.dto.Adapt<Income>();
+            var income = request.Adapt<Income>();
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             // Добавить приход
             await appContext.Incomes.AddAsync(income);

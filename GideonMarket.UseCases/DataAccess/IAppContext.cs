@@ -18,6 +18,10 @@ namespace GideonMarket.UseCases.DataAccess
         public DbSet<User> Users { get; }
         public DbSet<Role> Roles { get; }
 
+        public DbSet<PlaceItem> PlaceItems { get; set; }
+        public DbSet<IncomeItem> IncomeItems { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
         EntityEntry Entry(object entity);

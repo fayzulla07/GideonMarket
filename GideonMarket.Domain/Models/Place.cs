@@ -20,37 +20,67 @@ namespace GideonMarket.Entities.Models
             Name = name;
             PlaceType = placeType;
         }
-        public void AddProductToPlace(int productId, double remainCount)
+
+        public void UpdateProductInPlace(int productId, double incomecount)
         {
-             if (PlaceItems != null && PlaceItems.Where(x => x.ProductId == productId).Any())
-             {
-                UpdateItemByProductId(productId, remainCount);
-             }
-            else
+            double oldCount = PlaceItems.Where(x => x.ProductId == productId).FirstOrDefault().RemainCount;
+            if (incomecount > oldCount) 
             {
-                AddItemByProductId(productId, remainCount);
+                AddCount(productId, (incomecount - oldCount));
+            }
+            else if(incomecount < oldCount)
+            {
+                ReduceCount(productId, (oldCount - incomecount));
             }
         }
-        private void AddItemByProductId(int productId, double remainCount)
+
+        public void AddProductToPlace(int productId, double count)
+        {
+
+             // Если товар есть на складе то просто увеличиваем количество
+             if (PlaceItems != null && PlaceItems.Any())
+             {
+                 AddCount(productId, count);
+             }
+            else  // Если товар нет в складе то создаём и добавляем их
+            {
+                CreateItem(productId);
+                AddCount(productId, count);
+            }
+        }
+
+        private void AddCount(int productId, double count)
+        {
+            foreach (var item in PlaceItems)
+            {
+                if (item.ProductId == productId)
+                {
+                    item.AddCount(count);
+                    break;
+                }
+            }
+        }
+        private void ReduceCount(int productId, double count)
+        {
+            foreach (var item in PlaceItems)
+            {
+                if (item.ProductId == productId)
+                {
+                    item.ReduceCount(count);
+                    break;
+                }
+            }
+        }
+
+        private void CreateItem(int productId)
         {
             var placeitem = new PlaceItem(Id, productId);
-            placeitem.AddCount(remainCount);
             if(PlaceItems == null)
             {
                 PlaceItems = new List<PlaceItem>();
             }
             PlaceItems.Add(placeitem);
         }
-        private void UpdateItemByProductId(int productId, double remainCount)
-        {
-            foreach (var item in PlaceItems)
-            {
-                if(item.ProductId == productId)
-                {
-                    item.AddCount(remainCount);
-                    break;
-                }
-            }
-        }
+
     }
 }

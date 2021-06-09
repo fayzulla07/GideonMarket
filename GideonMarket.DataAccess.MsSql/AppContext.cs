@@ -12,8 +12,11 @@ namespace GideonMarket.DataAccess.MsSql
         public DbSet<Unit> Units { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Place> Places { get; set; }
+        public DbSet<PlaceItem> PlaceItems { get; set; }
         public DbSet<Income> Incomes { get; set; }
+        public DbSet<IncomeItem> IncomeItems { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -149,6 +152,8 @@ namespace GideonMarket.DataAccess.MsSql
 
                 x.Property(x => x.RemainCount).HasDefaultValue(0);
 
+                x.ToTable("PlaceItem");
+
             });
 
             modelBuilder.Entity<Income>(x =>
@@ -189,6 +194,8 @@ namespace GideonMarket.DataAccess.MsSql
 
                 x.Property(x => x.Price);
 
+                x.ToTable("IncomeItem");
+
             });
 
             modelBuilder.Entity<Order>(x =>
@@ -206,8 +213,9 @@ namespace GideonMarket.DataAccess.MsSql
                 x.HasIndex(i => i.Number)
                .IsUnique();
 
-
                 x.Property(x => x.RegDt);
+
+             
             });
 
             modelBuilder.Entity<OrderItem>(x =>
@@ -236,6 +244,7 @@ namespace GideonMarket.DataAccess.MsSql
                 x.Property(x => x.Price);
                 x.Property(x => x.OrderItemStatus).HasDefaultValue(OrderItemStatus.Completed);
 
+                x.ToTable("OrderItem");
             });
 
             modelBuilder.Entity<Customer>(x =>
