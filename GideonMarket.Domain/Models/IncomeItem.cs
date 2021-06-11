@@ -8,6 +8,7 @@ namespace GideonMarket.Entities.Models
         public int IncomeId { get; private set; }
         public int ProductId { get; private set; }
         public string Description { get; private set; }
+
         public double Count { get; private set; }
         public decimal Price { get; private set; }
         public IncomeItem()

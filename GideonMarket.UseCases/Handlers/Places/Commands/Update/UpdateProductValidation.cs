@@ -6,7 +6,7 @@ namespace GideonMarket.UseCases.Handlers.Places.Commands
     {
         public UpdatePlaceValidation()
         {
-            RuleFor(s => s.dto.Name)
+            RuleFor(s => s.Name)
                 .NotEmpty();
         }
 

@@ -17,13 +17,13 @@ namespace GideonMarket.UseCases.Handlers.Places.Commands
         }
         public async Task<int> Handle(CreatePlaceRequest request, CancellationToken cancellationToken)
         {
-            var Place = request.dto.Adapt<Place>();
+            var place = request.Adapt<Place>();
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-            await appContext.Places.AddAsync(Place);
+            await appContext.Places.AddAsync(place);
            
             await appContext.SaveChangesAsync();
             scope.Complete();
-            return Place.Id;
+            return place.Id;
         }
     }
 }

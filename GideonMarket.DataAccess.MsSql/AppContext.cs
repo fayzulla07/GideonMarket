@@ -171,8 +171,11 @@ namespace GideonMarket.DataAccess.MsSql
                 x.HasIndex(i => i.Number)
                .IsUnique();
 
-
                 x.Property(x => x.RegDt).HasDefaultValue(DateTime.Now);
+
+                x.HasOne<Product>()
+               .WithMany()
+               .HasForeignKey(x => x.PlaceId);
             });
 
             modelBuilder.Entity<IncomeItem>(x =>
@@ -192,7 +195,9 @@ namespace GideonMarket.DataAccess.MsSql
                 .WithMany()
                 .HasForeignKey(x => x.ProductId);
 
-                x.Property(x => x.Price);
+             
+
+                
 
                 x.ToTable("IncomeItem");
 

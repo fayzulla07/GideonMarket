@@ -6,7 +6,7 @@ namespace GideonMarket.UseCases.Handlers.Places.Commands
     {
         public CreatPlaceValidation()
         {
-            RuleFor(s => s.dto.Name)
+            RuleFor(s => s.Name)
                 .NotEmpty()
                 .MaximumLength(150);
         }

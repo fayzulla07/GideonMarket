@@ -10,6 +10,7 @@ namespace GideonMarket.Entities.Models
         public string Description { get; private set; }
         public int Number { get; private set; }
         public DateTime RegDt { get; private set; }
+        public int PlaceId { get; private set; }
 
         public List<IncomeItem> IncomeItems { get; private set; }
 
@@ -17,11 +18,12 @@ namespace GideonMarket.Entities.Models
         {
 
         }
-        public Income(string description, int number, DateTime regDt)
+        public Income(string description, int number, DateTime regDt, int placeId)
         {
             Description = description;
             Number = number;
             RegDt = regDt;
+            PlaceId = placeId;
         }
         public void AddItem(IncomeItem orderItem)
         {

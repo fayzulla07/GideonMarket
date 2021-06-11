@@ -21,9 +21,8 @@ namespace GideonMarket.Entities.Models
             PlaceType = placeType;
         }
 
-        public void UpdateProductInPlace(int productId, double incomecount)
+        public void UpdateProductInPlace(int productId, double oldCount, double incomecount)
         {
-            double oldCount = PlaceItems.Where(x => x.ProductId == productId).FirstOrDefault().RemainCount;
             if (incomecount > oldCount) 
             {
                 AddCount(productId, (incomecount - oldCount));
@@ -47,6 +46,11 @@ namespace GideonMarket.Entities.Models
                 CreateItem(productId);
                 AddCount(productId, count);
             }
+        }
+
+        public void RemoveProductFromPlace(int productId, double count)
+        {
+            ReduceCount(productId, count);
         }
 
         private void AddCount(int productId, double count)

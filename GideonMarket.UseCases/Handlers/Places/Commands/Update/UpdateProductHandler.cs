@@ -5,28 +5,27 @@ using System.Threading;
 using System.Threading.Tasks;
 using GideonMarket.Entities.Models;
 using System.Transactions;
+using Mapster;
 
 namespace GideonMarket.UseCases.Handlers.Places.Commands
 {
     internal class UpdatePlaceHandler : AsyncRequestHandler<UpdatePlaceRequest>
     {
         private readonly IAppContext appContext;
-        private readonly IMapper mapper;
 
-        public UpdatePlaceHandler(IAppContext appContext, IMapper mapper)
+        public UpdatePlaceHandler(IAppContext appContext)
         {
             this.appContext = appContext;
-            this.mapper = mapper;
         }
         protected async override Task Handle(UpdatePlaceRequest request, CancellationToken cancellationToken)
         {
             using var scope = new TransactionScope();
-            var entity = await appContext.Places.FindAsync(request.dto.Id);
+            var entity = await appContext.Places.FindAsync(request.Id);
             if (entity == null)
             {
                 return;
             }
-             var place = mapper.Map<Place>(request.dto);
+            var place = request.Adapt<Place>();
              appContext.Entry(entity).CurrentValues.SetValues(place);
              await appContext.SaveChangesAsync();
              scope.Complete();
