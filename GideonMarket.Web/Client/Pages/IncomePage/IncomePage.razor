@@ -1,0 +1,62 @@
+﻿@page "/income"
+
+@using Syncfusion.Blazor.Grids
+@using GideonMarket.Web.Client.Pages.Components.Product;
+
+<SfGrid DataSource="Data" AllowPaging="true"
+        Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" Height="315">
+    <GridEvents OnActionComplete="ActionComplete" TValue="IncomeViewModel"></GridEvents>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Normal" ShowDeleteConfirmDialog="true"></GridEditSettings>
+
+    <GridColumns>
+        <GridColumn Field=@nameof(IncomeViewModel.Id) Visible="false" HeaderText="ID" IsPrimaryKey="true" IsIdentity="true" ValidationRules="@(new ValidationRules{ Required=true})" TextAlign="TextAlign.Right" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(IncomeViewModel.Number) HeaderText="Номер заказа" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(IncomeViewModel.Description) HeaderText="Описание" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(IncomeViewModel.RegDt) HeaderText="дата рег" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(IncomeItemViewModel.ProductId) HeaderText="дата рег" Width="120"
+                    ForeignKeyField="Id" ForeignKeyValue="Name" DataSource="@lstProduct"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+@code{
+    [Inject]
+    public HttpClient client { get; set; }
+    public List<IncomeViewModel> Data { get; set; }
+    //public List<IncomeViewModel> lstUnits { get; set; }
+    public List<ProductViewModel> lstProduct { get; set; }
+    EditModified editType;
+    protected async override Task OnInitializedAsync()
+    {
+        Data = await client.GetFromJsonAsync<List<IncomeViewModel>>($"/api/Income");
+        //lstUnits = await client.GetFromJsonAsync<List<IncomeViewModel>>($"/api/unit");
+        lstProduct = await client.GetFromJsonAsync<List<ProductViewModel>>($"/api/product");
+    }
+
+    public async void ActionComplete(ActionEventArgs<IncomeViewModel> args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+            editType = EditModified.Updated;
+        }
+        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
+        {
+            editType = EditModified.Added;
+        }
+        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (editType == EditModified.Added)
+            {
+                var result = await client.PostAsJsonAsync<IncomeViewModel>($"/api/Income", args.Data);
+            }
+            else if (editType == EditModified.Updated)
+            {
+                var result = await client.PutAsJsonAsync<IncomeViewModel>($"/api/income/{args.Data.Id}", args.Data);
+            }
+        }
+        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            await client.DeleteAsync($"/api/product/{args.Data.Id}");
+        }
+    }
+
+}

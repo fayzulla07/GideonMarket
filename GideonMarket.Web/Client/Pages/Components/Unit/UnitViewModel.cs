@@ -1,4 +1,4 @@
-﻿namespace GideonMarket.Web.Client.Pages
+﻿namespace GideonMarket.Web.Client.Pages.Components.Unit
 {
     public class UnitViewModel
     {

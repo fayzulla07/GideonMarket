@@ -1,4 +1,4 @@
-﻿namespace GideonMarket.Web.Client.Pages.Customer
+﻿namespace GideonMarket.Web.Client.Pages.Components.Customer
 {
     public class CustomerViewModel
     {

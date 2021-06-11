@@ -1,4 +1,4 @@
-﻿namespace GideonMarket.Web.Client.Pages.Product
+﻿namespace GideonMarket.Web.Client.Pages.Components.Product
 {
     public class ProductViewModel
     {
