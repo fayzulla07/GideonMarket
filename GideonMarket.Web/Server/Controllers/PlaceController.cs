@@ -37,16 +37,16 @@ namespace GideonMarket.Web.Server.Controllers
 
         // POST api/<PlaceController>
         [HttpPost]
-        public async Task<int> Post([FromBody] PlaceDto value)
+        public async Task<int> Post([FromBody] CreatePlaceRequest value)
         {
-            return await mediator.Send(new CreatePlaceRequest() { dto = value });
+            return await mediator.Send(value);
         }
 
         // PUT api/<PlaceController>/5
         [HttpPut("{id}")]
-        public async Task Put(int id, [FromBody] PlaceDto value)
+        public async Task Put(int id, [FromBody] UpdatePlaceRequest value)
         {
-            await mediator.Send(new UpdatePlaceRequest() { dto = value });
+            await mediator.Send(value);
         }
 
         // DELETE api/<PlaceController>/5

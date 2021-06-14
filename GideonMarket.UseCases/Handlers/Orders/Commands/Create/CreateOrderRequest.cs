@@ -2,13 +2,13 @@
 using System;
 using System.Collections.Generic;
 
-namespace GideonMarket.UseCases.Handlers.Incomes.Commands
+namespace GideonMarket.UseCases.Handlers.Orders.Commands
 {
-    public class CreateIncomeRequest : IRequest<int>
+    public class CreateOrderRequest : IRequest<int>
     {
         public int Id { get; set; }
         public string Description { get; set; }
-        public List<IncomeItemDto> IncomeItems { get; set; }
+        public List<OrderItemDto> OrderItems { get; set; }
         public int PlaceId{ get; set; }
     }
 }

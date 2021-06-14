@@ -23,7 +23,7 @@ namespace GideonMarket.DataAccess.MsSql
 
         public AppContext(DbContextOptions<AppContext> options) : base(options)
         {
-           
+            
             Database.EnsureCreated();
             
         }
@@ -168,6 +168,7 @@ namespace GideonMarket.DataAccess.MsSql
                 .IsRequired(true);
 
                 x.Property(p => p.Number);
+                //.ValueGeneratedOnAdd();
                 x.HasIndex(i => i.Number)
                .IsUnique();
 
@@ -215,12 +216,17 @@ namespace GideonMarket.DataAccess.MsSql
                 .IsRequired(true);
 
                 x.Property(p => p.Number);
+                // .ValueGeneratedOnAdd();
                 x.HasIndex(i => i.Number)
                .IsUnique();
 
                 x.Property(x => x.RegDt);
 
-             
+                x.HasOne<Product>()
+               .WithMany()
+               .HasForeignKey(x => x.PlaceId);
+
+
             });
 
             modelBuilder.Entity<OrderItem>(x =>
@@ -247,7 +253,7 @@ namespace GideonMarket.DataAccess.MsSql
                 .HasForeignKey(x => x.ProductId);
 
                 x.Property(x => x.Price);
-                x.Property(x => x.OrderItemStatus).HasDefaultValue(OrderItemStatus.Completed);
+                x.Property(x => x.OrderItemStatus).HasDefaultValue(OrderItemStatus.Ordered);
 
                 x.ToTable("OrderItem");
             });

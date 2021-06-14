@@ -1,6 +1,7 @@
 ﻿using GideonMarket.Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,5 +29,6 @@ namespace GideonMarket.UseCases.DataAccess
         
         EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
         int SaveChanges();
+        DatabaseFacade Database { get; }
     }
 }

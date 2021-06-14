@@ -11,9 +11,14 @@ namespace GideonMarket.Entities.Models
         public string Description { get; private set; }
         public int Number { get; private set; }
         public DateTime RegDt { get; private set; }
+        public int PlaceId { get; private set; }
 
         public List<OrderItem> OrderItems { get; private set; }
 
+        public Order()
+        {
+
+        }
         public Order(string description, int number, DateTime regDt)
         {
             Description = description;

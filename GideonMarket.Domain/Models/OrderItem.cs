@@ -11,6 +11,10 @@ namespace GideonMarket.Entities.Models
         public decimal Price { get; private set; }
         public int ProductId { get; private set; }
         public OrderItemStatus OrderItemStatus { get; private set; }
+        public OrderItem()
+        {
+
+        }
         public OrderItem(int orderId, string description, int productId, double count, decimal price, OrderItemStatus orderItemStatus)
         {
             OrderId = orderId;
@@ -24,6 +28,9 @@ namespace GideonMarket.Entities.Models
         {
             get { return Price * (decimal)Count; }
         }
-
+        public void ChangeStatus(OrderItemStatus status)
+        {
+            OrderItemStatus = status;
+        }
     }
 }
