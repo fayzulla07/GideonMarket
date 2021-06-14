@@ -26,18 +26,26 @@ namespace GideonMarket.UseCases.Handlers.Orders.Commands
             {
                 return;
             }
-            request.Adapt(entity);
            // Обновить товары на складе
             var place = await appContext.Places.Include(x => x.PlaceItems).Where(x => x.Id == request.PlaceId).FirstOrDefaultAsync();
-            foreach (var item in request.OrderItems)
+            foreach (var requestitem in request.OrderItems)
             {
-                place.UpdateOrder(item.ProductId, appContext.OrderItems.Where(x => x.Id == item.Id).FirstOrDefault().Count, item.Count);
-                if(item.OrderItemStatus == Entities.Enums.OrderItemStatus.Canceled)
+                // обновляем количество
+                 place.UpdateOrder(requestitem.ProductId, entity.GetItem(requestitem.Id).Count, requestitem.Count);
+
+                // если состояние поменялся на Ordered
+                if (requestitem.OrderItemStatus != entity.GetItem(requestitem.Id).OrderItemStatus && requestitem.OrderItemStatus == Entities.Enums.OrderItemStatus.Ordered)
                 {
-                    place.CancelOrder(item.Id, item.Count);
+                    place.ReCancelOrder(requestitem.ProductId, requestitem.Count);
+                }
+                // если состояние поменялся на Canceled
+                else if (requestitem.OrderItemStatus != entity.GetItem(requestitem.Id).OrderItemStatus && requestitem.OrderItemStatus == Entities.Enums.OrderItemStatus.Canceled)
+                {
+                    place.CancelOrder(requestitem.ProductId, requestitem.Count);
                 }
             }
 
+            request.Adapt(entity);
             await appContext.SaveChangesAsync();
             scope.Complete();
         }

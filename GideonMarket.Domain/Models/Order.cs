@@ -35,7 +35,10 @@ namespace GideonMarket.Entities.Models
         {
             return OrderItems.Sum(x => x.Total);
         }
-
+        public OrderItem GetItem(int orderitemid)
+        {
+            return OrderItems.Where(x => x.Id == orderitemid).FirstOrDefault();
+        }
         private void ValidateItem(OrderItem orderItem)
         {
             //if (orderItem == null)

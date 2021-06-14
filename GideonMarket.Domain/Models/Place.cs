@@ -33,21 +33,23 @@ namespace GideonMarket.Entities.Models
                 AddCount(productId, (count - oldCount));
             }
         }
-        public void CancelOrder(int placeitemid, double count)
+        // Отменить заказ
+        public void CancelOrder(int productId, double count)
         {
-            foreach (var item in PlaceItems)
-            {
-                if(placeitemid == item.Id)
-                {
-                    item.AddCount(count);
-                    break;
-                }
-            }
+            AddCount(productId, count);
         }
+        // Отменить заказ
+        public void ReCancelOrder(int productId, double count)
+        {
+            ReduceCount(productId, count);
+        }
+        // Создать заказ
         public void MakeOrder(int productId, double count)
         {
             ReduceCount(productId, count);
         }
+
+        // Удалить заказ
         public void DeleteOrder(int productId, double count)
         {
             AddCount(productId, count);
