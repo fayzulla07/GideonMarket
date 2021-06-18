@@ -3,7 +3,7 @@
 @using GideonMarket.Web.Client.Pages.Components.Customer
 @using GideonMarket.Web.Client.Pages.Components.Product
 @using GideonMarket.Web.Client.Pages.Components.ProductType
-
+@using GideonMarket.Web.Client.Pages.Components.Place
 <h4>Настройки</h4>
 <!-- RH: this is bootstrap 5 tabbed panel -->
 @*<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -47,6 +47,14 @@
         <TabItems>
             <TabItem>
                 <ChildContent>
+                    <TabHeader Text="Места" IconCss="e-whatsapp"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <PlaceCmpt />
+                </ContentTemplate>
+            </TabItem>
+            <TabItem>
+                <ChildContent>
                     <TabHeader Text="Единица измерения" IconCss="Bullet_6"></TabHeader>
                 </ChildContent>
                 <ContentTemplate>
@@ -77,6 +85,7 @@
                     <CustomerCmpt />
                 </ContentTemplate>
             </TabItem>
+
         </TabItems>
     </SfTab>
 </div>

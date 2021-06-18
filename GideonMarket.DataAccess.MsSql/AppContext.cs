@@ -173,9 +173,9 @@ namespace GideonMarket.DataAccess.MsSql
 
                 x.Property(x => x.RegDt).HasDefaultValue(DateTime.Now);
 
-                x.HasOne<Product>()
-               .WithMany()
-               .HasForeignKey(x => x.PlaceId);
+               // x.HasOne<Product>()
+               //.WithMany()
+               //.HasForeignKey(x => x.PlaceId);
             });
 
             modelBuilder.Entity<IncomeItem>(x =>

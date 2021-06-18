@@ -1,6 +1,5 @@
 ﻿@using GideonMarket.Web.Client.Pages.Components.Unit 
-
-
+@using GideonMarket.Web.Client.Pages.Components.ProductType
 
 @using Syncfusion.Blazor.Grids
 
@@ -28,13 +27,13 @@
     public HttpClient client { get; set; }
     public List<ProductViewModel> Data { get; set; }
     public List<UnitViewModel> lstUnits { get; set; }
-    public List<ProductViewModel> lstProductType { get; set; }
+    public List<ProductTypeViewModel> lstProductType { get; set; }
     EditModified editType;
     protected async override Task OnInitializedAsync()
     {
         Data = await client.GetFromJsonAsync<List<ProductViewModel>>($"/api/product");
         lstUnits = await client.GetFromJsonAsync<List<UnitViewModel>>($"/api/unit");
-        lstProductType = await client.GetFromJsonAsync<List<ProductViewModel>>($"/api/producttype");
+        lstProductType = await client.GetFromJsonAsync<List<ProductTypeViewModel>>($"/api/producttype");
     }
 
     public async void ActionComplete(ActionEventArgs<ProductViewModel> args)

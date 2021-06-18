@@ -21,7 +21,7 @@ namespace GideonMarket.Web.Server.Controllers
             this.mediator = mediator;
         }
 
-        
+
         [HttpGet]
         public async Task<IEnumerable<IncomeDto>> Get()
         {

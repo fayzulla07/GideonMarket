@@ -7,6 +7,8 @@ namespace GideonMarket.UseCases.Handlers.Places
         public int Id { get; set; }
         public string Name { get; set; }
         public int PlaceType { get; set; }
+        public int PlaceId { get; set; }
+
         public List<PlaceItemDto> PlaceItems { get; set; }
     }
 }
