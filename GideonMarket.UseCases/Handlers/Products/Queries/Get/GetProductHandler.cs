@@ -20,7 +20,7 @@ namespace GideonMarket.UseCases.Handlers.Products.Queries
         }
         public async Task<GetProductDto> Handle(GetProductRequest request, CancellationToken cancellationToken)
         {
-            var product = await appContext.Products.Where(x => x.Id == request.Id).AsNoTracking().FirstOrDefaultAsync();
+            var product = await appContext.Products.Where(x => x.Id == request.Id && x.IsMaterial == request.IsMaterial).AsNoTracking().FirstOrDefaultAsync();
             var productDtos = mapper.Map<GetProductDto>(product);
             return productDtos;
         }

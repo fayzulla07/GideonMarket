@@ -38,7 +38,7 @@ namespace GideonMarket.Entities.Models
         {
             AddCount(productId, count);
         }
-        // Отменить заказ
+        // Запустить отменённый заказ
         public void ReCancelOrder(int productId, double count)
         {
             ReduceCount(productId, count);

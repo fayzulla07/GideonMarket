@@ -18,10 +18,14 @@ namespace GideonMarket.UseCases.DataAccess
         public DbSet<Customer> Customers { get; }
         public DbSet<User> Users { get; }
         public DbSet<Role> Roles { get; }
+        public DbSet<Supplier> Suppliers { get; }
 
-        public DbSet<PlaceItem> PlaceItems { get; set; }
-        public DbSet<IncomeItem> IncomeItems { get; set; }
-        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<PlaceItem> PlaceItems { get;  }
+        public DbSet<IncomeItem> IncomeItems { get;  }
+        public DbSet<OrderItem> OrderItems { get;  }
+        public DbSet<PriceList> PriceLists { get; }
+        public DbSet<PriceListItem> PriceListItems { get; }
+
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 

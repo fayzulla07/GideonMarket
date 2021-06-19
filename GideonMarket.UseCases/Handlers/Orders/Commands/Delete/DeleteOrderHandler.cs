@@ -28,7 +28,7 @@ namespace GideonMarket.UseCases.Handlers.Orders.Commands
             var place = await appContext.Places.Include(x => x.PlaceItems).Where(x => x.Id == Order.PlaceId).FirstOrDefaultAsync();
             foreach (var item in Order.OrderItems)
             {
-                place.CancelOrder(item.ProductId, item.Count);
+                place.DeleteOrder(item.ProductId, item.Count);
             }
 
             await appContext.SaveChangesAsync();

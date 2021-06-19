@@ -12,6 +12,7 @@ namespace GideonMarket.Entities.Models
         public int Number { get; private set; }
         public DateTime RegDt { get; private set; }
         public int PlaceId { get; private set; }
+        public int CustomerId { get; private set; }
 
         public List<OrderItem> OrderItems { get; private set; }
 
@@ -19,11 +20,12 @@ namespace GideonMarket.Entities.Models
         {
 
         }
-        public Order(string description, int number, DateTime regDt)
+        public Order(string description, int number, DateTime regDt, int customerId)
         {
             Description = description;
             Number = number;
             RegDt = regDt;
+            CustomerId = customerId;
         }
         public void AddItem(OrderItem orderItem)
         {
