@@ -19,7 +19,7 @@ namespace GideonMarket.Web.Client
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NDQzNzkwQDMxMzkyZTMxMmUzMEhDeDdONXZEUGp3aFU1NGw4NHJETVhZc3JVUElxVXJWTzlFeW14Ry8vNWs9");
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-            builder.Services.AddTransient<TokenService>();
+            builder.Services.AddScoped<TokenService>();
             builder.Services.AddTransient<AuthService>();
             builder.Services.AddScoped<IAppService, AppService>();
 

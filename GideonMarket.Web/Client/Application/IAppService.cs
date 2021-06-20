@@ -7,7 +7,7 @@ namespace GideonMarket.Web.Client.Application
     {
         Task<T> GetAsync<T>(string uri);
         Task UpdateAsync<T>(T obj, int id, string uri);
-        Task<T> InsertAsync<T>(T obj, string url);
+        Task<int> InsertAsync<T>(T obj, string url);
         Task DeleteAsync(int Id, string url);
         Task<T> GetByIdAsync<T>(int id, string uri);
 

@@ -262,6 +262,7 @@ namespace GideonMarket.DataAccess.MsSql
                 x.ToTable("OrderItem");
             });
 
+
             modelBuilder.Entity<User>(x =>
             {
                 x.HasKey(p => p.Id);
