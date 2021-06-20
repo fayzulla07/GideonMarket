@@ -21,13 +21,13 @@ namespace GideonMarket.Entities.Models
             Description = description;
             ProductTypeId = productTypeId;
             UnitId = unitId;
-            Price = price;
+            //Price = price;
             IsMaterial = isMaterial;
         }
 
         public void SetPrice(decimal price)
         {
-            Price = price;
+            //Price = price;
         }
     }
 }
