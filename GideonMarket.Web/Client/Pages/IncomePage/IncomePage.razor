@@ -7,7 +7,7 @@
 <CreateIncomeCmpt/>
 
 <SfGrid DataSource="@Data" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update","SaveIncome" })" Height="315">
-    <GridEvents OnActionComplete="ActionComplete" TValue="IncomeItemViewModel"></GridEvents>
+    @*<GridEvents OnActionComplete="ActionComplete" TValue="IncomeItemViewModel"></GridEvents>*@
     <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" ShowDeleteConfirmDialog="true"></GridEditSettings>
     <GridColumns>
         <GridColumn Field=@nameof(IncomeItemViewModel.Id) Visible="false" HeaderText="ID" IsPrimaryKey="true" IsIdentity="true" ValidationRules="@(new ValidationRules{ Required=true})" TextAlign="TextAlign.Right" Width="120"></GridColumn>
@@ -64,7 +64,7 @@
         {
             Data.Remove(args.Data);
         }
-        else if(args)
+        //else if(args)
     }
 
 }
