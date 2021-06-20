@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using GideonMarket.Web.Client.Application;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -23,7 +24,7 @@ namespace GideonMarket.Web.Client
             builder.Services.AddScoped<IAppService, AppService>();
 
             builder.Services.AddScoped<AuthenticationStateProvider, LocalStorageAuthProvider>();
-
+            builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddSyncfusionBlazor();
             await builder.Build().RunAsync();
         }

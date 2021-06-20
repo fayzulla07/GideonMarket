@@ -26,11 +26,12 @@
 @code {
     [Inject]
     public HttpClient client { get; set; }
+    [Parameter]
     public List<PlaceViewModel> Places { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
-        Places = await client.GetFromJsonAsync<List<PlaceViewModel>>($"api/place");
+        
     }
 
     void OpenNewIncome()

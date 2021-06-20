@@ -3,8 +3,9 @@
 @using Syncfusion.Blazor.Grids
 @using GideonMarket.Web.Client.Pages.Components.Product;
 @using GideonMarket.Web.Client.Pages.Components.Income;
+@using GideonMarket.Web.Client.Pages.Components.Place;
 
-<CreateIncomeCmpt/>
+<CreateIncomeCmpt Places="@Places"/>
 
 <SfGrid DataSource="@Data" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update","SaveIncome" })" Height="315">
     @*<GridEvents OnActionComplete="ActionComplete" TValue="IncomeItemViewModel"></GridEvents>*@
@@ -25,11 +26,14 @@
     public HttpClient client { get; set; }
     public List<IncomeItemViewModel> Data;
     public List<ProductViewModel> lstProduct { get; set; }
+    public List<PlaceViewModel> Places { get; set; }
     EditModified editType;
     protected async override Task OnInitializedAsync()
     {
         Data = new List<IncomeItemViewModel>();
         lstProduct = await client.GetFromJsonAsync<List<ProductViewModel>>($"/api/product");
+
+        Places = await client.GetFromJsonAsync<List<PlaceViewModel>>($"api/place");
     }
     public void ActionComplete(ActionEventArgs<IncomeItemViewModel> args)
     {
@@ -50,7 +54,8 @@
             else if (editType == EditModified.Updated)
             {
                 var res = Data.FirstOrDefault(p => p.Id == args.Data.Id);
-                if (res != null) {
+                if (res != null)
+                {
                     res.Id = args.Data.Id;
                     res.IncomeId = args.Data.IncomeId;
                     res.Price = args.Data.Price;
