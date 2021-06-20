@@ -18,6 +18,7 @@
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,10 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Handlers\Orders\Commands\" />
-    <Folder Include="Handlers\Orders\Dto\" />
-    <Folder Include="Handlers\Orders\Queries\" />
     <Folder Include="Handlers\Users\Commands\" />
+    <Folder Include="Handlers\PriceLists\" />
   </ItemGroup>
 
 </Project>

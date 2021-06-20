@@ -44,7 +44,7 @@ namespace GideonMarket.Web.Server.Controllers
 
         // PUT api/<PlaceController>/5
         [HttpPut("{id}")]
-        public async Task Put(int id, [FromBody] PlaceDto value)
+        public async Task Put(int id, [FromBody] UpdatePlaceRequest value)
         {
             await mediator.Send(value);
         }

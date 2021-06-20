@@ -1,10 +1,10 @@
 ﻿using MediatR;
+using System.Collections.Generic;
 
 namespace GideonMarket.UseCases.Handlers.Products.Queries
 {
-    public class GetProductRequest : IRequest<GetProductDto>
+    public class GetByMaterialProductRequest : IRequest<IEnumerable<GetProductDto>>
     {
-        public int Id { get; set; }
         public bool IsMaterial { get; set; } = false;
     }
 }

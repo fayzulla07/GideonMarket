@@ -21,6 +21,43 @@ namespace GideonMarket.Entities.Models
             PlaceType = placeType;
         }
 
+        #region for Order
+        public void UpdateOrder(int productId, double oldCount, double count)
+        {
+            if (count > oldCount)
+            {
+                ReduceCount(productId, (oldCount - count));
+            }
+            else if (count < oldCount)
+            {
+                AddCount(productId, (count - oldCount));
+            }
+        }
+        // Отменить заказ
+        public void CancelOrder(int productId, double count)
+        {
+            AddCount(productId, count);
+        }
+        // Запустить отменённый заказ
+        public void ReCancelOrder(int productId, double count)
+        {
+            ReduceCount(productId, count);
+        }
+        // Создать заказ
+        public void MakeOrder(int productId, double count)
+        {
+            ReduceCount(productId, count);
+        }
+
+        // Удалить заказ
+        public void DeleteOrder(int productId, double count)
+        {
+            AddCount(productId, count);
+        }
+
+        #endregion
+
+        #region for income
         public void UpdateProductInPlace(int productId, double oldCount, double incomecount)
         {
             if (incomecount > oldCount) 
@@ -52,7 +89,9 @@ namespace GideonMarket.Entities.Models
         {
             ReduceCount(productId, count);
         }
+        #endregion
 
+        #region Shared Modules
         private void AddCount(int productId, double count)
         {
             foreach (var item in PlaceItems)
@@ -79,12 +118,15 @@ namespace GideonMarket.Entities.Models
         private void CreateItem(int productId)
         {
             var placeitem = new PlaceItem(Id, productId);
-            if(PlaceItems == null)
+            if (PlaceItems == null)
             {
                 PlaceItems = new List<PlaceItem>();
             }
             PlaceItems.Add(placeitem);
         }
+        #endregion
+
+
 
     }
 }

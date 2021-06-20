@@ -11,14 +11,21 @@ namespace GideonMarket.Entities.Models
         public string Description { get; private set; }
         public int Number { get; private set; }
         public DateTime RegDt { get; private set; }
+        public int PlaceId { get; private set; }
+        public int CustomerId { get; private set; }
 
         public List<OrderItem> OrderItems { get; private set; }
 
-        public Order(string description, int number, DateTime regDt)
+        public Order()
+        {
+
+        }
+        public Order(string description, int number, DateTime regDt, int customerId)
         {
             Description = description;
             Number = number;
             RegDt = regDt;
+            CustomerId = customerId;
         }
         public void AddItem(OrderItem orderItem)
         {
@@ -30,7 +37,10 @@ namespace GideonMarket.Entities.Models
         {
             return OrderItems.Sum(x => x.Total);
         }
-
+        public OrderItem GetItem(int orderitemid)
+        {
+            return OrderItems.Where(x => x.Id == orderitemid).FirstOrDefault();
+        }
         private void ValidateItem(OrderItem orderItem)
         {
             //if (orderItem == null)

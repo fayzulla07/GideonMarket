@@ -18,12 +18,15 @@ namespace GideonMarket.DataAccess.MsSql
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<PriceList> PriceLists { get; set; }
+        public DbSet<PriceListItem> PriceListItems { get; set; }
 
         public AppContext(DbContextOptions<AppContext> options) : base(options)
         {
-           
+            
             Database.EnsureCreated();
             
         }
@@ -112,8 +115,6 @@ namespace GideonMarket.DataAccess.MsSql
                 .WithMany()
                 .HasForeignKey(x => x.UnitId);
 
-                x.Property(x => x.Price);
-
             });
 
             modelBuilder.Entity<Place>(x =>
@@ -168,14 +169,19 @@ namespace GideonMarket.DataAccess.MsSql
                 .IsRequired(true);
 
                 x.Property(p => p.Number);
+                //.ValueGeneratedOnAdd();
                 x.HasIndex(i => i.Number)
                .IsUnique();
 
                 x.Property(x => x.RegDt).HasDefaultValue(DateTime.Now);
 
-               // x.HasOne<Product>()
-               //.WithMany()
-               //.HasForeignKey(x => x.PlaceId);
+                x.HasOne<Place>()
+               .WithMany()
+               .HasForeignKey(x => x.PlaceId);
+
+                x.HasOne<Supplier>()
+                .WithMany()
+                .HasForeignKey(x => x.SupplierId);
             });
 
             modelBuilder.Entity<IncomeItem>(x =>
@@ -195,10 +201,6 @@ namespace GideonMarket.DataAccess.MsSql
                 .WithMany()
                 .HasForeignKey(x => x.ProductId);
 
-             
-
-                
-
                 x.ToTable("IncomeItem");
 
             });
@@ -215,12 +217,20 @@ namespace GideonMarket.DataAccess.MsSql
                 .IsRequired(true);
 
                 x.Property(p => p.Number);
+                // .ValueGeneratedOnAdd();
                 x.HasIndex(i => i.Number)
                .IsUnique();
 
                 x.Property(x => x.RegDt);
 
-             
+                x.HasOne<Place>()
+               .WithMany()
+               .HasForeignKey(x => x.PlaceId);
+
+                 x.HasOne<Customer>()
+                .WithMany()
+                .HasForeignKey(x => x.CustomerId);
+
             });
 
             modelBuilder.Entity<OrderItem>(x =>
@@ -247,7 +257,7 @@ namespace GideonMarket.DataAccess.MsSql
                 .HasForeignKey(x => x.ProductId);
 
                 x.Property(x => x.Price);
-                x.Property(x => x.OrderItemStatus).HasDefaultValue(OrderItemStatus.Completed);
+                x.Property(x => x.OrderItemStatus).HasDefaultValue(OrderItemStatus.Ordered);
 
                 x.ToTable("OrderItem");
             });
@@ -309,6 +319,62 @@ namespace GideonMarket.DataAccess.MsSql
                 x.Property(p => p.Name)
                .HasMaxLength(150)
                .IsRequired();
+            });
+
+            modelBuilder.Entity<Supplier>(x =>
+            {
+                x.HasKey(p => p.Id);
+                x.Property(p => p.Id)
+                .ValueGeneratedOnAdd()
+                .IsRequired();
+
+                x.Property(p => p.FullName)
+                .HasMaxLength(150)
+                .IsRequired(true);
+                x.HasIndex(i => i.FullName)
+                .IsUnique();
+
+                x.Property(p => p.Email)
+                .HasMaxLength(150)
+                .IsRequired(false);
+            });
+
+
+
+
+
+
+
+
+            modelBuilder.Entity<PriceList>(x =>
+            {
+                x.HasKey(p => p.Id);
+                x.Property(p => p.Id)
+                .ValueGeneratedOnAdd()
+                .IsRequired();
+
+                x.Property(p => p.Name)
+                .HasMaxLength(150)
+                .IsRequired(true);
+
+            });
+
+            modelBuilder.Entity<PriceListItem>(x =>
+            {
+                x.HasKey(p => p.Id);
+                x.Property(p => p.Id)
+                .ValueGeneratedOnAdd()
+                .IsRequired();
+
+                x.Property(p => p.ManualPrice);
+
+                x.HasOne<Product>()
+                .WithMany()
+                .HasForeignKey(x => x.ProductId);
+
+                x.HasOne<PriceList>()
+                .WithMany(x => x.PriceItems)
+                .HasForeignKey(x => x.PriceId);
             });
         }
     }

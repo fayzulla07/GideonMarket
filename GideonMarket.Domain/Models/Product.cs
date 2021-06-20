@@ -8,7 +8,7 @@ namespace GideonMarket.Entities.Models
         public string Description { get; private set; }
         public int? ProductTypeId { get; private set; }
         public int UnitId { get; private set; }
-        public decimal? Price { get; private set; }
+       // public decimal? Price { get; private set; }
         public bool IsMaterial { get; private set; }
 
         public Product()

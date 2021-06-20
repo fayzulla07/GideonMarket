@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using GideonMarket.Entities.Models;
 using System.Transactions;
-using GideonMarket.Entities.Enums;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
