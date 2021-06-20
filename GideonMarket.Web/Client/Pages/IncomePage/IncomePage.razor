@@ -1,15 +1,41 @@
 ﻿@page "/income"
 
 @using Syncfusion.Blazor.Grids
-@using GideonMarket.Web.Client.Pages.Components.Product;
-@using GideonMarket.Web.Client.Pages.Components.Income;
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Cards
+@using Syncfusion.Blazor.DropDowns
 @using GideonMarket.Web.Client.Pages.Components.Place;
+@using GideonMarket.Web.Client.Pages.Components.Product;
 
-<CreateIncomeCmpt Places="@Places"/>
+<SfCard ID="BasicCard">
+    <CardHeader Title="Создать новый приход" />
+    <CardContent>
+        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+            <SfComboBox TValue="string" TItem="PlaceViewModel" Placeholder="Выбрать места" DataSource="@Places">
+                <ComboBoxFieldSettings Text="Name" Value="Id"></ComboBoxFieldSettings>
+            </SfComboBox>
+        </div>
 
-<SfGrid DataSource="@Data" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update","SaveIncome" })" Height="315">
-    @*<GridEvents OnActionComplete="ActionComplete" TValue="IncomeItemViewModel"></GridEvents>*@
-    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" ShowDeleteConfirmDialog="true"></GridEditSettings>
+        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+            <SfComboBox TValue="string" TItem="PlaceViewModel" Placeholder="Выбрать поставщика" DataSource="@Places">
+                <ComboBoxFieldSettings Text="Name" Value="Id"></ComboBoxFieldSettings>
+            </SfComboBox>
+        </div>
+
+        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6" >
+            <SfTextBox CssClass="e-outline" Placeholder="Описание" FloatLabelType="@FloatLabelType.Auto" Autocomplete="AutoComplete.Off"/>
+        </div>
+    </CardContent>
+    <CardFooter>
+        @*<CardFooterContent>
+                <button class="btn btn-primary" @onclick="OpenNewIncome">Создать</button>
+            </CardFooterContent>*@
+    </CardFooter>
+</SfCard>
+
+@*<GridEvents OnActionComplete="ActionComplete" TValue="IncomeItemViewModel"></GridEvents>*@
+<SfGrid DataSource="@Data" Toolbar="@(new List<string>() { "Add", "Delete", "Update", "Cancel" })" AllowPaging="true">
+    <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Batch"></GridEditSettings>
     <GridColumns>
         <GridColumn Field=@nameof(IncomeItemViewModel.Id) Visible="false" HeaderText="ID" IsPrimaryKey="true" IsIdentity="true" ValidationRules="@(new ValidationRules{ Required=true})" TextAlign="TextAlign.Right" Width="120"></GridColumn>
 
@@ -20,21 +46,28 @@
         <GridColumn Field=@nameof(IncomeItemViewModel.Description) HeaderText="Описание" Width="120"></GridColumn>
     </GridColumns>
 </SfGrid>
-
+<br />
+<button class="btn btn-primary" @onclick="@SendData">Создать</button>
 @code{
     [Inject]
     public HttpClient client { get; set; }
-    public List<IncomeItemViewModel> Data;
+    public List<IncomeItemViewModel> Data { get; set; }
     public List<ProductViewModel> lstProduct { get; set; }
     public List<PlaceViewModel> Places { get; set; }
     EditModified editType;
     protected async override Task OnInitializedAsync()
     {
-        Data = new List<IncomeItemViewModel>();
+
         lstProduct = await client.GetFromJsonAsync<List<ProductViewModel>>($"/api/product");
 
         Places = await client.GetFromJsonAsync<List<PlaceViewModel>>($"api/place");
     }
+
+    void SendData()
+    {
+
+    }
+
     public void ActionComplete(ActionEventArgs<IncomeItemViewModel> args)
     {
         if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
