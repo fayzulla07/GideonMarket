@@ -262,25 +262,6 @@ namespace GideonMarket.DataAccess.MsSql
                 x.ToTable("OrderItem");
             });
 
-            modelBuilder.Entity<Customer>(x =>
-            {
-                x.HasKey(p => p.Id);
-                x.Property(p => p.Id)
-                .ValueGeneratedOnAdd()
-                .IsRequired();
-
-                x.Property(p => p.FullName)
-                .HasMaxLength(150)
-                .IsRequired(true);
-                x.HasIndex(i => i.FullName)
-                .IsUnique();
-
-                x.Property(p => p.Email)
-                .HasMaxLength(150);
-                x.HasIndex(i => i.Email)
-                .IsUnique();
-
-            });
 
             modelBuilder.Entity<User>(x =>
             {

@@ -19,6 +19,7 @@ namespace GideonMarket.Web.Client.Application
         }
         public async Task<string> GetToken()
         {
+            return await Task.FromResult("Plug");
             if (_provider.CurrentUser == null)
                 return null;
             var CurrentUser = _provider.CurrentUser;
