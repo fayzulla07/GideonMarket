@@ -26,9 +26,7 @@ namespace GideonMarket.DataAccess.MsSql
 
         public AppContext(DbContextOptions<AppContext> options) : base(options)
         {
-            
            // Database.EnsureCreated();
-            
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -182,6 +180,10 @@ namespace GideonMarket.DataAccess.MsSql
                 x.HasOne<Supplier>()
                 .WithMany()
                 .HasForeignKey(x => x.SupplierId);
+
+                x.HasOne<PriceList>()
+               .WithMany()
+               .HasForeignKey(x => x.PriceListId);
             });
 
             modelBuilder.Entity<IncomeItem>(x =>
