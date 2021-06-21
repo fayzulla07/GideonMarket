@@ -160,7 +160,7 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Number = table.Column<int>(type: "int", nullable: false),
-                    RegDt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 6, 21, 21, 13, 45, 911, DateTimeKind.Local).AddTicks(4132)),
+                    RegDt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 6, 21, 21, 40, 5, 78, DateTimeKind.Local).AddTicks(1332)),
                     PlaceId = table.Column<int>(type: "int", nullable: false),
                     SupplierId = table.Column<int>(type: "int", nullable: false)
                 },

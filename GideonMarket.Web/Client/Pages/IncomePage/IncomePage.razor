@@ -35,7 +35,7 @@
 </SfCard>
 
 @*<GridEvents OnActionComplete="ActionComplete" TValue="IncomeItemViewModel"></GridEvents>*@
-<SfGrid DataSource="@ObservableData" Toolbar="@(new List<string>() { "Add", "Delete", "Update", "Cancel" })" AllowPaging="true">
+<SfGrid DataSource="@Data" Toolbar="@(new List<string>() { "Add", "Delete", "Update", "Cancel" })" AllowPaging="true">
     <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Batch"></GridEditSettings>
     <GridColumns>
         <GridColumn Field=@nameof(IncomeItemViewModel.Id) Visible="false" HeaderText="ID" IsPrimaryKey="true" IsIdentity="true" ValidationRules="@(new ValidationRules{ Required=true})" TextAlign="TextAlign.Right" Width="120"></GridColumn>
@@ -50,7 +50,6 @@
 <br />
 <button class="btn btn-primary" @onclick="@SendData">Создать</button>
 @code{
-    public ObservableCollection<IncomeItemViewModel> ObservableData { get; set; }
     [Inject]
     public IAppService client { get; set; }
     public List<IncomeItemViewModel> Data = new List<IncomeItemViewModel>();
@@ -78,10 +77,7 @@
         //newIncome.IncomeItems = Data;
 
         Console.WriteLine(newIncome.Description);
-        foreach (var item in ObservableData)
-        {
-            Console.WriteLine(item.Count + " - " + item.Description);
-        }
+
 
     }
 
