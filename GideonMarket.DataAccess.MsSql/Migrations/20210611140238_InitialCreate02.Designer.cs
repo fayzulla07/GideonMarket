@@ -4,19 +4,21 @@ using GideonMarket.DataAccess.MsSql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GideonMarket.DataAccess.MsSql.Migrations
 {
     [DbContext(typeof(AppContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [Migration("20210611140238_InitialCreate02")]
+    partial class InitialCreate02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.7")
+                .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("GideonMarket.Entities.Models.Customer", b =>
@@ -36,6 +38,10 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                         .HasColumnType("nvarchar(150)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
 
                     b.HasIndex("FullName")
                         .IsUnique();
@@ -64,19 +70,12 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                     b.Property<DateTime>("RegDt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 6, 21, 21, 13, 45, 911, DateTimeKind.Local).AddTicks(4132));
-
-                    b.Property<int>("SupplierId")
-                        .HasColumnType("int");
+                        .HasDefaultValue(new DateTime(2021, 6, 11, 20, 2, 35, 769, DateTimeKind.Local).AddTicks(3911));
 
                     b.HasKey("Id");
 
                     b.HasIndex("Number")
                         .IsUnique();
-
-                    b.HasIndex("PlaceId");
-
-                    b.HasIndex("SupplierId");
 
                     b.ToTable("Incomes");
                 });
@@ -119,9 +118,6 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(150)
@@ -130,20 +126,13 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
-                    b.Property<int>("PlaceId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("RegDt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
-
                     b.HasIndex("Number")
                         .IsUnique();
-
-                    b.HasIndex("PlaceId");
 
                     b.ToTable("Orders");
                 });
@@ -168,7 +157,7 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                     b.Property<int>("OrderItemStatus")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(1);
+                        .HasDefaultValue(0);
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -237,48 +226,6 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                     b.ToTable("PlaceItem");
                 });
 
-            modelBuilder.Entity("GideonMarket.Entities.Models.PriceList", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PriceLists");
-                });
-
-            modelBuilder.Entity("GideonMarket.Entities.Models.PriceListItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("ManualPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("PriceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PriceId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("PriceListItems");
-                });
-
             modelBuilder.Entity("GideonMarket.Entities.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -297,6 +244,9 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("ProductTypeId")
                         .IsRequired()
@@ -361,30 +311,6 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                         });
                 });
 
-            modelBuilder.Entity("GideonMarket.Entities.Models.Supplier", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FullName")
-                        .IsUnique();
-
-                    b.ToTable("Suppliers");
-                });
-
             modelBuilder.Entity("GideonMarket.Entities.Models.Unit", b =>
                 {
                     b.Property<int>("Id")
@@ -442,21 +368,6 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("GideonMarket.Entities.Models.Income", b =>
-                {
-                    b.HasOne("GideonMarket.Entities.Models.Place", null)
-                        .WithMany()
-                        .HasForeignKey("PlaceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GideonMarket.Entities.Models.Supplier", null)
-                        .WithMany()
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("GideonMarket.Entities.Models.IncomeItem", b =>
                 {
                     b.HasOne("GideonMarket.Entities.Models.Income", null)
@@ -468,21 +379,6 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                     b.HasOne("GideonMarket.Entities.Models.Product", null)
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("GideonMarket.Entities.Models.Order", b =>
-                {
-                    b.HasOne("GideonMarket.Entities.Models.Customer", null)
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GideonMarket.Entities.Models.Place", null)
-                        .WithMany()
-                        .HasForeignKey("PlaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -507,21 +403,6 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                     b.HasOne("GideonMarket.Entities.Models.Place", null)
                         .WithMany("PlaceItems")
                         .HasForeignKey("PlaceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GideonMarket.Entities.Models.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("GideonMarket.Entities.Models.PriceListItem", b =>
-                {
-                    b.HasOne("GideonMarket.Entities.Models.PriceList", null)
-                        .WithMany("PriceItems")
-                        .HasForeignKey("PriceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -571,11 +452,6 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
             modelBuilder.Entity("GideonMarket.Entities.Models.Place", b =>
                 {
                     b.Navigation("PlaceItems");
-                });
-
-            modelBuilder.Entity("GideonMarket.Entities.Models.PriceList", b =>
-                {
-                    b.Navigation("PriceItems");
                 });
 #pragma warning restore 612, 618
         }

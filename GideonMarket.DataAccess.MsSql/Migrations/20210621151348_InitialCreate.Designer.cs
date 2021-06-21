@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GideonMarket.DataAccess.MsSql.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20210620081118_InitialCreate")]
+    [Migration("20210621151348_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,10 +39,6 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
-
                     b.HasIndex("FullName")
                         .IsUnique();
 
@@ -70,7 +66,7 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                     b.Property<DateTime>("RegDt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 6, 20, 14, 11, 16, 599, DateTimeKind.Local).AddTicks(1102));
+                        .HasDefaultValue(new DateTime(2021, 6, 21, 21, 13, 45, 911, DateTimeKind.Local).AddTicks(4132));
 
                     b.Property<int>("SupplierId")
                         .HasColumnType("int");

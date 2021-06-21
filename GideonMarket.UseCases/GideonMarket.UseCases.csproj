@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Handlers\PriceLists\Commands\" />
     <Folder Include="Handlers\Users\Commands\" />
   </ItemGroup>
 

@@ -160,7 +160,7 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Number = table.Column<int>(type: "int", nullable: false),
-                    RegDt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 6, 20, 14, 11, 16, 599, DateTimeKind.Local).AddTicks(1102)),
+                    RegDt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 6, 21, 21, 13, 45, 911, DateTimeKind.Local).AddTicks(4132)),
                     PlaceId = table.Column<int>(type: "int", nullable: false),
                     SupplierId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -327,13 +327,6 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
                 values: new object[] { 1, "admin" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Customers_Email",
-                table: "Customers",
-                column: "Email",
-                unique: true,
-                filter: "[Email] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customers_FullName",
