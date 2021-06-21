@@ -27,7 +27,7 @@ namespace GideonMarket.DataAccess.MsSql
         public AppContext(DbContextOptions<AppContext> options) : base(options)
         {
             
-            Database.EnsureCreated();
+           // Database.EnsureCreated();
             
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -262,7 +262,6 @@ namespace GideonMarket.DataAccess.MsSql
                 x.ToTable("OrderItem");
             });
 
-
             modelBuilder.Entity<User>(x =>
             {
                 x.HasKey(p => p.Id);
@@ -319,14 +318,6 @@ namespace GideonMarket.DataAccess.MsSql
                 .HasMaxLength(150)
                 .IsRequired(false);
             });
-
-
-
-
-
-
-
-
             modelBuilder.Entity<PriceList>(x =>
             {
                 x.HasKey(p => p.Id);

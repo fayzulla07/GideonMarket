@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GideonMarket.DataAccess.MsSql.Migrations
 {
-    public partial class InitialCreate01 : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,36 +22,6 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Incomes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Number = table.Column<int>(type: "int", nullable: false),
-                    RegDt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 6, 3, 13, 47, 42, 859, DateTimeKind.Local).AddTicks(3435))
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Incomes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Number = table.Column<int>(type: "int", nullable: false),
-                    RegDt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Places",
                 columns: table => new
                 {
@@ -63,6 +33,19 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Places", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PriceLists",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PriceLists", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -92,6 +75,20 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Suppliers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FullName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Suppliers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Units",
                 columns: table => new
                 {
@@ -102,6 +99,35 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Units", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Number = table.Column<int>(type: "int", nullable: false),
+                    RegDt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PlaceId = table.Column<int>(type: "int", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Orders_Places_PlaceId",
+                        column: x => x.PlaceId,
+                        principalTable: "Places",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -127,6 +153,35 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Incomes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Number = table.Column<int>(type: "int", nullable: false),
+                    RegDt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 6, 21, 21, 13, 45, 911, DateTimeKind.Local).AddTicks(4132)),
+                    PlaceId = table.Column<int>(type: "int", nullable: false),
+                    SupplierId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Incomes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Incomes_Places_PlaceId",
+                        column: x => x.PlaceId,
+                        principalTable: "Places",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Incomes_Suppliers_SupplierId",
+                        column: x => x.SupplierId,
+                        principalTable: "Suppliers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -136,7 +191,6 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                     Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     ProductTypeId = table.Column<int>(type: "int", nullable: false),
                     UnitId = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     IsMaterial = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -196,7 +250,7 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                     Count = table.Column<double>(type: "float", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
-                    OrderItemStatus = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
+                    OrderItemStatus = table.Column<int>(type: "int", nullable: false, defaultValue: 1)
                 },
                 constraints: table =>
                 {
@@ -242,17 +296,37 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PriceListItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PriceId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    ManualPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PriceListItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PriceListItems_PriceLists_PriceId",
+                        column: x => x.PriceId,
+                        principalTable: "PriceLists",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PriceListItems_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
                 values: new object[] { 1, "admin" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Customers_Email",
-                table: "Customers",
-                column: "Email",
-                unique: true,
-                filter: "[Email] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customers_FullName",
@@ -277,6 +351,16 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Incomes_PlaceId",
+                table: "Incomes",
+                column: "PlaceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Incomes_SupplierId",
+                table: "Incomes",
+                column: "SupplierId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderItem_OrderId",
                 table: "OrderItem",
                 column: "OrderId");
@@ -287,10 +371,20 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Orders_CustomerId",
+                table: "Orders",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Orders_Number",
                 table: "Orders",
                 column: "Number",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_PlaceId",
+                table: "Orders",
+                column: "PlaceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlaceItem_PlaceId",
@@ -307,6 +401,16 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                 table: "Places",
                 column: "Name",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PriceListItems_PriceId",
+                table: "PriceListItems",
+                column: "PriceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PriceListItems_ProductId",
+                table: "PriceListItems",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_Name",
@@ -328,6 +432,12 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                 name: "IX_ProductTypes_Name",
                 table: "ProductTypes",
                 column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Suppliers_FullName",
+                table: "Suppliers",
+                column: "FullName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -358,9 +468,6 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Customers");
-
-            migrationBuilder.DropTable(
                 name: "IncomeItem");
 
             migrationBuilder.DropTable(
@@ -368,6 +475,9 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
 
             migrationBuilder.DropTable(
                 name: "PlaceItem");
+
+            migrationBuilder.DropTable(
+                name: "PriceListItems");
 
             migrationBuilder.DropTable(
                 name: "Users");
@@ -379,13 +489,22 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Places");
+                name: "PriceLists");
 
             migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Roles");
+
+            migrationBuilder.DropTable(
+                name: "Suppliers");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
+
+            migrationBuilder.DropTable(
+                name: "Places");
 
             migrationBuilder.DropTable(
                 name: "ProductTypes");
