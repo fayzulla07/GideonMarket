@@ -9,7 +9,7 @@ namespace GideonMarket.UseCases.Handlers.Incomes
         public string Description { get; set; }
         public int Number { get; set; }
         public DateTime RegDt { get; set; }
-
+        public int SupplierId { get; set; }
         public List<IncomeItemDto> IncomeItems { get; set; }
     }
 }

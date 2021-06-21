@@ -1,14 +1,42 @@
 ﻿@page "/income"
 
 @using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Cards
+@using Syncfusion.Blazor.DropDowns
+@using GideonMarket.Web.Client.Pages.Components.Place;
 @using GideonMarket.Web.Client.Pages.Components.Product;
-@using GideonMarket.Web.Client.Pages.Components.Income;
+@using GideonMarket.Web.Client.Pages.Components.Supplier;
+@using System.Collections.ObjectModel;
+<SfCard ID="BasicCard">
+    <CardHeader Title="Создать новый приход" />
+    <CardContent>
+        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+            <SfComboBox TValue="string" TItem="PlaceViewModel" Placeholder="Выбрать места" DataSource="@Places" @bind-Value="@pid">
+                <ComboBoxFieldSettings Text="Name" Value="Id"></ComboBoxFieldSettings>
+            </SfComboBox>
+        </div>
+        <br />
+        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+            <SfComboBox TValue="string" TItem="SupplierViewModel" Placeholder="Выбрать поставщика" DataSource="@Suppliers" @bind-Value="@sid">
+                <ComboBoxFieldSettings Text="FullName" Value="Id"></ComboBoxFieldSettings>
+            </SfComboBox>
+        </div>
 
-<CreateIncomeCmpt/>
+        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+            <SfTextBox CssClass="e-outline" Placeholder="Описание" FloatLabelType="@FloatLabelType.Auto" Autocomplete="AutoComplete.Off" @bind-Value="@descr" />
+        </div>
+    </CardContent>
+    <CardFooter>
+        @*<CardFooterContent>
+                <button class="btn btn-primary" @onclick="OpenNewIncome">Создать</button>
+            </CardFooterContent>*@
+    </CardFooter>
+</SfCard>
 
-<SfGrid DataSource="@Data" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update","SaveIncome" })" Height="315">
-    @*<GridEvents OnActionComplete="ActionComplete" TValue="IncomeItemViewModel"></GridEvents>*@
-    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" ShowDeleteConfirmDialog="true"></GridEditSettings>
+@*<GridEvents OnActionComplete="ActionComplete" TValue="IncomeItemViewModel"></GridEvents>*@
+<SfGrid DataSource="@ObservableData" Toolbar="@(new List<string>() { "Add", "Delete", "Update", "Cancel" })" AllowPaging="true">
+    <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Batch"></GridEditSettings>
     <GridColumns>
         <GridColumn Field=@nameof(IncomeItemViewModel.Id) Visible="false" HeaderText="ID" IsPrimaryKey="true" IsIdentity="true" ValidationRules="@(new ValidationRules{ Required=true})" TextAlign="TextAlign.Right" Width="120"></GridColumn>
 
@@ -19,18 +47,45 @@
         <GridColumn Field=@nameof(IncomeItemViewModel.Description) HeaderText="Описание" Width="120"></GridColumn>
     </GridColumns>
 </SfGrid>
-
+<br />
+<button class="btn btn-primary" @onclick="@SendData">Создать</button>
 @code{
+    public ObservableCollection<IncomeItemViewModel> ObservableData { get; set; }
     [Inject]
-    public HttpClient client { get; set; }
-    public List<IncomeItemViewModel> Data;
+    public IAppService client { get; set; }
+    public List<IncomeItemViewModel> Data = new List<IncomeItemViewModel>();
     public List<ProductViewModel> lstProduct { get; set; }
+    public List<PlaceViewModel> Places { get; set; }
+    public List<SupplierViewModel> Suppliers { get; set; }
     EditModified editType;
+
+    string pid;
+    string sid;
+    string descr;
     protected async override Task OnInitializedAsync()
     {
-        Data = new List<IncomeItemViewModel>();
-        lstProduct = await client.GetFromJsonAsync<List<ProductViewModel>>($"/api/product");
+        lstProduct = await client.GetAsync<List<ProductViewModel>>($"/api/product");
+        Suppliers = await client.GetAsync<List<SupplierViewModel>>("/api/supplier");
+        Places = await client.GetAsync<List<PlaceViewModel>>($"api/place");
     }
+
+    void SendData()
+    {
+        IncomeViewModel newIncome = new IncomeViewModel();
+        newIncome.PlaceId = Convert.ToInt32(pid);
+        newIncome.SupplierId = Convert.ToInt32(sid);
+        newIncome.Description = descr;
+        //newIncome.IncomeItems = Data;
+
+        Console.WriteLine(newIncome.Description);
+        foreach (var item in ObservableData)
+        {
+            Console.WriteLine(item.Count + " - " + item.Description);
+        }
+
+    }
+
+
     public void ActionComplete(ActionEventArgs<IncomeItemViewModel> args)
     {
         if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
@@ -50,7 +105,8 @@
             else if (editType == EditModified.Updated)
             {
                 var res = Data.FirstOrDefault(p => p.Id == args.Data.Id);
-                if (res != null) {
+                if (res != null)
+                {
                     res.Id = args.Data.Id;
                     res.IncomeId = args.Data.IncomeId;
                     res.Price = args.Data.Price;

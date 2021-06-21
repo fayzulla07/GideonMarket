@@ -21,12 +21,13 @@ namespace GideonMarket.Entities.Models
         {
 
         }
-        public Income(string description, int number, DateTime regDt, int placeId)
+        public Income(string description, int number, DateTime regDt, int placeId,int supplierId)
         {
             Description = description;
             Number = number;
             RegDt = regDt;
             PlaceId = placeId;
+            SupplierId = supplierId;
         }
         public void AddItem(IncomeItem orderItem)
         {

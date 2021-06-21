@@ -17,20 +17,21 @@
         </div>
     </CardContent>
     <CardFooter>
-        <CardFooterContent>
+        @*<CardFooterContent>
             <button class="btn btn-primary" @onclick="OpenNewIncome">Создать</button>
-        </CardFooterContent>
+        </CardFooterContent>*@
     </CardFooter>
 </SfCard>
 
 @code {
     [Inject]
     public HttpClient client { get; set; }
+    [Parameter]
     public List<PlaceViewModel> Places { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
-        Places = await client.GetFromJsonAsync<List<PlaceViewModel>>($"api/place");
+        
     }
 
     void OpenNewIncome()

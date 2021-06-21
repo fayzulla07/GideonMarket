@@ -18,8 +18,9 @@ namespace GideonMarket.Web.Client.Application
         //---  Get generic ---
         async Task<string> SetToken()
         {
-            string TokenStr = await _token.GetToken();
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenStr);
+            //string TokenStr = await _token.GetToken();
+            string TokenStr = "Заглушка";
+           // _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenStr);
             return TokenStr;
         }
 

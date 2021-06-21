@@ -14,5 +14,6 @@ namespace GideonMarket.UseCases.Handlers.Incomes.Dto
         public double Count { get; set; }
         public decimal Price { get; set; }
         public decimal Total { get; set; }
+        public int SupplierId { get; set; }
     }
 }
