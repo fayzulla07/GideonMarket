@@ -20,9 +20,6 @@
     protected async override Task OnInitializedAsync()
     {
         Data = await client.GetAsync<List<SupplierViewModel>>("/api/supplier");
-        string str = nameof(SupplierViewModel);
-        int indx = str.IndexOf("ViewModel");
-        string controllerName = str.Substring(0, indx - 1);
     }
 
     public async void ActionComplete(ActionEventArgs<SupplierViewModel> args)

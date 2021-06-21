@@ -1,10 +1,14 @@
 ﻿@page "/Config"
+
 @using GideonMarket.Web.Client.Pages.Components.Unit
 @using GideonMarket.Web.Client.Pages.Components.Customer
 @using GideonMarket.Web.Client.Pages.Components.Product
 @using GideonMarket.Web.Client.Pages.Components.ProductType
 @using GideonMarket.Web.Client.Pages.Components.Place
+@using GideonMarket.Web.Client.Pages.Components.Supplier 
+
 <h4>Настройки</h4>
+
 <!-- RH: this is bootstrap 5 tabbed panel -->
 @*<ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
@@ -83,6 +87,14 @@
                 </ChildContent>
                 <ContentTemplate>
                     <CustomerCmpt />
+                </ContentTemplate>
+            </TabItem>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="Поставщики" IconCss="e-whatsapp"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <SupplierCmpt />
                 </ContentTemplate>
             </TabItem>
 
