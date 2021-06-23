@@ -1,0 +1,70 @@
+﻿@page "/LoginPage"
+@layout EmptyLayout
+@inject AuthService authService
+@inject AuthService authService
+    <!--  Request me for a signup form or any type of help  -->
+<div class="login-form">
+    <EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
+        <div class="avatar"><i class="material-icons">&#xE7FF;</i></div>
+        <h4 class="modal-title">Вход в свой аккаунт</h4>
+        <div class="form-group">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <p class="text-danger">@message</p>
+        </div>
+
+        <div class="form-group">
+            <InputText type="text" class="form-control" placeholder="Логин" @bind-Value="model.UserName" />
+        </div>
+        <div class="form-group">
+            <InputText type="password" class="form-control" placeholder="Пароль" @bind-Value="model.Password" />
+        </div>
+        <div class="form-group small clearfix">
+            <label class="checkbox-inline"><InputCheckbox type="checkbox" @bind-Value="model.RememberMe" /> Запомнить</label>
+            <a href="" class="forgot-link">Забыли пароль?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg">Войти</button>
+    </EditForm>
+    @*<div class="text-center small">Нет учетной записи? <a href="#">Авторизоваться</a></div>*@
+</div>
+
+
+@code {
+    [Inject]
+    public IAppService service { get; set; }
+
+    [Inject]
+    public AuthenticationStateProvider provider { get; set; }
+    private LoginViewModel model = new();
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+    UserResponse userInfo;
+    string message = String.Empty;
+
+    private async void HandleValidSubmit()
+    {
+        try
+        {
+            userInfo = await authService.LoginUserAsync(model);
+        }
+        catch (SimpleHttpResponseException ex)
+        {
+            if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                message = "Логин или пароль неверно!";
+                await InvokeAsync(StateHasChanged);
+            }
+            Console.WriteLine("IN LoginUserAsync: " + ex.StatusCode);
+            Console.WriteLine("IN LoginUserAsync: " + ex.Message);
+        }
+        if (userInfo != null)
+        {
+            LocalStorageAuthProvider Auth = (LocalStorageAuthProvider)provider;
+            await Auth.SetItemAsync(userInfo);
+            await Auth.GetAuthenticationStateAsync();
+            NavigationManager.NavigateTo($"/");
+        }
+
+    }
+}

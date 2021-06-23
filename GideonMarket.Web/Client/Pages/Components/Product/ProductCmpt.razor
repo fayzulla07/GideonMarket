@@ -12,10 +12,10 @@
         <GridColumn Field=@nameof(ProductViewModel.Id) Visible="false" HeaderText="ID" IsPrimaryKey="true" IsIdentity="true" ValidationRules="@(new ValidationRules{ Required=true})" TextAlign="TextAlign.Right" Width="120"></GridColumn>
         <GridColumn Field=@nameof(ProductViewModel.Name) HeaderText="Наименование" ValidationRules="@(new ValidationRules{ Required=true})" Width="120"></GridColumn>
         <GridColumn Field=@nameof(ProductViewModel.Description) HeaderText="Описание" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(ProductViewModel.ProductTypeId) HeaderText="Тип продукта" Width="120"
-                    ForeignKeyField="Id" ForeignKeyValue="Name" DataSource="@lstProductType"></GridColumn>
-        <GridColumn Field=@nameof(ProductViewModel.UnitId) HeaderText="Единица" Width="120"
-                    ForeignKeyField="Id" ForeignKeyValue="Name" DataSource="@lstUnits"></GridColumn>
+        <GridForeignColumn TValue="ProductTypeViewModel" Field=@nameof(ProductViewModel.ProductTypeId) HeaderText="Тип продукта" Width="120"
+                    ForeignKeyField="Id" ForeignKeyValue="Name" DataSource="@lstProductType"></GridForeignColumn>
+        <GridForeignColumn  TValue="UnitViewModel" Field=@nameof(ProductViewModel.UnitId) HeaderText="Единица" Width="120"
+                    ForeignKeyField="Id" ForeignKeyValue="Name" DataSource="@lstUnits"></GridForeignColumn>
         <GridColumn Field=@nameof(ProductViewModel.IsMaterial) HeaderText="Материал?" DisplayAsCheckBox="true"
                     EditType="EditType.BooleanEdit" Width="120">
         </GridColumn>
