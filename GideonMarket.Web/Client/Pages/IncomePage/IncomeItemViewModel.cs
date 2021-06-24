@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace GideonMarket.Web.Client.Pages.IncomePage
+﻿namespace GideonMarket.Web.Client.Pages.IncomePage
 {
     public class IncomeItemViewModel 
     {

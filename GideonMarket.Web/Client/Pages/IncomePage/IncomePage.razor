@@ -7,7 +7,7 @@
 @using GideonMarket.Web.Client.Pages.Components.Place;
 @using GideonMarket.Web.Client.Pages.Components.Product;
 @using GideonMarket.Web.Client.Pages.Components.Supplier;
-@using System.Collections.ObjectModel;
+
 <SfCard ID="BasicCard">
     <CardHeader Title="Создать новый приход" />
     <CardContent>
@@ -51,8 +51,8 @@
 <button class="btn btn-primary" @onclick="@SendData">Создать</button>
 @code{
     [Inject]
-    public IAppService client { get; set; }
-    public List<IncomeItemViewModel> Data = new List<IncomeItemViewModel>();
+    public HttpClient client { get; set; }
+    public List<IncomeItemViewModel> Data { get; set; }
     public List<ProductViewModel> lstProduct { get; set; }
     public List<PlaceViewModel> Places { get; set; }
     public List<SupplierViewModel> Suppliers { get; set; }
@@ -63,9 +63,9 @@
     string descr;
     protected async override Task OnInitializedAsync()
     {
-        lstProduct = await client.GetAsync<List<ProductViewModel>>($"/api/product");
-        Suppliers = await client.GetAsync<List<SupplierViewModel>>("/api/supplier");
-        Places = await client.GetAsync<List<PlaceViewModel>>($"api/place");
+        lstProduct = await client.GetFromJsonAsync<List<ProductViewModel>>($"/api/product");
+        Suppliers = await client.GetFromJsonAsync<List<SupplierViewModel>>("/api/supplier");
+        Places = await client.GetFromJsonAsync<List<PlaceViewModel>>($"api/place");
     }
 
     void SendData()
