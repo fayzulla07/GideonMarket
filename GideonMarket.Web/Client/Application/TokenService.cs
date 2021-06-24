@@ -19,20 +19,19 @@ namespace GideonMarket.Web.Client.Application
         }
         public async Task<string> GetToken()
         {
-            return await Task.FromResult("Plug");
             if (_provider.CurrentUser == null)
                 return null;
             var CurrentUser = _provider.CurrentUser;
             if (CurrentUser.User == null)
             {
                 await _provider.LogoutAsync();
-                _manager.NavigateTo("/system/login");
+                _manager.NavigateTo("/loginpage");
                 return null;
             }
             if (DateTime.Parse(CurrentUser.User.FindFirst("Expired").Value) < DateTime.Now)
             {
                 await _provider.LogoutAsync();
-                _manager.NavigateTo("/system/login");
+                _manager.NavigateTo("/loginpage");
                 return null;
             }
             else
