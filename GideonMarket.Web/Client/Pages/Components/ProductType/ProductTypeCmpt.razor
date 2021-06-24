@@ -14,12 +14,12 @@
 
 @code{
     [Inject]
-    public HttpClient client { get; set; }
+    public IAppService client { get; set; }
     public List<ProductTypeViewModel> Data { get; set; }
     EditModified editType;
     protected async override Task OnInitializedAsync()
     {
-        Data = await client.GetFromJsonAsync<List<ProductTypeViewModel>>("/api/productType");
+        Data = await client.GetAsync<List<ProductTypeViewModel>>("/api/productType");
     }
     public async void ActionComplete(ActionEventArgs<ProductTypeViewModel> args)
     {
@@ -35,16 +35,16 @@
         {
             if (editType == EditModified.Added)
             {
-                var result = await client.PostAsJsonAsync<string>("/api/productType", args.Data.Name);
+                var result = await client.PostAsync<string>(args.Data.Name, "/api/productType");
             }
             else if (editType == EditModified.Updated)
             {
-                var result = await client.PutAsJsonAsync<string>($"/api/productType/{args.Data.Id}", args.Data.Name);
+                await client.UpdateAsync(args.Data.Name, args.Data.Id, $"/api/productType/{args.Data.Id}");
             }
         }
         else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
         {
-            await client.DeleteAsync($"/api/productType/{args.Data.Id}");
+            await client.DeleteAsync(args.Data.Id, $"/api/productType/{args.Data.Id}");
         }
     }
 

@@ -26,6 +26,7 @@ namespace GideonMarket.Web.Client
             builder.Services.AddScoped<AuthenticationStateProvider, LocalStorageAuthProvider>();
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddSyncfusionBlazor();
+            builder.Services.AddAuthorizationCore();
             await builder.Build().RunAsync();
         }
     }

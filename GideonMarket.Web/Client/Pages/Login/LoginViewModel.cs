@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GideonMarket.Web.Client.Models
+namespace GideonMarket.Web.Client.Pages.Login
 {
     public class LoginViewModel
     {
@@ -16,5 +16,6 @@ namespace GideonMarket.Web.Client.Models
         public string Password { get; set; }
 
         public bool RememberMe { get; set; } = true;
+
     }
 }

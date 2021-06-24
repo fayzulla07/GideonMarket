@@ -40,12 +40,12 @@
             }
             else if (editType == EditModified.Updated)
             {
-                await client.UpdateAsync<SupplierViewModel>(args.Data,args.Data.Id, $"/api/supplier/");
+                await client.UpdateAsync<SupplierViewModel>(args.Data,args.Data.Id, $"/api/supplier");
             }
         }
         else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
         {
-            await client.DeleteAsync(args.Data.Id, $"/api/supplier/");
+            await client.DeleteAsync(args.Data.Id, $"/api/supplier");
         }
     }
 
