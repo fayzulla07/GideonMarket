@@ -7,7 +7,7 @@
 
     <div class="main">
         <div class="top-row px-4">
-            <a href="loginpage" class="ml-md-auto">Выйти</a>
+            <a href="" @onclick="Logout" class="ml-md-auto">Выйти</a>
         </div>
 
         <div class="content px-4">
@@ -15,3 +15,13 @@
         </div>
     </div>
 </div>
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject NavigationManager navigationManager
+@code{
+    private async Task Logout()
+    {
+         var localStateProvider = (LocalStorageAuthProvider)authenticationStateProvider;
+         await localStateProvider.LogoutAsync();
+        navigationManager.NavigateTo($"/loginpage");
+    }
+}
