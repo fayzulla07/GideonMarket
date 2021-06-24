@@ -52,7 +52,7 @@
 @code{
     [Inject]
     public HttpClient client { get; set; }
-    public List<IncomeItemViewModel> Data { get; set; }
+    public List<IncomeItemViewModel> Data = new List<IncomeItemViewModel>();
     public List<ProductViewModel> lstProduct { get; set; }
     public List<PlaceViewModel> Places { get; set; }
     public List<SupplierViewModel> Suppliers { get; set; }
@@ -63,9 +63,18 @@
     string descr;
     protected async override Task OnInitializedAsync()
     {
+        await Task.Delay(100);
         lstProduct = await client.GetFromJsonAsync<List<ProductViewModel>>($"/api/product");
         Suppliers = await client.GetFromJsonAsync<List<SupplierViewModel>>("/api/supplier");
         Places = await client.GetFromJsonAsync<List<PlaceViewModel>>($"api/place");
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+
+        }
     }
 
     void SendData()
@@ -74,9 +83,13 @@
         newIncome.PlaceId = Convert.ToInt32(pid);
         newIncome.SupplierId = Convert.ToInt32(sid);
         newIncome.Description = descr;
-        //newIncome.IncomeItems = Data;
+        newIncome.IncomeItems = Data;
 
         Console.WriteLine(newIncome.Description);
+        foreach (var item in newIncome.IncomeItems)
+        {
+            Console.WriteLine(item.Count+" "+item.ProductId);
+        }
 
 
     }
