@@ -12,7 +12,7 @@ namespace GideonMarket.Entities.Models
         public DateTime RegDt { get; private set; }
         public int PlaceId { get; private set; }
         public int SupplierId { get; private set; }
-        public int PriceListId { get; private set; }
+
 
 
         public List<IncomeItem> IncomeItems { get; private set; }

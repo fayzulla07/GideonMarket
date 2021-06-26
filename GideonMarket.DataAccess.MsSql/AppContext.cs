@@ -67,6 +67,10 @@ namespace GideonMarket.DataAccess.MsSql
                 x.Property(p => p.Email)
                 .HasMaxLength(150)
                 .IsRequired(false);
+
+                x.HasOne<PriceList>()
+                .WithMany()
+                .HasForeignKey(x => x.PriceListId);
             });
 
             modelBuilder.Entity<Unit>(x =>
@@ -181,9 +185,7 @@ namespace GideonMarket.DataAccess.MsSql
                 .WithMany()
                 .HasForeignKey(x => x.SupplierId);
 
-                x.HasOne<PriceList>()
-               .WithMany()
-               .HasForeignKey(x => x.PriceListId);
+
             });
 
             modelBuilder.Entity<IncomeItem>(x =>

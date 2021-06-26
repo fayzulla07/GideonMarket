@@ -11,21 +11,29 @@
 <SfCard ID="BasicCard">
     <CardHeader Title="Создать новый приход" />
     <CardContent>
-        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
-            <SfComboBox TValue="string" TItem="PlaceViewModel" Placeholder="Выбрать места" DataSource="@Places" @bind-Value="@pid">
-                <ComboBoxFieldSettings Text="Name" Value="Id"></ComboBoxFieldSettings>
-            </SfComboBox>
-        </div>
-        <br />
-        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
-            <SfComboBox TValue="string" TItem="SupplierViewModel" Placeholder="Выбрать поставщика" DataSource="@Suppliers" @bind-Value="@sid">
-                <ComboBoxFieldSettings Text="FullName" Value="Id"></ComboBoxFieldSettings>
-            </SfComboBox>
+
+        <div class="row">
+            <div class="col col-md-6 col-12">
+                <SfComboBox TValue="string" TItem="PlaceViewModel" Placeholder="Выбрать места" FloatLabelType="@FloatLabelType.Auto" DataSource="@Places" @bind-Value="@pid">
+                    <ComboBoxFieldSettings Text="Name" Value="Id"></ComboBoxFieldSettings>
+                </SfComboBox>
+            </div>
+            <div class="col col-md-6 col-12">
+                <SfComboBox TValue="string" TItem="SupplierViewModel" Placeholder="Выбрать поставщика" FloatLabelType="@FloatLabelType.Auto" DataSource="@Suppliers" @bind-Value="@sid">
+                    <ComboBoxFieldSettings Text="FullName" Value="Id"></ComboBoxFieldSettings>
+                </SfComboBox>
+
+            </div>
+            <div class="col col-md-6 col-12">
+                <SfTextBox CssClass="e-outline" Placeholder="Описание" FloatLabelType="@FloatLabelType.Auto" Autocomplete="AutoComplete.Off" @bind-Value="@descr" />
+
+
+            </div>
+            <div class="col col-md-6 col-12">
+                <button class="btn btn-primary" style="margin-top:20px;" @onclick="SendData">Создать</button>
+            </div>
         </div>
 
-        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
-            <SfTextBox CssClass="e-outline" Placeholder="Описание" FloatLabelType="@FloatLabelType.Auto" Autocomplete="AutoComplete.Off" @bind-Value="@descr" />
-        </div>
     </CardContent>
     <CardFooter>
         @*<CardFooterContent>
@@ -34,8 +42,9 @@
     </CardFooter>
 </SfCard>
 
-@*<GridEvents OnActionComplete="ActionComplete" TValue="IncomeItemViewModel"></GridEvents>*@
+
 <SfGrid DataSource="@Data" Toolbar="@(new List<string>() { "Add", "Delete", "Update", "Cancel" })" AllowPaging="true">
+    <GridEvents OnActionComplete="ActionComplete" TValue="IncomeItemViewModel"></GridEvents>
     <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Batch"></GridEditSettings>
     <GridColumns>
         <GridColumn Field=@nameof(IncomeItemViewModel.Id) Visible="false" HeaderText="ID" IsPrimaryKey="true" IsIdentity="true" ValidationRules="@(new ValidationRules{ Required=true})" TextAlign="TextAlign.Right" Width="120"></GridColumn>
@@ -48,7 +57,7 @@
     </GridColumns>
 </SfGrid>
 <br />
-<button class="btn btn-primary" @onclick="@SendData">Создать</button>
+
 @code{
     [Inject]
     public IAppService client { get; set; }
@@ -68,51 +77,20 @@
         Places = await client.GetAsync<List<PlaceViewModel>>($"api/place");
     }
 
-    void SendData()
+    async Task SendData()
     {
         IncomeViewModel newIncome = new IncomeViewModel();
         newIncome.PlaceId = Convert.ToInt32(pid);
         newIncome.SupplierId = Convert.ToInt32(sid);
         newIncome.Description = descr;
-        //newIncome.IncomeItems = Data;
-
-        Console.WriteLine(newIncome.Description);
-
-
+        newIncome.IncomeItems = Data;
+        await client.PostAsync<IncomeViewModel>(newIncome, "/api/income");
     }
 
 
     public void ActionComplete(ActionEventArgs<IncomeItemViewModel> args)
     {
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
-        {
-            editType = EditModified.Updated;
-        }
-        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
-        {
-            editType = EditModified.Added;
-        }
-        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
-        {
-            if (editType == EditModified.Added)
-            {
-                //Data.Add(args.Data);
-            }
-            else if (editType == EditModified.Updated)
-            {
-                var res = Data.FirstOrDefault(p => p.Id == args.Data.Id);
-                if (res != null)
-                {
-                    res.Id = args.Data.Id;
-                    res.IncomeId = args.Data.IncomeId;
-                    res.Price = args.Data.Price;
-                    res.ProductId = args.Data.ProductId;
-                    res.Count = args.Data.Count;
-                    res.Description = args.Data.Description;
-                }
-            }
-        }
-        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
         {
             Data.Remove(args.Data);
         }
