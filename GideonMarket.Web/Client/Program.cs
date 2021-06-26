@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Syncfusion.Blazor;
 using System;
+using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -27,6 +28,8 @@ namespace GideonMarket.Web.Client
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddSyncfusionBlazor();
             builder.Services.AddAuthorizationCore();
+           
+
             await builder.Build().RunAsync();
         }
     }
