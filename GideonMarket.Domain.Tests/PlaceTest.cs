@@ -16,13 +16,7 @@ namespace GideonMarket.Entities.Tests
             // Arrange
             Place place = new Place("Склад1", Enums.PlaceType.WareHouse);
             // Act
-            place.AddProductToPlace(1, 10);
-            place.MakeOrder(1, 2);
-            place.CancelOrder(0, 2);
-
-            // Assert
-            Assert.IsNotNull(place.PlaceItems);
-            Assert.IsTrue(place.PlaceItems.FirstOrDefault().RemainCount == 10);
+           
         }
     }
 }

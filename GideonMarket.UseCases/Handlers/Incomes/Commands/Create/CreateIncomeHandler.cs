@@ -28,7 +28,7 @@ namespace GideonMarket.UseCases.Handlers.Incomes.Commands
             var place = await appContext.Places.Include(x=>x.PlaceItems).Where(x => x.Id == request.PlaceId).FirstOrDefaultAsync();
             foreach (var item in income.IncomeItems)
             {
-                place.AddProductToPlace(item.ProductId, item.Count);
+                place.AddCount(item.ProductId, item.Count);
             }
 
             await appContext.SaveChangesAsync();

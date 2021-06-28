@@ -31,7 +31,15 @@ namespace GideonMarket.UseCases.Handlers.Incomes.Commands
             var place = await appContext.Places.Include(x => x.PlaceItems).Where(x => x.Id == request.PlaceId).FirstOrDefaultAsync();
             foreach (var item in request.IncomeItems)
             {
-                place.UpdateProductInPlace(item.ProductId, appContext.IncomeItems.Where(x => x.Id == item.Id).FirstOrDefault().Count, item.Count);
+                double oldCount = appContext.IncomeItems.Where(x => x.Id == item.Id).FirstOrDefault().Count;
+                if (item.Count > oldCount)
+                {
+                    place.AddCount(item.ProductId, (item.Count - oldCount));
+                }
+                else if (item.Count < oldCount)
+                {
+                    place.ReduceCount(item.ProductId, (oldCount - item.Count));
+                }
             }
 
             await appContext.SaveChangesAsync();
