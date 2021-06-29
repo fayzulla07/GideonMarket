@@ -1,10 +1,10 @@
-﻿@using GideonMarket.Web.Client.Pages.Components.Unit 
+﻿@using GideonMarket.Web.Client.Pages.Components.Unit
 @using GideonMarket.Web.Client.Pages.Components.ProductType
 
 @using Syncfusion.Blazor.Grids
 
 <SfGrid DataSource="Data" AllowPaging="true"
-        Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" Height="315">
+        Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" Height="515">
     <GridEvents OnActionComplete="ActionComplete" TValue="ProductViewModel"></GridEvents>
     <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Normal" ShowDeleteConfirmDialog="true"></GridEditSettings>
 
@@ -24,16 +24,16 @@
 
 @code{
     [Inject]
-    public IAppService client { get; set; }
+    public HttpClient client { get; set; }
     public List<ProductViewModel> Data { get; set; }
     public List<UnitViewModel> lstUnits { get; set; }
     public List<ProductTypeViewModel> lstProductType { get; set; }
     EditModified editType;
     protected async override Task OnInitializedAsync()
     {
-        Data = await client.GetAsync<List<ProductViewModel>>($"/api/product");
-        lstUnits = await client.GetAsync<List<UnitViewModel>>($"/api/unit");
-        lstProductType = await client.GetAsync<List<ProductTypeViewModel>>($"/api/producttype");
+        Data = await client.GetFromJsonAsync<List<ProductViewModel>>($"/api/product");
+        lstUnits = await client.GetFromJsonAsync<List<UnitViewModel>>($"/api/unit");
+        lstProductType = await client.GetFromJsonAsync<List<ProductTypeViewModel>>($"/api/producttype");
     }
 
     public async void ActionComplete(ActionEventArgs<ProductViewModel> args)
@@ -50,16 +50,16 @@
         {
             if (editType == EditModified.Added)
             {
-                var result = await client.InsertAsync<ProductViewModel>(args.Data,$"/api/product");
+                var result = await client.PostAsJsonAsync<ProductViewModel>($"/api/product", args.Data);
             }
             else if (editType == EditModified.Updated)
             {
-                await client.UpdateAsync<ProductViewModel>(args.Data, args.Data.Id,$"/api/product/");
+                await client.PutAsJsonAsync<ProductViewModel>($"/api/product/{args.Data.Id}", args.Data);
             }
         }
         else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
         {
-            await client.DeleteAsync(args.Data.Id,$"/api/product/");
+            await client.DeleteAsync($"/api/product/{args.Data.Id}");
         }
     }
 
