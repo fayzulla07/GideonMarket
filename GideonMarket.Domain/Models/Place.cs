@@ -21,79 +21,13 @@ namespace GideonMarket.Entities.Models
             PlaceType = placeType;
         }
 
-        #region for Order
-        public void UpdateOrder(int productId, double oldCount, double count)
+        #region Shared Modules
+        public void AddCount(int productId, double count)
         {
-            if (count > oldCount)
-            {
-                ReduceCount(productId, (oldCount - count));
-            }
-            else if (count < oldCount)
-            {
-                AddCount(productId, (count - oldCount));
-            }
-        }
-        // Отменить заказ
-        public void CancelOrder(int productId, double count)
-        {
-            AddCount(productId, count);
-        }
-        // Запустить отменённый заказ
-        public void ReCancelOrder(int productId, double count)
-        {
-            ReduceCount(productId, count);
-        }
-        // Создать заказ
-        public void MakeOrder(int productId, double count)
-        {
-            ReduceCount(productId, count);
-        }
-
-        // Удалить заказ
-        public void DeleteOrder(int productId, double count)
-        {
-            AddCount(productId, count);
-        }
-
-        #endregion
-
-        #region for income
-        public void UpdateProductInPlace(int productId, double oldCount, double incomecount)
-        {
-            if (incomecount > oldCount) 
-            {
-                AddCount(productId, (incomecount - oldCount));
-            }
-            else if(incomecount < oldCount)
-            {
-                ReduceCount(productId, (oldCount - incomecount));
-            }
-        }
-
-        public void AddProductToPlace(int productId, double count)
-        {
-
-             // Если товар есть на складе то просто увеличиваем количество
-             if (PlaceItems != null && PlaceItems.Any())
-             {
-                 AddCount(productId, count);
-             }
-            else  // Если товар нет в складе то создаём и добавляем их
+            if (PlaceItems == null || !PlaceItems.Any())
             {
                 CreateItem(productId);
-                AddCount(productId, count);
             }
-        }
-
-        public void RemoveProductFromPlace(int productId, double count)
-        {
-            ReduceCount(productId, count);
-        }
-        #endregion
-
-        #region Shared Modules
-        private void AddCount(int productId, double count)
-        {
             foreach (var item in PlaceItems)
             {
                 if (item.ProductId == productId)
@@ -103,7 +37,7 @@ namespace GideonMarket.Entities.Models
                 }
             }
         }
-        private void ReduceCount(int productId, double count)
+        public void ReduceCount(int productId, double count)
         {
             foreach (var item in PlaceItems)
             {
@@ -114,7 +48,6 @@ namespace GideonMarket.Entities.Models
                 }
             }
         }
-
         private void CreateItem(int productId)
         {
             var placeitem = new PlaceItem(Id, productId);

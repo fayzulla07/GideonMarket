@@ -31,17 +31,24 @@ namespace GideonMarket.UseCases.Handlers.Orders.Commands
             foreach (var requestitem in request.OrderItems)
             {
                 // обновляем количество
-                 place.UpdateOrder(requestitem.ProductId, entity.GetItem(requestitem.Id).Count, requestitem.Count);
+                if (requestitem.Count > entity.GetItem(requestitem.Id).Count)
+                {
+                    place.ReduceCount(requestitem.ProductId, (entity.GetItem(requestitem.Id).Count - requestitem.Count));
+                }
+                else if (requestitem.Count < entity.GetItem(requestitem.Id).Count)
+                {
+                    place.AddCount(requestitem.ProductId, (requestitem.Count - entity.GetItem(requestitem.Id).Count));
+                }
 
                 // если состояние поменялся на Ordered
                 if (requestitem.OrderItemStatus != entity.GetItem(requestitem.Id).OrderItemStatus && requestitem.OrderItemStatus == Entities.Enums.OrderItemStatus.Ordered)
                 {
-                    place.ReCancelOrder(requestitem.ProductId, requestitem.Count);
+                    place.ReduceCount(requestitem.ProductId, requestitem.Count);
                 }
                 // если состояние поменялся на Canceled
                 else if (requestitem.OrderItemStatus != entity.GetItem(requestitem.Id).OrderItemStatus && requestitem.OrderItemStatus == Entities.Enums.OrderItemStatus.Canceled)
                 {
-                    place.CancelOrder(requestitem.ProductId, requestitem.Count);
+                    place.AddCount(requestitem.ProductId, requestitem.Count);
                 }
             }
 

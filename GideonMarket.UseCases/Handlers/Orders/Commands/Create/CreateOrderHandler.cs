@@ -29,7 +29,7 @@ namespace GideonMarket.UseCases.Handlers.Orders.Commands
             foreach (var item in order.OrderItems)
             {
                 item.ChangeStatus(Entities.Enums.OrderItemStatus.Ordered);
-                place.MakeOrder(item.ProductId, item.Count);
+                place.ReduceCount(item.ProductId, item.Count);
             }
 
             await appContext.SaveChangesAsync();
