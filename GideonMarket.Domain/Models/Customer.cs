@@ -8,7 +8,7 @@ namespace GideonMarket.Entities.Models
         public string FullName { get; private set; }
         public string Email { get; private set; }
 
-        public int PriceListId { get; private set; }
+        public int? PriceListId { get; private set; }
 
         public Customer()
         {

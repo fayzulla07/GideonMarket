@@ -39,6 +39,9 @@ namespace GideonMarket.Entities.Models
             return IncomeItems.Sum(x => x.Total);
         }
 
-
+        public IncomeItem GetItem(int incomeitemid)
+        {
+            return IncomeItems.Where(x => x.Id == incomeitemid).FirstOrDefault();
+        }
     }
 }

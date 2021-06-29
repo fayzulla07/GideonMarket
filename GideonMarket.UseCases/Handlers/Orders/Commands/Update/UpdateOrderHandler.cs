@@ -30,14 +30,15 @@ namespace GideonMarket.UseCases.Handlers.Orders.Commands
             var place = await appContext.Places.Include(x => x.PlaceItems).Where(x => x.Id == request.PlaceId).FirstOrDefaultAsync();
             foreach (var requestitem in request.OrderItems)
             {
+                double oldCount = entity.GetItem(requestitem.Id).Count;
                 // обновляем количество
-                if (requestitem.Count > entity.GetItem(requestitem.Id).Count)
+                if (requestitem.Count > oldCount)
                 {
-                    place.ReduceCount(requestitem.ProductId, (entity.GetItem(requestitem.Id).Count - requestitem.Count));
+                    place.ReduceCount(requestitem.ProductId, (oldCount - requestitem.Count));
                 }
-                else if (requestitem.Count < entity.GetItem(requestitem.Id).Count)
+                else if (requestitem.Count < oldCount)
                 {
-                    place.AddCount(requestitem.ProductId, (requestitem.Count - entity.GetItem(requestitem.Id).Count));
+                    place.AddCount(requestitem.ProductId, (requestitem.Count - oldCount));
                 }
 
                 // если состояние поменялся на Ordered

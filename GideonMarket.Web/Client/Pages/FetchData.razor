@@ -1,7 +1,7 @@
 ﻿@page "/fetchdata"
 @using GideonMarket.Web.Shared
 @inject HttpClient Http
-
+@using System.Linq; 
 <h1>Weather forecast</h1>
 
 <p>This component demonstrates fetching data from the server.</p>
@@ -22,15 +22,18 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
+            <Virtualize Items="forecasts" Context="car">
+               
+                    <tr>
+                        <td>@car.Date.ToShortDateString()</td>
+                        <td>@car.TemperatureC</td>
+                        <td>@car.TemperatureF</td>
+                        <td>@car.Summary</td>
+                    </tr>
+
+               
+            </Virtualize>
+           
         </tbody>
     </table>
 }

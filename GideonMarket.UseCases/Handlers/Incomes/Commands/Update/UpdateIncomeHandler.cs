@@ -26,12 +26,11 @@ namespace GideonMarket.UseCases.Handlers.Incomes.Commands
             {
                 return;
             }
-            request.Adapt(entity);
            // Обновить товары на складе
             var place = await appContext.Places.Include(x => x.PlaceItems).Where(x => x.Id == request.PlaceId).FirstOrDefaultAsync();
             foreach (var item in request.IncomeItems)
             {
-                double oldCount = appContext.IncomeItems.Where(x => x.Id == item.Id).FirstOrDefault().Count;
+                 double oldCount = entity.GetItem(item.Id).Count;
                 if (item.Count > oldCount)
                 {
                     place.AddCount(item.ProductId, (item.Count - oldCount));
@@ -42,6 +41,7 @@ namespace GideonMarket.UseCases.Handlers.Incomes.Commands
                 }
             }
 
+            request.Adapt(entity);
             await appContext.SaveChangesAsync();
             scope.Complete();
         }

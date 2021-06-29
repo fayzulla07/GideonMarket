@@ -70,7 +70,7 @@ namespace GideonMarket.DataAccess.MsSql
 
                 x.HasOne<PriceList>()
                 .WithMany()
-                .HasForeignKey(x => x.PriceListId);
+                .HasForeignKey(x => x.PriceListId).IsRequired(false);
             });
 
             modelBuilder.Entity<Unit>(x =>
@@ -163,15 +163,15 @@ namespace GideonMarket.DataAccess.MsSql
             {
                 x.HasKey(p => p.Id);
                 x.Property(p => p.Id)
-                .ValueGeneratedOnAdd()
+                .ValueGeneratedNever()
                 .IsRequired();
 
                 x.Property(p => p.Description)
                 .HasMaxLength(150)
                 .IsRequired(true);
 
-                x.Property(p => p.Number);
-                //.ValueGeneratedOnAdd();
+                x.Property(p => p.Number)
+                .ValueGeneratedOnAdd();
                 x.HasIndex(i => i.Number)
                .IsUnique();
 
@@ -220,8 +220,8 @@ namespace GideonMarket.DataAccess.MsSql
                 .HasMaxLength(150)
                 .IsRequired(true);
 
-                x.Property(p => p.Number);
-                // .ValueGeneratedOnAdd();
+                x.Property(p => p.Number)
+                .ValueGeneratedNever();
                 x.HasIndex(i => i.Number)
                .IsUnique();
 
