@@ -69,7 +69,7 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                     b.Property<DateTime>("RegDt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 6, 26, 19, 29, 17, 228, DateTimeKind.Local).AddTicks(2695));
+                        .HasDefaultValue(new DateTime(2021, 6, 26, 20, 25, 57, 760, DateTimeKind.Local).AddTicks(9211));
 
                     b.Property<int>("SupplierId")
                         .HasColumnType("int");

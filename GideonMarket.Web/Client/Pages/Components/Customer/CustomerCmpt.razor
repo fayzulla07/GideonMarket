@@ -1,52 +1,160 @@
-﻿@using Syncfusion.Blazor.Grids
+﻿@using Radzen
+@using Radzen.Blazor
 
-<SfGrid DataSource="Data" AllowPaging="true"
-        Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" Height="315">
-    <GridEvents OnActionComplete="ActionComplete" TValue="CustomerViewModel"></GridEvents>
-    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Normal" ShowDeleteConfirmDialog="true"></GridEditSettings>
+<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="" Click="@InsertRow" />
+<RadzenDataGrid @ref="rGrid" AllowFiltering="true" AllowPaging="true" PageSize="3" AllowSorting="true"
+                EditMode="DataGridEditMode.Single"
+                Data="@dataList" TItem="CustomerViewModel" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow">
+    <Columns>
+        <RadzenDataGridColumn Width="100px" TItem="CustomerViewModel" Property="Id" Title="cust Id" Frozen="true" />
+        <RadzenDataGridColumn TItem="CustomerViewModel" Property="FullName" Title="Cust Name">
+            <EditTemplate Context="dat">
+                <RadzenTextBox @bind-Value="dat.FullName" Style="width:100%; display: block" Name="custName" />
+                <RadzenRequiredValidator Text="Name is required" Component="custName" Popup="true" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
 
-    <GridColumns>
-        <GridColumn Field=@nameof(CustomerViewModel.Id) Visible="false" HeaderText="ID" IsPrimaryKey="true" IsIdentity="true" ValidationRules="@(new ValidationRules{ Required=true})" TextAlign="TextAlign.Right" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(CustomerViewModel.FullName) HeaderText="Наименование" ValidationRules="@(new ValidationRules{ Required=true})" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(CustomerViewModel.Email) HeaderText="Email" ValidationRules="@(new ValidationRules{ Email=true })" Width="120"></GridColumn>
-    </GridColumns>
-</SfGrid>
+        <RadzenDataGridColumn Width="200px" TItem="CustomerViewModel" Property="Customer.CompanyName" Title="Customer">
+            <EditTemplate Context="dat">
+                <RadzenDropDown @bind-Value="dat.PriceListId" Data="@pList" TextProperty="Name" ValueProperty="Id" Style="width:100%" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
 
-@code{
+        <RadzenDataGridColumn TItem="CustomerViewModel" Property="Email" Title="Email">
+            <EditTemplate Context="dat">
+                <RadzenTextBox @bind-Value="dat.Email" Style="width:100%; display: block" Name="email" />
+                <RadzenEmailValidator Text="Email is invalid" Component="email" Popup="true" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn TItem="CustomerViewModel" Context="datCtx" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+            <Template Context="dat">
+                <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditRow(dat))" @onclick:stopPropagation="true" />
+            </Template>
+            <EditTemplate Context="dat">
+                <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveRow(dat))" />
+                <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => CancelEdit(dat))" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="CustomerViewModel" Context="order" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+            <Template Context="dat">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteRow(dat))" @onclick:stopPropagation="true" />
+            </Template>
+            <EditTemplate Context="dat">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteRow(dat))" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+    </Columns>
+</RadzenDataGrid>
+
+@code {
     [Inject]
     public IAppService client { get; set; }
-    public List<CustomerViewModel> Data { get; set; }
-    EditModified editType;
+    RadzenDataGrid<CustomerViewModel> rGrid;
+    IList<CustomerViewModel> dataList;
+    IList<PriceListViewModel> pList;
+
     protected async override Task OnInitializedAsync()
     {
-        Data = await client.GetAsync<List<CustomerViewModel>>("/api/customer");
+        dataList = await client.GetAsync<List<CustomerViewModel>>("/api/customer");
+        pList = await client.GetAsync<List<PriceListViewModel>>("/api/pricelist");
     }
 
-    public async void ActionComplete(ActionEventArgs<CustomerViewModel> args)
+    void EditRow(CustomerViewModel obj)
     {
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        rGrid.EditRow(obj);
+    }
+
+    void OnUpdateRow(CustomerViewModel obj)
+    {
+        client.UpdateAsync<CustomerViewModel>(obj, obj.Id, $"/api/Customer/{obj.Id}").GetAwaiter().GetResult();
+    }
+
+    void SaveRow(CustomerViewModel obj)
+    {
+        rGrid.UpdateRow(obj);
+    }
+
+    void CancelEdit(CustomerViewModel obj)
+    {
+        rGrid.CancelEditRow(obj);
+    }
+
+    void DeleteRow(CustomerViewModel obj)
+    {
+        if (dataList.Contains(obj))
         {
-            editType = EditModified.Updated;
+            client.DeleteAsync(obj.Id, $"/api/customer/{obj.Id}").GetAwaiter().GetResult();
+
+            rGrid.Reload();
         }
-        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
+        else
         {
-            editType = EditModified.Added;
-        }
-        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
-        {
-            if (editType == EditModified.Added)
-            {
-                var result = await client.PostAsync<CustomerViewModel>(args.Data, "/api/Customer");
-            }
-            else if (editType == EditModified.Updated)
-            {
-                await client.UpdateAsync<CustomerViewModel>(args.Data, args.Data.Id, $"/api/Customer/{args.Data.Id}");
-            }
-        }
-        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
-        {
-            await client.DeleteAsync(args.Data.Id, $"/api/customer/{args.Data.Id}");
+            rGrid.CancelEditRow(obj);
         }
     }
 
+    void InsertRow()
+    {
+        rGrid.InsertRow(new CustomerViewModel());
+    }
+
+    void OnCreateRow(CustomerViewModel obj)
+    {
+        var result = client.PostAsync<CustomerViewModel>(obj, "/api/Customer").Result;
+    }
 }
+
+@*@using Syncfusion.Blazor.Grids
+
+    <SfGrid DataSource="Data" AllowPaging="true"
+            Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" Height="315">
+        <GridEvents OnActionComplete="ActionComplete" TValue="CustomerViewModel"></GridEvents>
+        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Normal" ShowDeleteConfirmDialog="true"></GridEditSettings>
+
+        <GridColumns>
+            <GridColumn Field=@nameof(CustomerViewModel.Id) Visible="false" HeaderText="ID" IsPrimaryKey="true" IsIdentity="true" ValidationRules="@(new ValidationRules{ Required=true})" TextAlign="TextAlign.Right" Width="120"></GridColumn>
+            <GridColumn Field=@nameof(CustomerViewModel.FullName) HeaderText="Наименование" ValidationRules="@(new ValidationRules{ Required=true})" Width="120"></GridColumn>
+            <GridColumn Field=@nameof(CustomerViewModel.Email) HeaderText="Email" ValidationRules="@(new ValidationRules{ Email=true })" Width="120"></GridColumn>
+        </GridColumns>
+    </SfGrid>
+
+    @code{
+        [Inject]
+        public IAppService client { get; set; }
+        public List<CustomerViewModel> Data { get; set; }
+        EditModified editType;
+        protected async override Task OnInitializedAsync()
+        {
+            Data = await client.GetAsync<List<CustomerViewModel>>("/api/customer");
+        }
+
+        public async void ActionComplete(ActionEventArgs<CustomerViewModel> args)
+        {
+            if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+            {
+                editType = EditModified.Updated;
+            }
+            else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
+            {
+                editType = EditModified.Added;
+            }
+            else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+            {
+                if (editType == EditModified.Added)
+                {
+                    var result = await client.PostAsync<CustomerViewModel>(args.Data, "/api/Customer");
+                }
+                else if (editType == EditModified.Updated)
+                {
+                    await client.UpdateAsync<CustomerViewModel>(args.Data, args.Data.Id, $"/api/Customer/{args.Data.Id}");
+                }
+            }
+            else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+            {
+                await client.DeleteAsync(args.Data.Id, $"/api/customer/{args.Data.Id}");
+            }
+        }
+
+    }*@

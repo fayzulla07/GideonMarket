@@ -17,6 +17,7 @@
     <PackageReference Include="Blazored.LocalStorage" Version="4.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.4" PrivateAssets="all" />
+    <PackageReference Include="Radzen.Blazor" Version="3.6.1" />
     <PackageReference Include="Syncfusion.Blazor" Version="19.1.0.59" />
     <PackageReference Include="Syncfusion.Blazor.Themes" Version="19.1.0.69" />
     <PackageReference Include="Syncfusion.Licensing" Version="19.1.0.59" />

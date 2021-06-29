@@ -1,51 +1,97 @@
-﻿@using Syncfusion.Blazor.Grids
+﻿@using Radzen
+@using Radzen.Blazor
 
-<SfGrid DataSource="Data" AllowPaging="true"
-        Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" Height="315">
-    <GridEvents OnActionComplete="ActionComplete" TValue="UnitViewModel"></GridEvents>
-    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Normal" ShowDeleteConfirmDialog="true"></GridEditSettings>
+<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="" Click="@InsertRow" />
+<RadzenDataGrid @ref="rGrid" AllowFiltering="true" AllowSorting="true"
+                EditMode="DataGridEditMode.Single"  
+                Data="@dataList" TItem="UnitViewModel" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow">
+    <Columns>
 
-    <GridColumns>
-        <GridColumn Field=@nameof(UnitViewModel.Id) Visible="false" HeaderText="ID" IsPrimaryKey="true" IsIdentity="true" ValidationRules="@(new ValidationRules{ Required=true})" TextAlign="TextAlign.Right" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(UnitViewModel.Name) HeaderText="Наименование" ValidationRules="@(new ValidationRules{ Required=true})" Width="120"></GridColumn>
-    </GridColumns>
-</SfGrid>
+        <RadzenDataGridColumn Width="100px" TItem="UnitViewModel" Property="Id" Title="cust Id" Frozen="true" />
 
-@code{
+        <RadzenDataGridColumn TItem="UnitViewModel" Property="Name" Title="Наименование">
+            <EditTemplate Context="dat">
+                <RadzenTextBox @bind-Value="dat.Name" Style="width:100%; display: block" Name="tName" />
+                <RadzenRequiredValidator Text="Name is required" Component="custName" Popup="true" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+
+        <RadzenDataGridColumn TItem="UnitViewModel" Context="dat" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+            <Template Context="dat">
+                <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditRow(dat))" @onclick:stopPropagation="true" />
+            </Template>
+            <EditTemplate Context="dat">
+                <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveRow(dat))" />
+                <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => CancelEdit(dat))" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="UnitViewModel" Context="order" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+            <Template Context="dat">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteRow(dat))" @onclick:stopPropagation="true" />
+            </Template>
+            <EditTemplate Context="dat">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteRow(dat))" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+    </Columns>
+</RadzenDataGrid>
+
+@code {
     [Inject]
     public IAppService client { get; set; }
-    public List<UnitViewModel> Data { get; set; }
-    EditModified editType;
+    RadzenDataGrid<UnitViewModel> rGrid;
+    IList<UnitViewModel> dataList;
+    bool isNew=false;
     protected async override Task OnInitializedAsync()
     {
-        Data = await client.GetAsync<List<UnitViewModel>>("/api/Unit");
+        dataList = await client.GetAsync<List<UnitViewModel>>("/api/unit");
     }
-    public async void ActionComplete(ActionEventArgs<UnitViewModel> args)
+
+    void EditRow(UnitViewModel obj)
     {
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        rGrid.EditRow(obj);
+    }
+
+    void OnUpdateRow(UnitViewModel obj)
+    {
+        client.UpdateAsync<UnitViewModel>(obj, obj.Id, $"/api/unit/{obj.Id}").GetAwaiter().GetResult();
+    }
+
+    void SaveRow(UnitViewModel obj)
+    {
+        rGrid.UpdateRow(obj);
+    }
+
+    void CancelEdit(UnitViewModel obj)
+    {
+        rGrid.CancelEditRow(obj);
+    }
+
+    void DeleteRow(UnitViewModel obj)
+    {
+        if (dataList.Contains(obj))
         {
-            editType = EditModified.Updated;
+            client.DeleteAsync(obj.Id, $"/api/unit/{obj.Id}").GetAwaiter().GetResult();
+
+            rGrid.Reload();
         }
-        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
+        else
         {
-            editType = EditModified.Added;
-        }
-        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
-        {
-            if (editType == EditModified.Added)
-            {
-                var Id = await client.InsertAsync<string>(args.Data.Name, "/api/Unit");
-                args.Data.Id = Id;
-            }
-            else if (editType == EditModified.Updated)
-            {
-                await client.UpdateAsync<string>(args.Data.Name, args.Data.Id, $"/api/Unit/{args.Data.Id}");
-            }
-        }
-        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
-        {
-            await client.DeleteAsync(args.Data.Id, $"/api/Unit/{args.Data.Id}");
+            rGrid.CancelEditRow(obj);
         }
     }
 
+    void InsertRow()
+    {
+        rGrid.InsertRow(new UnitViewModel());
+        isNew = true;
+    }
+
+    void OnCreateRow(UnitViewModel obj)
+    {
+        var result = client.PostAsync<UnitViewModel>(obj, "/api/unit").Result;
+    }
 }
+
