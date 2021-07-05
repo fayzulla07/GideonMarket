@@ -1,17 +1,4 @@
-﻿@using Syncfusion.Blazor.Grids
-
-<SfGrid DataSource="Data" AllowPaging="true"
-        Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" Height="315">
-    <GridEvents OnActionComplete="ActionComplete" TValue="PlaceViewModel"></GridEvents>
-    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Normal" ShowDeleteConfirmDialog="true"></GridEditSettings>
-
-    <GridColumns>
-        <GridColumn Field=@nameof(PlaceViewModel.Id) Visible="false" HeaderText="ID" IsPrimaryKey="true" IsIdentity="true" ValidationRules="@(new ValidationRules{ Required=true})" TextAlign="TextAlign.Right" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(PlaceViewModel.Name) HeaderText="Наименование" ValidationRules="@(new ValidationRules{ Required=true})" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(PlaceViewModel.PlaceType) HeaderText="Тип" ValidationRules="@(new ValidationRules{ Required=true})" Width="120"></GridColumn>
-    </GridColumns>
-</SfGrid>
-
+﻿
 @code{
     [Inject]
     public HttpClient client { get; set; }
@@ -21,31 +8,6 @@
     {
         Data = await client.GetFromJsonAsync<List<PlaceViewModel>>("/api/Place");
     }
-    public async void ActionComplete(ActionEventArgs<PlaceViewModel> args)
-    {
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
-        {
-            editType = EditModified.Updated;
-        }
-        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
-        {
-            editType = EditModified.Added;
-        }
-        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
-        {
-            if (editType == EditModified.Added)
-            {
-                var result = await client.PostAsJsonAsync<PlaceViewModel>($"/api/Place", args.Data);
-            }
-            else if (editType == EditModified.Updated)
-            {
-                var result = await client.PutAsJsonAsync<PlaceViewModel>($"/api/Place/{args.Data.Id}", args.Data);
-            }
-        }
-        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
-        {
-            await client.DeleteAsync($"/api/Place/{args.Data.Id}");
-        }
-    }
+   
 
 }

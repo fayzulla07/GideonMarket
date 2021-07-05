@@ -3,9 +3,7 @@ using GideonMarket.Web.Client.Application;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Syncfusion.Blazor;
 using System;
-using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -17,7 +15,6 @@ namespace GideonMarket.Web.Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NDQzNzkwQDMxMzkyZTMxMmUzMEhDeDdONXZEUGp3aFU1NGw4NHJETVhZc3JVUElxVXJWTzlFeW14Ry8vNWs9");
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             builder.Services.AddScoped<TokenService>();
@@ -26,7 +23,6 @@ namespace GideonMarket.Web.Client
 
             builder.Services.AddScoped<AuthenticationStateProvider, LocalStorageAuthProvider>();
             builder.Services.AddBlazoredLocalStorage();
-            builder.Services.AddSyncfusionBlazor();
             builder.Services.AddAuthorizationCore();
            
 

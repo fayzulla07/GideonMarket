@@ -1,51 +1,12 @@
-﻿@using Syncfusion.Blazor.Grids
-
-
-<SfGrid DataSource="Data" AllowPaging="true" 
-        Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })" Height="315">
-    <GridEvents OnActionComplete="ActionComplete" TValue="ProductTypeViewModel"></GridEvents>
-    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Normal" ShowDeleteConfirmDialog="true"></GridEditSettings>
-    
-    <GridColumns>
-        <GridColumn Field=@nameof(ProductTypeViewModel.Id) Visible="false" HeaderText="ID" IsPrimaryKey="true" IsIdentity="true" ValidationRules="@(new ValidationRules{ Required=true})" TextAlign="TextAlign.Right" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(ProductTypeViewModel.Name) HeaderText="Наименование" ValidationRules="@(new ValidationRules{ Required=true})" Width="120"></GridColumn>
-    </GridColumns>
-</SfGrid>
+﻿
 
 @code{
-    [Inject]
-    public IAppService client { get; set; }
+        [Inject]
+        public IAppService client { get; set; }
     public List<ProductTypeViewModel> Data { get; set; }
     EditModified editType;
     protected async override Task OnInitializedAsync()
     {
         Data = await client.GetAsync<List<ProductTypeViewModel>>("/api/productType");
     }
-    public async void ActionComplete(ActionEventArgs<ProductTypeViewModel> args)
-    {
-        if (args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
-        {
-            editType = EditModified.Updated;
-        }
-        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Add)
-        {
-            editType = EditModified.Added;
-        }
-        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
-        {
-            if (editType == EditModified.Added)
-            {
-                var result = await client.PostAsync<string>(args.Data.Name, "/api/productType");
-            }
-            else if (editType == EditModified.Updated)
-            {
-                await client.UpdateAsync(args.Data.Name, args.Data.Id, $"/api/productType/{args.Data.Id}");
-            }
-        }
-        else if (args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
-        {
-            await client.DeleteAsync(args.Data.Id, $"/api/productType/{args.Data.Id}");
-        }
-    }
-
 }

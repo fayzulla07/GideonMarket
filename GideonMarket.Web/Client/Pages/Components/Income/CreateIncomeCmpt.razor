@@ -1,27 +1,5 @@
-﻿@using Syncfusion.Blazor.Inputs
-@using Syncfusion.Blazor.Cards
-@using Syncfusion.Blazor.DropDowns
+﻿
 @using GideonMarket.Web.Client.Pages.Components.Place;
-
-<SfCard ID="BasicCard">
-    <CardHeader Title="Создать новый приход" />
-    <CardContent>
-        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
-            <SfComboBox TValue="string"  TItem="PlaceViewModel" Placeholder="Выбрать места"  DataSource="@Places">
-                <ComboBoxFieldSettings Text="Name" Value="Id"></ComboBoxFieldSettings>
-            </SfComboBox>
-        </div>
-
-        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
-            <SfTextBox CssClass="e-outline" Placeholder="Описание" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
-        </div>
-    </CardContent>
-    <CardFooter>
-        @*<CardFooterContent>
-            <button class="btn btn-primary" @onclick="OpenNewIncome">Создать</button>
-        </CardFooterContent>*@
-    </CardFooter>
-</SfCard>
 
 @code {
     [Inject]
