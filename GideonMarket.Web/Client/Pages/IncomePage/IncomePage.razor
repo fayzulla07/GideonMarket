@@ -1,5 +1,7 @@
 ﻿@page "/income"
 
+
+
 @using GideonMarket.Web.Client.Pages.Components.Place;
 @using GideonMarket.Web.Client.Pages.Components.Product;
 @using GideonMarket.Web.Client.Pages.Components.Supplier;
@@ -11,11 +13,7 @@
     public List<ProductViewModel> lstProduct { get; set; }
     public List<PlaceViewModel> Places { get; set; }
     public List<SupplierViewModel> Suppliers { get; set; }
-    EditModified editType;
 
-    string pid;
-    string sid;
-    string descr;
     protected async override Task OnInitializedAsync()
     {
         lstProduct = await client.GetAsync<List<ProductViewModel>>($"/api/product");
@@ -26,9 +24,6 @@
     async Task SendData()
     {
         IncomeViewModel newIncome = new IncomeViewModel();
-        newIncome.PlaceId = Convert.ToInt32(pid);
-        newIncome.SupplierId = Convert.ToInt32(sid);
-        newIncome.Description = descr;
         newIncome.IncomeItems = Data;
         await client.PostAsync<IncomeViewModel>(newIncome, "/api/income");
     }
