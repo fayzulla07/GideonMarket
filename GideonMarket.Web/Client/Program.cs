@@ -3,6 +3,7 @@ using GideonMarket.Web.Client.Application;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Radzen;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace GideonMarket.Web.Client
     {
         public static async Task Main(string[] args)
         {
+            await Task.Delay(500);
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
@@ -24,7 +26,15 @@ namespace GideonMarket.Web.Client
             builder.Services.AddScoped<AuthenticationStateProvider, LocalStorageAuthProvider>();
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddAuthorizationCore();
-           
+
+
+            #region Radzen
+            builder.Services.AddScoped<DialogService>();
+            builder.Services.AddScoped<NotificationService>();
+            builder.Services.AddScoped<TooltipService>();
+            builder.Services.AddScoped<ContextMenuService>();
+            #endregion
+
 
             await builder.Build().RunAsync();
         }

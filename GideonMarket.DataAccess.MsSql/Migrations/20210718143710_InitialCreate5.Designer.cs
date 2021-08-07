@@ -10,15 +10,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GideonMarket.DataAccess.MsSql.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20210626142558_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210718143710_InitialCreate5")]
+    partial class InitialCreate5
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.7")
+                .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("GideonMarket.Entities.Models.Customer", b =>
@@ -37,7 +37,7 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<int>("PriceListId")
+                    b.Property<int?>("PriceListId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -53,9 +53,7 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
             modelBuilder.Entity("GideonMarket.Entities.Models.Income", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -63,15 +61,15 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<int>("Number")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("PlaceId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RegDt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 6, 26, 20, 25, 57, 760, DateTimeKind.Local).AddTicks(9211));
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("SupplierId")
                         .HasColumnType("int");
@@ -453,9 +451,7 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                 {
                     b.HasOne("GideonMarket.Entities.Models.PriceList", null)
                         .WithMany()
-                        .HasForeignKey("PriceListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PriceListId");
                 });
 
             modelBuilder.Entity("GideonMarket.Entities.Models.Income", b =>

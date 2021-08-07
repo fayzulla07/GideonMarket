@@ -175,7 +175,7 @@ namespace GideonMarket.DataAccess.MsSql
                 x.HasIndex(i => i.Number)
                .IsUnique();
 
-                x.Property(x => x.RegDt).HasDefaultValue(DateTime.Now);
+                x.Property(x => x.RegDt);
 
                 x.HasOne<Place>()
                .WithMany()

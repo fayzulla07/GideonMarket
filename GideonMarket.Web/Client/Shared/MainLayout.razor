@@ -1,27 +1,28 @@
 ﻿@inherits LayoutComponentBase
-
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <div class="main">
-        <div class="top-row px-4">
-            <a href="" @onclick="Logout" class="ml-md-auto">Выйти</a>
+    <RadzenNotification></RadzenNotification>
+    <RadzenDialog></RadzenDialog>
+    <div class="page">
+        <div class="sidebar">
+            <NavMenu />
         </div>
 
-        <div class="content px-4">
-            @Body
+        <div class="main">
+            <div class="top-row px-4">
+                <a href="" @onclick="Logout" class="ml-md-auto">Выйти</a>
+            </div>
+
+            <div class="content px-4">
+                @Body
+            </div>
         </div>
     </div>
-</div>
-@inject AuthenticationStateProvider authenticationStateProvider
-@inject NavigationManager navigationManager
-@code{
-    private async Task Logout()
-    {
-         var localStateProvider = (LocalStorageAuthProvider)authenticationStateProvider;
-         await localStateProvider.LogoutAsync();
-        navigationManager.NavigateTo($"/loginpage");
+    @inject AuthenticationStateProvider authenticationStateProvider
+    @inject NavigationManager navigationManager
+    @code{
+        private async Task Logout()
+        {
+            var localStateProvider = (LocalStorageAuthProvider)authenticationStateProvider;
+            await localStateProvider.LogoutAsync();
+            navigationManager.NavigateTo($"/loginpage");
+        }
     }
-}

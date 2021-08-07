@@ -49,12 +49,12 @@ namespace GideonMarket.Web.Server.Controllers
         }
 
        
-        [HttpPut("{id}")]
-        public async Task Update(int id, [FromBody] string value)
+        [HttpPut]
+        public async Task Update([FromBody] UnitDto value)
         {
             await mediator.Send(new UpdateUnitRequest()
             {
-                dto = new UnitDto() { Name = value, Id = id }
+                dto = value
             });
         }
 

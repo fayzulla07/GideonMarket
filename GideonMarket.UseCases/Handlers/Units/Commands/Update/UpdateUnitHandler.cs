@@ -1,4 +1,4 @@
-﻿using MapsterMapper;
+﻿using Mapster;
 using GideonMarket.UseCases.DataAccess;
 using MediatR;
 using System.Threading;
@@ -9,12 +9,10 @@ namespace GideonMarket.UseCases.Handlers.Units.Commands
     internal class UpdateUnitHandler : AsyncRequestHandler<UpdateUnitRequest>
     {
         private readonly IAppContext appContext;
-        private readonly IMapper mapper;
 
-        public UpdateUnitHandler(IAppContext appContext, IMapper mapper)
+        public UpdateUnitHandler(IAppContext appContext)
         {
             this.appContext = appContext;
-            this.mapper = mapper;
         }
         protected async override Task Handle(UpdateUnitRequest request, CancellationToken cancellationToken)
         {
@@ -23,8 +21,10 @@ namespace GideonMarket.UseCases.Handlers.Units.Commands
             {
                 return;
             }
-            appContext.Entry(entity).CurrentValues.SetValues(new Entities.Models.Unit(request.dto.Id, request.dto.Name));
+            request.dto.Adapt(entity);
             await appContext.SaveChangesAsync();
+
+
         }
     }
 }

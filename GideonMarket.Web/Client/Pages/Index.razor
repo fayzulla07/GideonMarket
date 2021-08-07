@@ -1,7 +1,44 @@
 ﻿@page "/"
-@attribute [Authorize]
-<h1>Hello, world!</h1>
+@inherits BaseComponent.BaseGrid<UnitViewModel>
+    @using Components.Unit
+    <RadzenCard Style="padding:5px;">
+        <div class="d-flex flex-row">
+            <div class="pr-1">
+                <RadzenButton Size="ButtonSize.Small" Text="Добавить" Click="InsertRow" ButtonStyle="ButtonStyle.Secondary"></RadzenButton>
+            </div>
+            <div class="pr-1">
+                <RadzenButton Size="ButtonSize.Small" Text="Сохранить" Click="SaveRow" ButtonStyle="ButtonStyle.Info"></RadzenButton>
+            </div>
+            <div class="pr-1">
+                <RadzenButton Size="ButtonSize.Small" Text="Отменить" Click="CancelEdit" ButtonStyle="ButtonStyle.Primary"></RadzenButton>
+            </div>
+            <div class="pr-1">
+                <RadzenButton Size="ButtonSize.Small" Text="Удалить" Click="DeleteRow" ButtonStyle="ButtonStyle.Danger"></RadzenButton>
+            </div>
+        </div>
+    </RadzenCard>
+    <RadzenDataGrid @ref="Grid" FilterCaseSensitivity="Radzen.FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowColumnResize="true" AllowPaging="true" PageSize="10" AllowSorting="true" EditMode="DataGridEditMode.Single" RowDoubleClick="RowDoubleClickHandler" RowSelect="RowClickHandler"
+                    Data="@Data" TItem="UnitViewModel"  Count="@Count"  RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow" @onkeypress="@(e => KeyPressed(e))">
+        <Columns>
+            <RadzenDataGridColumn TItem="UnitViewModel" Property="Name" Title="Имя">
+                <Template Context="dsourse">
+                    <span>@dsourse.Name</span>
+                </Template>
+                <EditTemplate Context="dsourse">
+                    <RadzenTextBox @bind-Value="dsourse.Name" Style="width:100%"></RadzenTextBox>
+                </EditTemplate>
+            </RadzenDataGridColumn>
+          
+        </Columns>
+    </RadzenDataGrid>
 
-Welcome to your new app.
+    @code{
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+        protected async override Task OnInitializedAsync()
+        {
+            RemotePath = "api/Unit";
+           await GetData();
+            Console.WriteLine("asdasdasdsadasdasdsaasasdasdas");
+        }
+
+    }
