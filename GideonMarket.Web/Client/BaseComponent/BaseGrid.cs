@@ -5,7 +5,6 @@ using Radzen;
 using Radzen.Blazor;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
   
@@ -39,10 +38,10 @@ namespace GideonMarket.Web.Client.BaseComponent
            
         }
 
-        public async Task GetData()
+        public async Task GetDataAsync()
         {
             Data = await client.GetAsync<List<T>>(RemotePath);
-            Count = Data.Count;
+            Count = Data != null ? Data.Count : 0;
         }
         public async virtual void OnCreateRow(T entity)
         {
@@ -55,7 +54,7 @@ namespace GideonMarket.Web.Client.BaseComponent
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                NotificationService.Notify(NotificationSeverity.Info, "Ошибка", "Что-то пошло не так");
+                NotificationService.Notify(NotificationSeverity.Error, "Ошибка", "Что-то пошло не так");
             }
             
         }
@@ -71,7 +70,7 @@ namespace GideonMarket.Web.Client.BaseComponent
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                NotificationService.Notify(NotificationSeverity.Info, "Ошибка", "Что-то пошло не так");
+                NotificationService.Notify(NotificationSeverity.Error, "Ошибка", "Что-то пошло не так");
             }
             
         }
@@ -80,13 +79,13 @@ namespace GideonMarket.Web.Client.BaseComponent
             try
             {
                 int id = (int)entity.GetType().GetProperty("Id").GetValue(entity);
-                await client.DeleteAsync(id, $"api/{nameof(T)}");
-                NotificationService.Notify(NotificationSeverity.Warning, "Успешно", "Успешно удалено!");
+                await client.DeleteAsync(id, RemotePath);
+                NotificationService.Notify(NotificationSeverity.Info, "Успешно", "Успешно удалено!");
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                NotificationService.Notify(NotificationSeverity.Info, "Ошибка", "Что-то пошло не так");
+                NotificationService.Notify(NotificationSeverity.Error, "Ошибка", "Что-то пошло не так");
             }
             
         }

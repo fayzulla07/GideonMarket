@@ -116,7 +116,7 @@ namespace GideonMarket.Web.Server
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
-
+    
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

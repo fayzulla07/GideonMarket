@@ -1,97 +1,48 @@
 ﻿@using Radzen
 @using Radzen.Blazor
 
-<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="" Click="@InsertRow" />
-<RadzenDataGrid @ref="rGrid" AllowFiltering="true" AllowSorting="true"
-                EditMode="DataGridEditMode.Single"  
-                Data="@dataList" TItem="UnitViewModel" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow">
+@inherits BaseComponent.BaseGrid<UnitViewModel>
+@using Components.Unit
+<RadzenCard Style="padding:5px;">
+    <div class="d-flex flex-row">
+        <div class="pr-1">
+            <RadzenButton Size="ButtonSize.Small" Icon="add" Click="InsertRow" ButtonStyle="ButtonStyle.Secondary"></RadzenButton>
+        </div>
+        <div class="pr-1">
+            <RadzenButton Size="ButtonSize.Small" Icon="save" Click="SaveRow" ButtonStyle="ButtonStyle.Info"></RadzenButton>
+        </div>
+        <div class="pr-1">
+            <RadzenButton Size="ButtonSize.Small" Icon="clear" Click="CancelEdit" ButtonStyle="ButtonStyle.Primary"></RadzenButton>
+        </div>
+        <div class="pr-1">
+            <RadzenButton Size="ButtonSize.Small" Icon="delete" Click="DeleteRow" ButtonStyle="ButtonStyle.Danger"></RadzenButton>
+        </div>
+    </div>
+</RadzenCard>
+<RadzenDataGrid @ref="Grid" FilterCaseSensitivity="Radzen.FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowColumnResize="true" AllowPaging="true" PageSize="10" AllowSorting="true" 
+                EditMode="DataGridEditMode.Single" RowDoubleClick="RowDoubleClickHandler" RowSelect="RowClickHandler"
+                Data="@Data" TItem="UnitViewModel" Count="@Count" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow" @onkeypress="@(e => KeyPressed(e))">
     <Columns>
-
-        <RadzenDataGridColumn Width="100px" TItem="UnitViewModel" Property="Id" Title="cust Id" Frozen="true" />
-
-        <RadzenDataGridColumn TItem="UnitViewModel" Property="Name" Title="Наименование">
-            <EditTemplate Context="dat">
-                <RadzenTextBox @bind-Value="dat.Name" Style="width:100%; display: block" Name="tName" />
-                <RadzenRequiredValidator Text="Name is required" Component="custName" Popup="true" />
-            </EditTemplate>
-        </RadzenDataGridColumn>
-
-
-        <RadzenDataGridColumn TItem="UnitViewModel" Context="dat" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
-            <Template Context="dat">
-                <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditRow(dat))" @onclick:stopPropagation="true" />
+        <RadzenDataGridColumn TItem="UnitViewModel" Property="Name" Title="Имя">
+            <Template Context="dsourse">
+                <span>@dsourse.Name</span>
             </Template>
-            <EditTemplate Context="dat">
-                <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveRow(dat))" />
-                <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => CancelEdit(dat))" />
-            </EditTemplate>
-        </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="UnitViewModel" Context="order" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
-            <Template Context="dat">
-                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteRow(dat))" @onclick:stopPropagation="true" />
-            </Template>
-            <EditTemplate Context="dat">
-                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteRow(dat))" />
+            <EditTemplate Context="dsourse">
+                <RadzenTextBox @bind-Value="dsourse.Name" Style="width:100%"></RadzenTextBox>
             </EditTemplate>
         </RadzenDataGridColumn>
 
     </Columns>
 </RadzenDataGrid>
 
-@code {
-    [Inject]
-    public IAppService client { get; set; }
-    RadzenDataGrid<UnitViewModel> rGrid;
-    IList<UnitViewModel> dataList;
-    bool isNew=false;
+@code{
+
     protected async override Task OnInitializedAsync()
     {
-        dataList = await client.GetAsync<List<UnitViewModel>>("/api/unit");
+        RemotePath = "/api/Unit";
+        await GetDataAsync();
+
     }
 
-    void EditRow(UnitViewModel obj)
-    {
-        rGrid.EditRow(obj);
-    }
-
-    void OnUpdateRow(UnitViewModel obj)
-    {
-        client.UpdateAsync<UnitViewModel>(obj, obj.Id, $"/api/unit/{obj.Id}").GetAwaiter().GetResult();
-    }
-
-    void SaveRow(UnitViewModel obj)
-    {
-        rGrid.UpdateRow(obj);
-    }
-
-    void CancelEdit(UnitViewModel obj)
-    {
-        rGrid.CancelEditRow(obj);
-    }
-
-    void DeleteRow(UnitViewModel obj)
-    {
-        if (dataList.Contains(obj))
-        {
-            client.DeleteAsync(obj.Id, $"/api/unit/{obj.Id}").GetAwaiter().GetResult();
-
-            rGrid.Reload();
-        }
-        else
-        {
-            rGrid.CancelEditRow(obj);
-        }
-    }
-
-    void InsertRow()
-    {
-        rGrid.InsertRow(new UnitViewModel());
-        isNew = true;
-    }
-
-    void OnCreateRow(UnitViewModel obj)
-    {
-        var result = client.PostAsync<UnitViewModel>(obj, "/api/unit").Result;
-    }
 }
 

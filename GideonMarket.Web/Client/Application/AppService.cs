@@ -42,7 +42,7 @@ namespace GideonMarket.Web.Client.Application
         public async Task DeleteAsync(int Id, string url)
         {
             if (string.IsNullOrEmpty(await SetToken())) return;
-            var response = await _client.DeleteAsync((url.StartsWith("/") == true ? "" : "/") + $"{url}");
+            var response = await _client.DeleteAsync((url.StartsWith("/") == true ? "" : "/") + $"{url}" + (url.EndsWith("/") == true ? "" : "/") + Id.ToString());
             response.EnsureSuccessStatusCode();
         }
         public async Task<T> GetByIdAsync<T>(int id, string uri)

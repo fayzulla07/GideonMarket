@@ -5,11 +5,32 @@
 @using GideonMarket.Web.Client.Pages.Components.Product
 @using GideonMarket.Web.Client.Pages.Components.ProductType
 @using GideonMarket.Web.Client.Pages.Components.Place
-@using GideonMarket.Web.Client.Pages.Components.Supplier 
+@using GideonMarket.Web.Client.Pages.Components.Supplier
 
 <h4>Настройки</h4>
 
+<div class="container-fluid">
 
+        <RadzenTabs RenderMode="TabRenderMode.Client" Style="height:80vh;" >
+            <Tabs>
+                <RadzenTabsItem Text="Ед изм">
+                    <UnitCmpt></UnitCmpt>
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="Пользователи">
+                    <CustomerCmpt></CustomerCmpt>
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="Продукт">
+                    <ProductCmpt></ProductCmpt>
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="Тип продукта">
+                    <ProductTypeCmpt></ProductTypeCmpt>
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="Поставщик">
+                    <SupplierCmpt></SupplierCmpt>
+                </RadzenTabsItem>
+            </Tabs>
+        </RadzenTabs>
+</div>
 
 @code {
 

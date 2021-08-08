@@ -40,11 +40,11 @@ namespace GideonMarket.Web.Server.Controllers
 
     
         [HttpPost]
-        public async Task<ActionResult<int>> Create([FromBody] string value)
+        public async Task<ActionResult<int>> Create([FromBody] UnitDto value)
         {
             return await mediator.Send(new CreateUnitRequest()
             {
-               dto =  new UnitDto() { Name = value }
+               dto =  value
             });
         }
 
