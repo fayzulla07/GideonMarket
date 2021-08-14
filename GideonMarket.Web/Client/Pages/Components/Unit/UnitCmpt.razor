@@ -21,7 +21,7 @@
 </RadzenCard>
 <RadzenDataGrid @ref="Grid" FilterCaseSensitivity="Radzen.FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowColumnResize="true" AllowPaging="true" PageSize="10" AllowSorting="true" 
                 EditMode="DataGridEditMode.Single" RowDoubleClick="RowDoubleClickHandler" RowSelect="RowClickHandler"
-                Data="@Data" TItem="UnitViewModel" Count="@Count" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow" @onkeypress="@(e => KeyPressed(e))">
+                Data="@Data" TItem="UnitViewModel" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow" @onkeypress="@(e => KeyPressed(e))">
     <Columns>
         <RadzenDataGridColumn TItem="UnitViewModel" Property="Name" Title="Имя">
             <Template Context="dsourse">
@@ -40,6 +40,7 @@
     protected async override Task OnInitializedAsync()
     {
         RemotePath = "/api/Unit";
+        ConfirmProperty = "Name";
         await GetDataAsync();
 
     }

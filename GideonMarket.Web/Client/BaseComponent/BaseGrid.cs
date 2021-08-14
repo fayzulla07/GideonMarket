@@ -16,15 +16,22 @@ namespace GideonMarket.Web.Client.BaseComponent
         public NotificationService NotificationService { get; set; }
         [Inject]
         public IAppService client { get; set; }
+        [Inject]
+        public DialogService dialogService { get; set; }
         
         public RadzenDataGrid<T> Grid { get; set; }
         public List<T> Data { get; set; } = new List<T>();
         private T currentEditingData = default(T);
         private T currentSelectData = default(T);
         public int Count { get; set; }
-        public string RemotePath { get; set; }
 
-      
+        #region Configs
+        public string RemotePath { get; set; }
+        public string ConfirmProperty { get; set; } = "Id";
+        #endregion
+
+
+
         public void RowDoubleClickHandler(DataGridRowMouseEventArgs<T> entity)
         {
             SaveRow();
@@ -106,18 +113,24 @@ namespace GideonMarket.Web.Client.BaseComponent
             currentEditingData = null;
         }
 
-        public void DeleteRow()
+        public async void DeleteRow()
         {
-            Data.Remove(currentSelectData);
-            OnDeleteRow(currentSelectData);
-            Grid.Reload();
+           bool flag = await ShowConfirm();
+            if (flag)
+            {
+                Data.Remove(currentSelectData);
+                OnDeleteRow(currentSelectData);
+               await Grid.Reload();
+            }
+           
         }
 
-        public void InsertRow()
+        public async Task InsertRow()
         {
             var data = Activator.CreateInstance<T>();
             currentEditingData = data;
-            Grid.InsertRow(data);
+            Data.Insert(0, data);
+            await Grid.InsertRow(data);
         }
 
         public void KeyPressed(KeyboardEventArgs e)
@@ -129,6 +142,11 @@ namespace GideonMarket.Web.Client.BaseComponent
               //  SaveRow();
             }
         }
-
+        public async Task<bool> ShowConfirm()
+        {
+            string name = currentSelectData.GetType().GetProperty(ConfirmProperty).GetValue(currentSelectData).ToString();
+            bool? flag = await dialogService.Confirm("Вы действительно хотите удалить " + name + " ?", "Удаление", new ConfirmOptions { OkButtonText = "Да", CancelButtonText = "Нет" });
+           return flag ?? false;
+        }
     }
 }

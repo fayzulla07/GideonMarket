@@ -38,21 +38,21 @@ namespace GideonMarket.Web.Server.Controllers
 
     
         [HttpPost]
-        public async Task<ActionResult<int>> Create([FromBody] string value)
+        public async Task<ActionResult<int>> Create([FromBody] ProductTypeDto value)
         {
             return await mediator.Send(new CreateProductTypeRequest()
             {
-               dto =  new ProductTypeDto() { Name = value }
+               dto = value
             });
         }
 
        
         [HttpPut("{id}")]
-        public async Task Update(int id, [FromBody] string value)
+        public async Task Update(int id, [FromBody] ProductTypeDto value)
         {
             await mediator.Send(new UpdateProductTypeRequest()
             {
-                dto = new ProductTypeDto() { Name = value, Id = id }
+                dto = value
             });
         }
 

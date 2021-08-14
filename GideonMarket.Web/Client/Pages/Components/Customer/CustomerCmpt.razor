@@ -1,108 +1,64 @@
 ﻿@using Radzen
 @using Radzen.Blazor
 
-<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="" Click="@InsertRow" />
-<RadzenDataGrid @ref="rGrid" AllowFiltering="true" AllowPaging="true" PageSize="3" AllowSorting="true"
-                EditMode="DataGridEditMode.Single"
-                Data="@dataList" TItem="CustomerViewModel" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow">
+@inherits BaseComponent.BaseGrid<CustomerViewModel>
+<RadzenCard Style="padding:5px;">
+    <div class="d-flex flex-row">
+        <div class="pr-1">
+            <RadzenButton Size="ButtonSize.Small" Icon="add" Click="InsertRow" ButtonStyle="ButtonStyle.Secondary"></RadzenButton>
+        </div>
+        <div class="pr-1">
+            <RadzenButton Size="ButtonSize.Small" Icon="save" Click="SaveRow" ButtonStyle="ButtonStyle.Info"></RadzenButton>
+        </div>
+        <div class="pr-1">
+            <RadzenButton Size="ButtonSize.Small" Icon="clear" Click="CancelEdit" ButtonStyle="ButtonStyle.Primary"></RadzenButton>
+        </div>
+        <div class="pr-1">
+            <RadzenButton Size="ButtonSize.Small" Icon="delete" Click="DeleteRow" ButtonStyle="ButtonStyle.Danger"></RadzenButton>
+        </div>
+    </div>
+</RadzenCard>
+<RadzenDataGrid @ref="Grid" FilterCaseSensitivity="Radzen.FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowColumnResize="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                EditMode="DataGridEditMode.Single" RowDoubleClick="RowDoubleClickHandler" RowSelect="RowClickHandler"
+                Data="@Data" TItem="CustomerViewModel" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow" @onkeypress="@(e => KeyPressed(e))">
     <Columns>
-        <RadzenDataGridColumn Width="100px" TItem="CustomerViewModel" Property="Id" Title="cust Id" Frozen="true" />
-        <RadzenDataGridColumn TItem="CustomerViewModel" Property="FullName" Title="Cust Name">
-            <EditTemplate Context="dat">
-                <RadzenTextBox @bind-Value="dat.FullName" Style="width:100%; display: block" Name="custName" />
-                <RadzenRequiredValidator Text="Name is required" Component="custName" Popup="true" />
-            </EditTemplate>
-        </RadzenDataGridColumn>
-
-        <RadzenDataGridColumn Width="200px" TItem="CustomerViewModel" Property="Customer.CompanyName" Title="Customer">
-            <EditTemplate Context="dat">
-                <RadzenDropDown @bind-Value="dat.PriceListId" Data="@pList" TextProperty="Name" ValueProperty="Id" Style="width:100%" />
-            </EditTemplate>
-        </RadzenDataGridColumn>
-
-        <RadzenDataGridColumn TItem="CustomerViewModel" Property="Email" Title="Email">
-            <EditTemplate Context="dat">
-                <RadzenTextBox @bind-Value="dat.Email" Style="width:100%; display: block" Name="email" />
-                <RadzenEmailValidator Text="Email is invalid" Component="email" Popup="true" />
-            </EditTemplate>
-        </RadzenDataGridColumn>
-
-        <RadzenDataGridColumn TItem="CustomerViewModel" Context="datCtx" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
-            <Template Context="dat">
-                <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditRow(dat))" @onclick:stopPropagation="true" />
+        <RadzenDataGridColumn TItem="CustomerViewModel" Property="FullName" Title="Имя">
+            <Template Context="dsourse">
+                <span>@dsourse.FullName</span>
             </Template>
-            <EditTemplate Context="dat">
-                <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveRow(dat))" />
-                <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => CancelEdit(dat))" />
+            <EditTemplate Context="dsourse">
+                <RadzenTextBox @bind-Value="dsourse.FullName" Style="width:100%"></RadzenTextBox>
             </EditTemplate>
         </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="CustomerViewModel" Context="order" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
-            <Template Context="dat">
-                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteRow(dat))" @onclick:stopPropagation="true" />
+        <RadzenDataGridColumn TItem="CustomerViewModel" Property="Email" Title="Почта">
+            <Template Context="dsourse">
+                <span>@dsourse.Email</span>
             </Template>
-            <EditTemplate Context="dat">
-                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteRow(dat))" />
+            <EditTemplate Context="dsourse">
+                <RadzenTextBox @bind-Value="dsourse.Email" Style="width:100%"></RadzenTextBox>
             </EditTemplate>
         </RadzenDataGridColumn>
-
+        <RadzenDataGridColumn TItem="CustomerViewModel" Property="PriceListId" Title="Прайс">
+            <Template Context="dsourse">
+                <span>@priceList.FirstOrDefault(x => x.Id == dsourse.PriceListId)?.Name</span>
+            </Template>
+            <EditTemplate Context="dsourse">
+                <RadzenDropDown Data="priceList"  @bind-Value="dsourse.PriceListId" TValue="int" ValueProperty="Id" TextProperty="Name" Style="width:100%"></RadzenDropDown>
+            </EditTemplate>
+        </RadzenDataGridColumn>
     </Columns>
 </RadzenDataGrid>
 
-@code {
-    [Inject]
-    public IAppService client { get; set; }
-    RadzenDataGrid<CustomerViewModel> rGrid;
-    IList<CustomerViewModel> dataList;
-    IList<PriceListViewModel> pList;
-
+@code{
+    private IEnumerable<PriceListViewModel> priceList;
     protected async override Task OnInitializedAsync()
     {
-        dataList = await client.GetAsync<List<CustomerViewModel>>("/api/customer");
-        pList = await client.GetAsync<List<PriceListViewModel>>("/api/pricelist");
+        RemotePath = "/api/Customer";
+        ConfirmProperty = "Name";
+        priceList = await client.GetAsync<IEnumerable<PriceListViewModel>>("/api/PriceList");
+        await GetDataAsync();
+
     }
 
-    void EditRow(CustomerViewModel obj)
-    {
-        rGrid.EditRow(obj);
-    }
-
-    void OnUpdateRow(CustomerViewModel obj)
-    {
-        client.UpdateAsync<CustomerViewModel>(obj, obj.Id, $"/api/Customer/{obj.Id}").GetAwaiter().GetResult();
-    }
-
-    void SaveRow(CustomerViewModel obj)
-    {
-        rGrid.UpdateRow(obj);
-    }
-
-    void CancelEdit(CustomerViewModel obj)
-    {
-        rGrid.CancelEditRow(obj);
-    }
-
-    void DeleteRow(CustomerViewModel obj)
-    {
-        if (dataList.Contains(obj))
-        {
-            client.DeleteAsync(obj.Id, $"/api/customer/{obj.Id}").GetAwaiter().GetResult();
-
-            rGrid.Reload();
-        }
-        else
-        {
-            rGrid.CancelEditRow(obj);
-        }
-    }
-
-    void InsertRow()
-    {
-        rGrid.InsertRow(new CustomerViewModel());
-    }
-
-    void OnCreateRow(CustomerViewModel obj)
-    {
-        var result = client.PostAsync<CustomerViewModel>(obj, "/api/Customer").Result;
-    }
 }
 

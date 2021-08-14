@@ -22,35 +22,29 @@ namespace GideonMarket.Web.Server.Controllers
         }
 
         
-        [HttpGet("{IsMaterial}")]
-        public async Task<IEnumerable<GetProductDto>> Get(bool isMaterial)
+        [HttpGet]
+        public async Task<IEnumerable<ProductDto>> Get()
         {
-            return await mediator.Send(new GetByMaterialProductRequest() { IsMaterial = isMaterial });
+            return await mediator.Send(new GetByMaterialProductRequest() { IsMaterial = true });
         }
 
 
     
         [HttpPost]
-        public async Task<ActionResult<int>> Create([FromBody] SetProductDto value)
+        public async Task<ActionResult<int>> Create([FromBody] CreateProductRequest value)
         {
             if(value != null)
             {
                 value.IsMaterial = true;
             }
-            return await mediator.Send(new CreateProductRequest()
-            {
-               dto = value
-            });
+            return await mediator.Send(value);
         }
 
        
         [HttpPut("{id}")]
-        public async Task Update(int id, [FromBody] SetProductDto value)
+        public async Task Update(int id, [FromBody] UpdateProductRequest value)
         {
-            await mediator.Send(new UpdateProductRequest()
-            {
-                dto = value
-            });
+            await mediator.Send(value);
         }
 
   

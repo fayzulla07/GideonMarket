@@ -6,7 +6,7 @@ namespace GideonMarket.UseCases.Handlers.Products.Commands
     {
         public UpdateProductValidation()
         {
-            RuleFor(s => s.dto.Name)
+            RuleFor(s => s.Name)
                 .NotEmpty();
         }
 

@@ -4,7 +4,11 @@ namespace GideonMarket.UseCases.Handlers.Products.Commands
 {
     public class UpdateProductRequest : IRequest
     {
-        
-        public SetProductDto dto { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int? ProductTypeId { get; set; }
+        public int UnitId { get; set; }
+        public bool IsMaterial { get; set; }
     }
 }

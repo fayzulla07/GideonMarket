@@ -6,11 +6,11 @@ namespace GideonMarket.UseCases.Handlers.Products.Commands
     {
         public CreatProductValidation()
         {
-            RuleFor(s => s.dto.Name)
+            RuleFor(s => s.Name)
                 .NotEmpty()
                 .MaximumLength(150);
 
-            RuleFor(s => s.dto.Description)
+            RuleFor(s => s.Description)
                 .NotEmpty()
                 .MaximumLength(250);
         }

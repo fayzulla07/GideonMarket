@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GideonMarket.UseCases.Handlers.Products.Queries
 {
-    internal class GetAllProductHandler : IRequestHandler<GetAllProductRequest, IEnumerable<GetProductDto>>
+    internal class GetAllProductHandler : IRequestHandler<GetAllProductRequest, IEnumerable<ProductDto>>
     {
         private readonly IAppContext appContext;
 
@@ -16,10 +16,10 @@ namespace GideonMarket.UseCases.Handlers.Products.Queries
         {
             this.appContext = appContext;
         }
-        public async Task<IEnumerable<GetProductDto>> Handle(GetAllProductRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ProductDto>> Handle(GetAllProductRequest request, CancellationToken cancellationToken)
         {
             var products = await appContext.Products.ToListAsync();
-            var productDtos = products.Adapt<GetProductDto[]>();
+            var productDtos = products.Adapt<ProductDto[]>();
             return productDtos;
         }
     }

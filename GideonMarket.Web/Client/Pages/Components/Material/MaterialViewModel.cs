@@ -1,8 +1,6 @@
-﻿
-
-namespace GideonMarket.UseCases.Handlers.Products
+﻿namespace GideonMarket.Web.Client.Pages.Components.Material
 {
-    public class GetProductDto
+    public class MaterialViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -10,6 +8,6 @@ namespace GideonMarket.UseCases.Handlers.Products
         public int? ProductTypeId { get; set; }
         public int UnitId { get; set; }
         public decimal Price { get; set; }
-        public bool IsMaterial { get; set; }
+        public bool IsMaterial => true;
     }
 }

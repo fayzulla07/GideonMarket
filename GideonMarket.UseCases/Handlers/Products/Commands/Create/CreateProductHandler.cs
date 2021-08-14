@@ -16,7 +16,7 @@ namespace GideonMarket.UseCases.Handlers.Products.Commands
         }
         public async Task<int> Handle(CreateProductRequest request, CancellationToken cancellationToken)
         {
-            var product = request.dto.Adapt<Product>();
+            var product = request.Adapt<Product>();
             await appContext.Products.AddAsync(product);
             await appContext.SaveChangesAsync();
             return product.Id;

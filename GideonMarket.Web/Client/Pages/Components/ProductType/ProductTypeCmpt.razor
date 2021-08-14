@@ -1,12 +1,48 @@
-﻿
+﻿@using Radzen
+@using Radzen.Blazor
+
+@inherits BaseComponent.BaseGrid<ProductTypeViewModel>
+<RadzenCard Style="padding:5px;">
+    <div class="d-flex flex-row">
+        <div class="pr-1">
+            <RadzenButton Size="ButtonSize.Small" Icon="add" Click="InsertRow" ButtonStyle="ButtonStyle.Secondary"></RadzenButton>
+        </div>
+        <div class="pr-1">
+            <RadzenButton Size="ButtonSize.Small" Icon="save" Click="SaveRow" ButtonStyle="ButtonStyle.Info"></RadzenButton>
+        </div>
+        <div class="pr-1">
+            <RadzenButton Size="ButtonSize.Small" Icon="clear" Click="CancelEdit" ButtonStyle="ButtonStyle.Primary"></RadzenButton>
+        </div>
+        <div class="pr-1">
+            <RadzenButton Size="ButtonSize.Small" Icon="delete" Click="DeleteRow" ButtonStyle="ButtonStyle.Danger"></RadzenButton>
+        </div>
+    </div>
+</RadzenCard>
+<RadzenDataGrid @ref="Grid" FilterCaseSensitivity="Radzen.FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowColumnResize="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                EditMode="DataGridEditMode.Single" RowDoubleClick="RowDoubleClickHandler" RowSelect="RowClickHandler"
+                Data="@Data" TItem="ProductTypeViewModel" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow" @onkeypress="@(e => KeyPressed(e))">
+    <Columns>
+        <RadzenDataGridColumn TItem="ProductTypeViewModel" Property="Name" Title="Имя">
+            <Template Context="dsourse">
+                <span>@dsourse.Name</span>
+            </Template>
+            <EditTemplate Context="dsourse">
+                <RadzenTextBox @bind-Value="dsourse.Name" Style="width:100%"></RadzenTextBox>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+    </Columns>
+</RadzenDataGrid>
 
 @code{
-        [Inject]
-        public IAppService client { get; set; }
-    public List<ProductTypeViewModel> Data { get; set; }
-    EditModified editType;
+
     protected async override Task OnInitializedAsync()
     {
-        Data = await client.GetAsync<List<ProductTypeViewModel>>("/api/productType");
+        RemotePath = "/api/ProductType";
+        ConfirmProperty = "Name";
+        await GetDataAsync();
+
     }
+
 }
+

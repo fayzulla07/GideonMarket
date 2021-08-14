@@ -19,12 +19,12 @@ namespace GideonMarket.UseCases.Handlers.Products.Commands
         }
         protected async override Task Handle(UpdateProductRequest request, CancellationToken cancellationToken)
         {
-            var entity = await appContext.Products.FindAsync(request.dto.Id);
+            var entity = await appContext.Products.FindAsync(request.Id);
             if (entity == null)
             {
                 return;
             }
-            var product = mapper.Map<Product>(request.dto);
+            var product = mapper.Map<Product>(request);
             appContext.Entry(entity).CurrentValues.SetValues(product);
             await appContext.SaveChangesAsync();
         }
