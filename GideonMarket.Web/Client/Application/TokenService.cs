@@ -20,7 +20,11 @@ namespace GideonMarket.Web.Client.Application
         public async Task<string> GetToken()
         {
             if (_provider.CurrentUser == null)
+            {
+                await _provider.LogoutAsync();
+                _manager.NavigateTo("/loginpage");
                 return null;
+            }
             var CurrentUser = _provider.CurrentUser;
             if (CurrentUser.User == null)
             {

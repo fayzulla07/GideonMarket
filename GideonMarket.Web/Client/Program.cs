@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 using System;
+using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
-
 namespace GideonMarket.Web.Client
 {
     public class Program
@@ -18,7 +18,6 @@ namespace GideonMarket.Web.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
             builder.Services.AddScoped<TokenService>();
             builder.Services.AddTransient<AuthService>();
             builder.Services.AddScoped<IAppService, AppService>();
@@ -34,8 +33,6 @@ namespace GideonMarket.Web.Client
             builder.Services.AddScoped<TooltipService>();
             builder.Services.AddScoped<ContextMenuService>();
             #endregion
-
-
             await builder.Build().RunAsync();
         }
     }

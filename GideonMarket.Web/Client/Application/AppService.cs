@@ -28,10 +28,10 @@ namespace GideonMarket.Web.Client.Application
             if (string.IsNullOrEmpty(await SetToken())) return default(T);
             return await _client.GetFromJsonAsync<T>((uri.StartsWith("/") == true ? "":"/") + $"{uri}");
         }
-        public async Task UpdateAsync<T>(T obj, int id, string uri)
+        public async Task UpdateAsync<T>(T obj, int id, string url)
         {
             if (string.IsNullOrEmpty(await SetToken())) return;
-            await _client.PutAsJsonAsync<T>((uri.StartsWith("/") == true ? "" : "/") + $"{uri}", obj);
+            await _client.PutAsJsonAsync<T>((url.StartsWith("/") == true ? "" : "/") + $"{url}" + (url.EndsWith("/") == true ? "" : "/") + id.ToString(), obj);
         }
         public async Task<int> InsertAsync<T>(T obj, string url)
         {

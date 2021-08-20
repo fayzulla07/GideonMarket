@@ -1,0 +1,69 @@
+﻿@using Radzen
+@using Radzen.Blazor
+@using Components.Product
+@using Components.Material
+@inherits BaseComponent.BaseGrid<PriceListItemViewModel>
+<div class="h3">Имя: @PriceList.Name</div>
+<RadzenCard Style="padding:5px;">
+    <div class="d-flex flex-row">
+        <div class="pr-1">
+            <RadzenButton Size="ButtonSize.Small" Icon="add" Click="InsertRow" ButtonStyle="ButtonStyle.Secondary"></RadzenButton>
+        </div>
+        <div class="pr-1">
+            <RadzenButton Size="ButtonSize.Small" Icon="save" Click="SaveRow" ButtonStyle="ButtonStyle.Info"></RadzenButton>
+        </div>
+        <div class="pr-1">
+            <RadzenButton Size="ButtonSize.Small" Icon="clear" Click="CancelEdit" ButtonStyle="ButtonStyle.Primary"></RadzenButton>
+        </div>
+        <div class="pr-1">
+            <RadzenButton Size="ButtonSize.Small" Icon="delete" Click="DeleteRow" ButtonStyle="ButtonStyle.Danger"></RadzenButton>
+        </div>
+    </div>
+</RadzenCard>
+<RadzenDataGrid @ref="Grid" FilterCaseSensitivity="Radzen.FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowColumnResize="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                EditMode="DataGridEditMode.Single" RowDoubleClick="RowDoubleClickHandler" RowSelect="RowClickHandler"
+                Data="@Data" TItem="PriceListItemViewModel" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow" @onkeypress="@(e => KeyPressed(e))">
+    <Columns>
+        <RadzenDataGridColumn TItem="PriceListItemViewModel" Property="PriceListId" Title="Прайс">
+            <Template Context="dsourse">
+                <span>@productList.FirstOrDefault(x => x.Id == dsourse.ProductId)?.Name</span>
+            </Template>
+            <EditTemplate Context="dsourse">
+                <RadzenDropDown Data="productList" @bind-Value="dsourse.ProductId" TValue="int" ValueProperty="Id" TextProperty="Name" Style="width:100%"></RadzenDropDown>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="PriceListItemViewModel" Property="FullName" Title="Цена">
+            <Template Context="dsourse">
+                <span>@dsourse.ManualPrice.ToString("C", new CultureInfo("kk-KZ"))</span>
+            </Template>
+            <EditTemplate Context="dsourse">
+                <RadzenNumeric @bind-Value="dsourse.ManualPrice" Style="width:100%"></RadzenNumeric>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+@code{
+    [Parameter]
+    public PriceListViewModel PriceList { get; set; }
+    private IEnumerable<ProductViewModel> productList;
+    protected async override Task OnInitializedAsync()
+    {
+        productList = await client.GetAsync<IEnumerable<ProductViewModel>>("/api/Product");
+        Data = PriceList.PriceItems;
+    }
+
+    public async override void OnCreateRow(PriceListItemViewModel entity)
+    {
+        NotificationService.Notify(NotificationSeverity.Info, "added", "");
+    }
+    public async override void OnUpdateRow(PriceListItemViewModel entity)
+    {
+        NotificationService.Notify(NotificationSeverity.Info, "updated", ""); 
+    }
+    public async override void OnDeleteRow(PriceListItemViewModel entity)
+    {
+        NotificationService.Notify(NotificationSeverity.Info, "deleted", "");
+    }
+}
+

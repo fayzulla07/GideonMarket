@@ -42,7 +42,6 @@ namespace GideonMarket.Web.Client.BaseComponent
         {
             SaveRow();
             currentSelectData = entity;
-           
         }
 
         public async Task GetDataAsync()

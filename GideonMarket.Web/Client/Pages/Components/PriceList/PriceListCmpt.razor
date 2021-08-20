@@ -1,7 +1,7 @@
 ﻿@using Radzen
 @using Radzen.Blazor
 
-@inherits BaseComponent.BaseGrid<CustomerViewModel>
+@inherits BaseComponent.BaseGrid<PriceListViewModel>
 <RadzenCard Style="padding:5px;">
     <div class="d-flex flex-row">
         <div class="pr-1">
@@ -20,45 +20,43 @@
 </RadzenCard>
 <RadzenDataGrid @ref="Grid" FilterCaseSensitivity="Radzen.FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowColumnResize="true" AllowPaging="true" PageSize="10" AllowSorting="true"
                 EditMode="DataGridEditMode.Single" RowDoubleClick="RowDoubleClickHandler" RowSelect="RowClickHandler"
-                Data="@Data" TItem="CustomerViewModel" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow" @onkeypress="@(e => KeyPressed(e))">
+                Data="@Data" TItem="PriceListViewModel" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow" @onkeypress="@(e => KeyPressed(e))">
+    <Template Context="dsourse" >
+        <PriceListItemCmpt PriceList="dsourse" ></PriceListItemCmpt>
+    </Template>
     <Columns>
-        <RadzenDataGridColumn TItem="CustomerViewModel" Property="FullName" Title="Имя">
+
+        <RadzenDataGridColumn TItem="PriceListViewModel" Property="Name" Title="" Width="80px">
             <Template Context="dsourse">
-                <span>@dsourse.FullName</span>
+                <RadzenButton Size="ButtonSize.Medium" Icon="read_more" Click="async()=>{ await OpenDetails(dsourse); }" ButtonStyle="ButtonStyle.Secondary"></RadzenButton>
             </Template>
             <EditTemplate Context="dsourse">
-                <RadzenTextBox @bind-Value="dsourse.FullName" Style="width:100%"></RadzenTextBox>
+                <RadzenButton Size="ButtonSize.Medium" Icon="read_more" Click="async()=>{ await OpenDetails(dsourse); }" ButtonStyle="ButtonStyle.Secondary"></RadzenButton>
             </EditTemplate>
         </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="CustomerViewModel" Property="Email" Title="Почта">
+        <RadzenDataGridColumn TItem="PriceListViewModel" Property="Name" Title="Имя">
             <Template Context="dsourse">
-                <span>@dsourse.Email</span>
+                <span>@dsourse.Name</span>
             </Template>
             <EditTemplate Context="dsourse">
-                <RadzenTextBox @bind-Value="dsourse.Email" Style="width:100%"></RadzenTextBox>
-            </EditTemplate>
-        </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="CustomerViewModel" Property="PriceListId" Title="Прайс">
-            <Template Context="dsourse">
-                <span>@priceList.FirstOrDefault(x => x.Id == dsourse.PriceListId)?.Name</span>
-            </Template>
-            <EditTemplate Context="dsourse">
-                <RadzenDropDown Data="priceList"  @bind-Value="dsourse.PriceListId" TValue="int" ValueProperty="Id" TextProperty="Name" Style="width:100%"></RadzenDropDown>
+                <RadzenTextBox @bind-Value="dsourse.Name" Style="width:100%"></RadzenTextBox>
             </EditTemplate>
         </RadzenDataGridColumn>
     </Columns>
 </RadzenDataGrid>
 
 @code{
-    private IEnumerable<PriceListViewModel> priceList;
     protected async override Task OnInitializedAsync()
     {
-        RemotePath = "api/Customer";
+        RemotePath = "api/PriceList";
         ConfirmProperty = "Name";
-        priceList = await client.GetAsync<IEnumerable<PriceListViewModel>>("/api/PriceList");
         await GetDataAsync();
 
     }
 
+    private async Task OpenDetails(PriceListViewModel value)
+    {
+       await dialogService.OpenAsync("Детали прайса", ds => @<PriceListItemCmpt PriceList="value"></PriceListItemCmpt>, new DialogOptions { Height = "80%", Width = "80%" });
+    }
 }
 
