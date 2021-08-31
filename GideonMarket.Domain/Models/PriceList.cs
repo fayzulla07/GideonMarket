@@ -6,6 +6,7 @@ namespace GideonMarket.Entities.Models
     public class PriceList : Entity, MainEntity
     {
         public string Name { get; set; }
+        // auto include enabled    
         public List<PriceListItem> PriceItems { get; private set; }
 
         public void AddItem(List<PriceListItem> items)
@@ -14,6 +15,7 @@ namespace GideonMarket.Entities.Models
             {
                 PriceItems = new List<PriceListItem>();
             }
+            if (items == null) return;
             PriceItems.AddRange(items);
         }
 
@@ -26,7 +28,7 @@ namespace GideonMarket.Entities.Models
            
         }
 
-
+      
         private void Update(PriceListItem entity)
         {
             foreach (var item in PriceItems)

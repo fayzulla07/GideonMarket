@@ -1,6 +1,6 @@
 ﻿@using Radzen
 @using Radzen.Blazor
-
+<div class="h6">Прайс листы</div>
 @inherits BaseComponent.BaseGrid<PriceListViewModel>
 <RadzenCard Style="padding:5px;">
     <div class="d-flex flex-row">
@@ -46,9 +46,5 @@
 
     }
 
-    private async Task OpenDetails(PriceListViewModel value)
-    {
-       await dialogService.OpenAsync("Детали прайса", ds => @<PriceListItemCmpt PriceList="value"></PriceListItemCmpt>, new DialogOptions { Height = "80%", Width = "80%" });
-    }
 }
 

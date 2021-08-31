@@ -1,4 +1,5 @@
 ﻿using GideonMarket.Entities.Models;
+using GideonMarket.Entities.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -16,6 +17,9 @@ namespace GideonMarket.UseCases.DataAccess
         public DbSet<Income> Incomes { get; }
         public DbSet<Order> Orders { get; }
         public DbSet<Customer> Customers { get; }
+
+        DbSet<T> Set<T>() where T : class;
+
         public DbSet<User> Users { get; }
         public DbSet<Role> Roles { get; }
         public DbSet<Supplier> Suppliers { get; }

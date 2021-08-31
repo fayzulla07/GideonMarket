@@ -13,6 +13,8 @@ namespace GideonMarket.DataAccess.MsSql
   
             services.AddDbContext<IAppContext, AppContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddTransient<IGenericRepository, GenericRepository>();
         }
     }
 }

@@ -20,7 +20,9 @@ namespace GideonMarket.Web.Client.BaseComponent
         public DialogService dialogService { get; set; }
         
         public RadzenDataGrid<T> Grid { get; set; }
-        public List<T> Data { get; set; } = new List<T>();
+        private List<T> data;
+
+        public List<T> Data { get; set; } = Activator.CreateInstance<List<T>>();
         private T currentEditingData = default(T);
         private T currentSelectData = default(T);
         public int Count { get; set; }
@@ -128,6 +130,10 @@ namespace GideonMarket.Web.Client.BaseComponent
         {
             var data = Activator.CreateInstance<T>();
             currentEditingData = data;
+            if(Data == null)
+            {
+                Data = Activator.CreateInstance<List<T>>();
+            }
             Data.Insert(0, data);
             await Grid.InsertRow(data);
         }

@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
 using Mapster;
 using MapsterMapper;
-
+using GideonMarket.UseCases.DataAccess;
 namespace GideonMarket.DataAccess.MsSql
 {
     public class UseCaseModule : Module
@@ -20,6 +20,7 @@ namespace GideonMarket.DataAccess.MsSql
             var config = new TypeAdapterConfig();
             services.AddSingleton(config);
             services.AddScoped<IMapper, ServiceMapper>();
+        
         }
     }
 }

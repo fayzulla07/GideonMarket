@@ -56,28 +56,19 @@
 
     public async override void OnCreateRow(PriceListItemViewModel entity)
     {
-        PriceListViewModel pricelst = new PriceListViewModel();
-        pricelst.Id = PriceList.Id;
-        pricelst.Name = PriceList.Name;
-        pricelst.PriceItems = new List<PriceListItemViewModel>();
-        pricelst.PriceItems.Add(entity);
-        int id = await client.PostAsync<int>(pricelst, "/api/PriceList");
+        entity.PriceId = PriceList.Id;
+        int id = await client.PostAsync<int>(entity, "/api/PriceList/item");
         entity.Id = id;
         NotificationService.Notify(NotificationSeverity.Info, "Успешно добавлено", "");
     }
     public async override void OnUpdateRow(PriceListItemViewModel entity)
     {
-        PriceListViewModel pricelst = new PriceListViewModel();
-        pricelst.Id = PriceList.Id;
-        pricelst.Name = PriceList.Name;
-        pricelst.PriceItems = new List<PriceListItemViewModel>();
-        pricelst.PriceItems.Add(entity);
-        await client.UpdateAsync<PriceListViewModel>(pricelst, pricelst.Id, "/api/PriceList");
+        await client.UpdateAsync<PriceListItemViewModel>(entity, entity.Id, "/api/PriceList/item");
         NotificationService.Notify(NotificationSeverity.Info, "Успешно обновлено", "");
     }
     public async override void OnDeleteRow(PriceListItemViewModel entity)
     {
-       // await client.UpdateAsync<PriceListViewModel>(PriceList, PriceList.Id, "/api/PriceList");
+        await client.DeleteAsync(entity.Id, "/api/PriceList/item");
         NotificationService.Notify(NotificationSeverity.Info, "Успешно удалено", "");
     }
 }

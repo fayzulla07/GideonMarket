@@ -35,7 +35,7 @@ namespace GideonMarket.Web.Server.Controllers
         {
             if (value != null)
             {
-                value.IsMaterial = true;
+                value.IsMaterial = false;
             }
             return await mediator.Send(value);
         }

@@ -332,7 +332,7 @@ namespace GideonMarket.DataAccess.MsSql
                 x.Property(p => p.Name)
                 .HasMaxLength(150)
                 .IsRequired(true);
-
+                x.Navigation(x => x.PriceItems).AutoInclude();
             });
 
             modelBuilder.Entity<PriceListItem>(x =>
@@ -351,6 +351,8 @@ namespace GideonMarket.DataAccess.MsSql
                 x.HasOne<PriceList>()
                 .WithMany(x => x.PriceItems)
                 .HasForeignKey(x => x.PriceId);
+               
+                
             });
         }
     }

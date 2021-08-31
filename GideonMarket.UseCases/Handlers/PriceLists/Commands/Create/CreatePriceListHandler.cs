@@ -13,22 +13,29 @@ namespace GideonMarket.UseCases.Handlers.PriceLists.Commands
     internal class CreatePriceListHandler : IRequestHandler<CreatePriceListRequest, int>
     {
         private readonly IAppContext appContext;
-        public CreatePriceListHandler(IAppContext appContext)
+        private readonly IGenericRepository repository;
+
+        public CreatePriceListHandler(IAppContext appContext, IGenericRepository repository)
         {
             this.appContext = appContext;
+            this.repository = repository;
         }
         public async Task<int> Handle(CreatePriceListRequest request, CancellationToken cancellationToken)
         {
+            // mapped request
             var priceList = request.Adapt<PriceList>();
             
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
 
-            var pricelst = await appContext.PriceLists.Where(x => x.Id == priceList.Id).Include(x => x.PriceItems).FirstOrDefaultAsync();
-
-            // Добавить приход
-            pricelst.AddItem(priceList.PriceItems);
-
-            await appContext.SaveChangesAsync();
+            //// object to save
+            //PriceList pricelst = new();
+            //pricelst.Name = priceList.Name;
+            //pricelst.Id = priceList.Id;
+            //// Добавить приход
+            //pricelst.AddItem(priceList.PriceItems);
+            //add to repository
+            repository.AddOrUpdate(priceList);
+            await repository.SaveAsync();
             scope.Complete();
             return priceList.Id;
         }
