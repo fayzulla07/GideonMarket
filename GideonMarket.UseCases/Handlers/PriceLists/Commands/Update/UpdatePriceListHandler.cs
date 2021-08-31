@@ -3,9 +3,9 @@ using GideonMarket.UseCases.DataAccess;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Transactions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using GideonMarket.Entities.Models;
 
 namespace GideonMarket.UseCases.Handlers.PriceLists.Commands
 {
@@ -25,7 +25,9 @@ namespace GideonMarket.UseCases.Handlers.PriceLists.Commands
             {
                 return;
             }
-            request.Adapt(entity);
+            var adaptedValue = request.Adapt<PriceList>();
+            entity.Name = adaptedValue.Name;
+            entity.UpdateItem(entity.PriceItems);
             await appContext.SaveChangesAsync();
         }
     }

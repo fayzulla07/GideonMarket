@@ -19,14 +19,18 @@ namespace GideonMarket.UseCases.Handlers.PriceLists.Commands
         }
         public async Task<int> Handle(CreatePriceListRequest request, CancellationToken cancellationToken)
         {
-            var PriceList = request.Adapt<PriceList>();
+            var priceList = request.Adapt<PriceList>();
+            
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
+            var pricelst = await appContext.PriceLists.Where(x => x.Id == priceList.Id).Include(x => x.PriceItems).FirstOrDefaultAsync();
+
             // Добавить приход
-            await appContext.PriceLists.AddAsync(PriceList);
+            pricelst.AddItem(priceList.PriceItems);
 
             await appContext.SaveChangesAsync();
             scope.Complete();
-            return PriceList.Id;
+            return priceList.Id;
         }
     }
 }

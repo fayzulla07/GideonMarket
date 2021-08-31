@@ -27,7 +27,7 @@
                 <span>@dsourse.Name</span>
             </Template>
             <EditTemplate Context="dsourse">
-                <RadzenTextBox @bind-Value="dsourse.Name" Style="width:100%"></RadzenTextBox>
+                <RadzenTextBox AutoComplete="false" @bind-Value="dsourse.Name" Style="width:100%"></RadzenTextBox>
             </EditTemplate>
         </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="MaterialViewModel" Property="Price" Title="Цена">
@@ -66,16 +66,18 @@
 </RadzenDataGrid>
 @using Components.Unit;
 @code{
-    private IEnumerable<UnitViewModel> units;
-    private IEnumerable<ProductType.ProductTypeViewModel> producttypes;
+    private IEnumerable<UnitViewModel> units = new List<UnitViewModel>();
+    private IEnumerable<ProductType.ProductTypeViewModel> producttypes = new List<ProductType.ProductTypeViewModel>();
     protected async override Task OnInitializedAsync()
     {
         RemotePath = "/api/Material";
         ConfirmProperty = "Name";
-        units = await client.GetAsync<IEnumerable<UnitViewModel>>("/api/Unit");
-        producttypes = await client.GetAsync<IEnumerable<ProductType.ProductTypeViewModel>>("/api/ProductType");
         await GetDataAsync();
     }
-
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        units = await client.GetAsync<IEnumerable<UnitViewModel>>("/api/Unit");
+        producttypes = await client.GetAsync<IEnumerable<ProductType.ProductTypeViewModel>>("/api/ProductType");
+    }
 }
 

@@ -15,6 +15,7 @@ namespace GideonMarket.Entities.Models
 
 
 
+
         public List<IncomeItem> IncomeItems { get; private set; }
 
         public Income()

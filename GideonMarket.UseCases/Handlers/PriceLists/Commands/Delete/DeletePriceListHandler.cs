@@ -21,8 +21,8 @@ namespace GideonMarket.UseCases.Handlers.PriceLists.Commands
         protected async override Task Handle(DeletePriceListRequest request, CancellationToken cancellationToken)
         {
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-            var PriceList = await appContext.PriceLists.Include(x => x.PriceItems).Where(x => x.Id == request.Id).FirstOrDefaultAsync();
-            appContext.PriceLists.Remove(PriceList);
+            var priceList = await appContext.PriceLists.Include(x => x.PriceItems).Where(x => x.Id == request.Id).FirstOrDefaultAsync();
+            appContext.PriceLists.Remove(priceList);
 
             await appContext.SaveChangesAsync();
             

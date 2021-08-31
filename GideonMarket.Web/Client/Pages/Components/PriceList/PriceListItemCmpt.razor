@@ -3,7 +3,7 @@
 @using Components.Product
 @using Components.Material
 @inherits BaseComponent.BaseGrid<PriceListItemViewModel>
-<div class="h3">Имя: @PriceList.Name</div>
+<div class="h6">Имя: @PriceList.Name</div>
 <RadzenCard Style="padding:5px;">
     <div class="d-flex flex-row">
         <div class="pr-1">
@@ -44,6 +44,7 @@
 </RadzenDataGrid>
 
 @code{
+
     [Parameter]
     public PriceListViewModel PriceList { get; set; }
     private IEnumerable<ProductViewModel> productList;
@@ -55,15 +56,29 @@
 
     public async override void OnCreateRow(PriceListItemViewModel entity)
     {
-        NotificationService.Notify(NotificationSeverity.Info, "added", "");
+        PriceListViewModel pricelst = new PriceListViewModel();
+        pricelst.Id = PriceList.Id;
+        pricelst.Name = PriceList.Name;
+        pricelst.PriceItems = new List<PriceListItemViewModel>();
+        pricelst.PriceItems.Add(entity);
+        int id = await client.PostAsync<int>(pricelst, "/api/PriceList");
+        entity.Id = id;
+        NotificationService.Notify(NotificationSeverity.Info, "Успешно добавлено", "");
     }
     public async override void OnUpdateRow(PriceListItemViewModel entity)
     {
-        NotificationService.Notify(NotificationSeverity.Info, "updated", ""); 
+        PriceListViewModel pricelst = new PriceListViewModel();
+        pricelst.Id = PriceList.Id;
+        pricelst.Name = PriceList.Name;
+        pricelst.PriceItems = new List<PriceListItemViewModel>();
+        pricelst.PriceItems.Add(entity);
+        await client.UpdateAsync<PriceListViewModel>(pricelst, pricelst.Id, "/api/PriceList");
+        NotificationService.Notify(NotificationSeverity.Info, "Успешно обновлено", "");
     }
     public async override void OnDeleteRow(PriceListItemViewModel entity)
     {
-        NotificationService.Notify(NotificationSeverity.Info, "deleted", "");
+       // await client.UpdateAsync<PriceListViewModel>(PriceList, PriceList.Id, "/api/PriceList");
+        NotificationService.Notify(NotificationSeverity.Info, "Успешно удалено", "");
     }
 }
 

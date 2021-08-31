@@ -26,14 +26,6 @@
     </Template>
     <Columns>
 
-        <RadzenDataGridColumn TItem="PriceListViewModel" Property="Name" Title="" Width="80px">
-            <Template Context="dsourse">
-                <RadzenButton Size="ButtonSize.Medium" Icon="read_more" Click="async()=>{ await OpenDetails(dsourse); }" ButtonStyle="ButtonStyle.Secondary"></RadzenButton>
-            </Template>
-            <EditTemplate Context="dsourse">
-                <RadzenButton Size="ButtonSize.Medium" Icon="read_more" Click="async()=>{ await OpenDetails(dsourse); }" ButtonStyle="ButtonStyle.Secondary"></RadzenButton>
-            </EditTemplate>
-        </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="PriceListViewModel" Property="Name" Title="Имя">
             <Template Context="dsourse">
                 <span>@dsourse.Name</span>
