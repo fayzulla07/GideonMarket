@@ -35,7 +35,9 @@ namespace GideonMarket.Entities.Models
             {
                 if(item.Id == entity.Id)
                 {
-                    item.Update(entity.PriceId, entity.ProductId, entity.ManualPrice);
+                    item.PriceId = entity.PriceId;
+                    item.ProductId = entity.ProductId;
+                    item.ManualPrice = entity.ManualPrice;
                 }
 
             }

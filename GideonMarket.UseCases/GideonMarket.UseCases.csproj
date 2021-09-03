@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Handlers\Customers\Mappings\**" />
-    <EmbeddedResource Remove="Handlers\Customers\Mappings\**" />
-    <None Remove="Handlers\Customers\Mappings\**" />
+    <Compile Remove="Handlers\Settings\Customers\Mappings\**" />
+    <EmbeddedResource Remove="Handlers\Settings\Customers\Mappings\**" />
+    <None Remove="Handlers\Settings\Customers\Mappings\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Handlers\Users\Commands\" />
+    <Folder Include="Handlers\Settings\Users\Commands\" />
   </ItemGroup>
 
 </Project>

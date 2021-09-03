@@ -26,6 +26,7 @@ namespace GideonMarket.UseCases.Handlers.PriceLists.Commands
                 return;
             }
             var adaptedValue = request.Adapt<PriceList>();
+
             entity.Name = adaptedValue.Name;
             entity.UpdateItem(entity.PriceItems);
             await appContext.SaveChangesAsync();
