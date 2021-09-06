@@ -1,0 +1,35 @@
+﻿@using Radzen
+@using Radzen.Blazor
+@using Components.Product
+@inherits BaseComponent.BaseGrid<PlaceItemViewModel>
+
+<RadzenDataGrid @ref="Grid" FilterCaseSensitivity="Radzen.FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowColumnResize="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                EditMode="DataGridEditMode.Single" RowDoubleClick="RowDoubleClickHandler" RowSelect="RowClickHandler"
+                Data="@Data" TItem="PlaceItemViewModel">
+    <Columns>
+        <RadzenDataGridColumn TItem="PlaceItemViewModel" Property="PriceListId" Title="Продукт">
+            <Template Context="dsourse">
+                <span>@productList.FirstOrDefault(x => x.Id == dsourse.ProductId)?.Name</span>
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="PlaceItemViewModel" Property="FullName" Title="Цена">
+            <Template Context="dsourse">
+                <span>@dsourse.RemainCount</span>
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+@code{
+
+    [Parameter]
+    public PlaceViewModel Place { get; set; }
+    private IEnumerable<ProductViewModel> productList;
+    protected async override Task OnInitializedAsync()
+    {
+        productList = await client.GetAsync<IEnumerable<ProductViewModel>>("/api/Product");
+        Data = Place.PlaceItems;
+    }
+
+}
+

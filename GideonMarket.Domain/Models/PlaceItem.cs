@@ -26,6 +26,5 @@ namespace GideonMarket.Entities.Models
         {
             RemainCount = RemainCount - count;
         }
-
     }
 }
