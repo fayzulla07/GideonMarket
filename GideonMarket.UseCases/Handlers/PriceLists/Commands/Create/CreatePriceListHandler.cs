@@ -26,13 +26,6 @@ namespace GideonMarket.UseCases.Handlers.PriceLists.Commands
             var priceList = request.Adapt<PriceList>();
             
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-
-            //// object to save
-            //PriceList pricelst = new();
-            //pricelst.Name = priceList.Name;
-            //pricelst.Id = priceList.Id;
-            //// Добавить приход
-            //pricelst.AddItem(priceList.PriceItems);
             //add to repository
             repository.AddOrUpdate(priceList);
             await repository.SaveAsync();

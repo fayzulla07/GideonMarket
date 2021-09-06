@@ -1,64 +1,81 @@
 ﻿using GideonMarket.Entities.Models;
-using GideonMarket.Entities.Shared;
 using GideonMarket.UseCases.DataAccess;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GideonMarket.DataAccess.MsSql.Repos
 {
-    public class PriceListRepository : IGenericRepository
+    public class PriceListRepository 
     {
-        public Task AddAsync<T>(List<T> entity) where T : Entity
+        private readonly IAppContext appContext;
+
+        public PriceListRepository(IAppContext appContext)
         {
-            throw new NotImplementedException();
+            this.appContext = appContext;
+        }
+        public async Task AddAsync(PriceList entity)
+        {
+            var result = await appContext.PriceLists.Include(x => x.PriceItems).FirstOrDefaultAsync(x => x.Id == entity.Id);
+            if(result != null)
+            {
+                result.PriceItems.AddRange(entity.PriceItems);
+            }
+            else
+            {
+                await appContext.PriceLists.AddAsync(entity);
+            }
+
         }
 
-        public Task AddAsync<T>(T entity) where T : Entity
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var result = await appContext.PriceLists.FirstOrDefaultAsync(x => x.Id == id);
+            if(result != null)
+            {
+                appContext.PriceLists.Remove(result);
+            }
         }
 
-        public void AddOrUpdate<T>(T entity) where T : Entity
+        public async Task DeleteItemAsync(int id, int itemid) 
         {
-            throw new NotImplementedException();
+            var result = await appContext.PriceLists.Include(x => x.PriceItems).FirstOrDefaultAsync(x => x.Id == id);
+            var datatoremove = result.PriceItems.FirstOrDefault(x => x.Id == itemid);
+            result.PriceItems.Remove(datatoremove);
         }
 
-        public Task DeleteAsync<T>(int id) where T : Entity
+        public async Task<PriceList> FindById(int id)
         {
-            throw new NotImplementedException();
+            var result = await appContext.PriceLists.Include(x => x.PriceItems).FirstOrDefaultAsync(x => x.Id == id);
+            return result;
         }
 
-        public Task DeleteAsync<T>(int[] ids) where T : Entity
+        public async Task<List<PriceList>> GetAsync()
         {
-            throw new NotImplementedException();
+            var result = await appContext.PriceLists.Include(x => x.PriceItems).ToListAsync();
+            return result;
         }
 
-        public Task<T> FindById<T>(int id) where T : Entity
+        public async Task<int> SaveAsync()
         {
-            throw new NotImplementedException();
+          return await appContext.SaveChangesAsync();
         }
 
-        public Task<List<T>> GetAsync<T>() where T : Entity
+        public async Task UpdateAsync(PriceList entity)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> SaveAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update<T>(List<T> entity) where T : Entity
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update<T>(T entity) where T : Entity
-        {
-            throw new NotImplementedException();
+            var result = await appContext.PriceLists.Include(x => x.PriceItems).Where(x => x.Id == entity.Id).FirstOrDefaultAsync();
+            result.Name = entity.Name;
+            if (result.PriceItems.Any())
+            {
+                foreach (var item in result.PriceItems)
+                {
+                    if(item.Id == entity.Id)
+                    {
+                       // item.ManualPrice = entity.
+                    }
+                }
+            }
         }
     }
 }
