@@ -109,7 +109,7 @@ namespace GideonMarket.Web.Server
 
             app.UseRouting();
 
-             app.UseAuthentication();    // подключение аутентификации
+             app.UseAuthentication();   //
              app.UseAuthorization();
 
             app.UseSwaggerUI(c =>

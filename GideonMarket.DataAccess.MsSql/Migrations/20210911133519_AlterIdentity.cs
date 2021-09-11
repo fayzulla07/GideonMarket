@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GideonMarket.DataAccess.MsSql.Migrations
 {
-    public partial class InitialCreate5 : Migration
+    public partial class AlterIdentity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -134,11 +134,11 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                 name: "Incomes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Number = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RegDt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Number = table.Column<int>(type: "int", nullable: false),
+                    RegDt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     PlaceId = table.Column<int>(type: "int", nullable: false),
                     SupplierId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -355,12 +355,6 @@ namespace GideonMarket.DataAccess.MsSql.Migrations
                 name: "IX_IncomeItem_ProductId",
                 table: "IncomeItem",
                 column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Incomes_Number",
-                table: "Incomes",
-                column: "Number",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Incomes_PlaceId",

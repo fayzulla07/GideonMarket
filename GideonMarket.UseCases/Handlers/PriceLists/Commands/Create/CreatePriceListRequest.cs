@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using GideonMarket.UseCases.Handlers.PriceListItems;
+using MediatR;
 using System;
 using System.Collections.Generic;
 

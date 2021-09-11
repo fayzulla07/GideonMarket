@@ -25,8 +25,17 @@ namespace GideonMarket.Web.Client.Application
 
         public async Task<T> GetAsync<T>(string uri)
         {
-            if (string.IsNullOrEmpty(await SetToken())) return default(T);
-            return await _client.GetFromJsonAsync<T>((uri.StartsWith("/") == true ? "":"/") + $"{uri}");
+            try
+            {
+                if (string.IsNullOrEmpty(await SetToken())) return default(T);
+                return await _client.GetFromJsonAsync<T>((uri.StartsWith("/") == true ? "" : "/") + $"{uri}");
+            }
+            catch (System.Exception ex)
+            {
+
+                throw;
+            }
+           
         }
         public async Task UpdateAsync<T>(T obj, int id, string url)
         {

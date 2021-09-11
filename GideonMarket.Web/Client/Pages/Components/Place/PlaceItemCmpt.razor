@@ -1,0 +1,51 @@
+﻿@using Radzen
+@using Radzen.Blazor
+@using Components.Product
+@using Components.Material
+@inherits BaseComponent.BaseGrid<PlaceItemViewModel>
+<div class="h6">Имя: @PlaceList.Name</div>
+
+<RadzenDataGrid @ref="Grid" FilterCaseSensitivity="Radzen.FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowColumnResize="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                EditMode="DataGridEditMode.Single" RowDoubleClick="RowDoubleClickHandler" RowSelect="RowClickHandler"
+                Data="@Data" TItem="PlaceItemViewModel" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow" @onkeypress="@(e => KeyPressed(e))">
+    <Columns>
+        <RadzenDataGridColumn TItem="PlaceItemViewModel" Property="PriceListId" Title="Прайс">
+            <Template Context="dsourse">
+                <span>@productList.FirstOrDefault(x => x.Id == dsourse.ProductId)?.Name</span>
+            </Template>
+            <EditTemplate Context="dsourse">
+                <RadzenDropDown Data="productList" @bind-Value="dsourse.ProductId" TValue="int" ValueProperty="Id" TextProperty="Name" Style="width:100%"></RadzenDropDown>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="PlaceItemViewModel" Property="FullName" Title="Цена">
+            <Template Context="dsourse">
+                <span>@dsourse.RemainCount</span>
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+@code{
+
+    [Parameter]
+    public PlaceViewModel PlaceList { get; set; }
+    private IEnumerable<ProductViewModel> productList;
+    protected async override Task OnInitializedAsync()
+    {
+        productList = await client.GetAsync<IEnumerable<ProductViewModel>>("/api/Product");
+        Data = PlaceList.PlaceItems;
+    }
+
+    public async override void OnCreateRow(PlaceItemViewModel entity)
+    {
+       
+    }
+    public async override void OnUpdateRow(PlaceItemViewModel entity)
+    {
+    }
+    public async override void OnDeleteRow(PlaceItemViewModel entity)
+    {
+      
+    }
+}
+

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GideonMarket.Web.Client.Pages.IncomePage
+namespace GideonMarket.Web.Client.Pages.Income
 {
     public class IncomeViewModel
     {

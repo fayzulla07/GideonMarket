@@ -7,8 +7,9 @@ namespace GideonMarket.UseCases.Handlers.Incomes.Commands
         public CreatIncomeValidation()
         {
             RuleFor(s => s.Description)
-                .NotEmpty()
                 .MaximumLength(150);
+            RuleFor(s => s.IncomeItems.Count)
+              .GreaterThan(0);
         }
     }
 }

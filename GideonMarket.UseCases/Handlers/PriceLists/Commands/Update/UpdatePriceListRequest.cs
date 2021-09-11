@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Mapster;
+using GideonMarket.UseCases.Handlers.PriceListItems;
 
 namespace GideonMarket.UseCases.Handlers.PriceLists.Commands
 {

@@ -1,0 +1,152 @@
+﻿@page "/income"
+@using GideonMarket.Web.Client.Pages.Components.Place;
+@using GideonMarket.Web.Client.Pages.Components.Product;
+@using GideonMarket.Web.Client.Pages.Components.Supplier;
+
+<RadzenTemplateForm Data="@formData" Submit="@((IncomeViewModel args) => { Submit(args); })">
+    <RadzenFieldset Text="общая приход">
+        <div class="row">
+            <div class="col-md-2 align-items-center d-flex">
+                <RadzenLabel Text="Склад или места" />
+            </div>
+            <div class="col-md-10">
+                <RadzenDropDown @bind-Value="formData.PlaceId" AllowClear="true" Placeholder="выберите что нибудь" Data="@places" style="width: 100%;" TextProperty="Name" ValueProperty="Id" Name="PlaceId">
+                </RadzenDropDown>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 align-items-center d-flex">
+                <RadzenLabel Text="Поставщик" />
+            </div>
+            <div class="col-md-10">
+                <RadzenDropDown @bind-Value="formData.SupplierId" AllowClear="true" Placeholder="выберите что нибудь" Data="@suppliers" style="width: 100%;" TextProperty="FullName" ValueProperty="Id" Name="SupplierId">
+                </RadzenDropDown>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 align-items-center d-flex">
+                <RadzenLabel Text="Описание" />
+            </div>
+            <div class="col-md-10">
+                <RadzenTextBox @bind-Value="formData.Description" Name="Description" style="width: 100%;"></RadzenTextBox>
+            </div>
+        </div>
+        <div class="row justify-content-center hide">
+            <div class="col-md-12 d-flex align-items-end justify-content-end" style="margin-top: 16px;">
+               @* <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Создать" />*@
+            </div>
+        </div>
+    </RadzenFieldset>
+
+
+</RadzenTemplateForm>
+
+@using Radzen
+@using Radzen.Blazor
+@using GideonMarket.Web.Client.Pages.Income
+@inherits BaseComponent.BaseGrid<IncomeItemViewModel>
+@using Components.Unit
+<RadzenFieldset Text="Детали прихода">
+
+    <RadzenCard Style="padding:5px;">
+        <div class="d-flex flex-row">
+            <div class="pr-1">
+                <RadzenButton Size="ButtonSize.Small" Icon="add" Click="InsertRow" ButtonStyle="ButtonStyle.Secondary"></RadzenButton>
+            </div>
+            <div class="pr-1">
+                <RadzenButton Size="ButtonSize.Small" Icon="save" Click="SaveRow" ButtonStyle="ButtonStyle.Info"></RadzenButton>
+            </div>
+            <div class="pr-1">
+                <RadzenButton Size="ButtonSize.Small" Icon="clear" Click="CancelEdit" ButtonStyle="ButtonStyle.Primary"></RadzenButton>
+            </div>
+            <div class="pr-1">
+                <RadzenButton Size="ButtonSize.Small" Icon="delete" Click="DeleteRow" ButtonStyle="ButtonStyle.Danger"></RadzenButton>
+            </div>
+        </div>
+    </RadzenCard>
+    <RadzenDataGrid @ref="Grid" FilterCaseSensitivity="Radzen.FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowColumnResize="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                    EditMode="DataGridEditMode.Single" RowDoubleClick="RowDoubleClickHandler" RowSelect="RowClickHandler"
+                    Data="@Data" TItem="IncomeItemViewModel" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow" @onkeypress="@(e => KeyPressed(e))">
+        <Columns>
+            <RadzenDataGridColumn TItem="IncomeItemViewModel" Property="ProductId" Title="Имя">
+                <Template Context="dsourse">
+                    <span>@productList.FirstOrDefault(x => x.Id == dsourse.ProductId)?.Name</span>
+                </Template>
+                <EditTemplate Context="dsourse">
+                    <RadzenDropDown Data="productList" @bind-Value="dsourse.ProductId" TValue="int" ValueProperty="Id" TextProperty="Name" Style="width:100%"></RadzenDropDown>
+                </EditTemplate>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="IncomeItemViewModel" Property="Description" Title="Описание">
+                <Template Context="dsourse">
+                    <span>@dsourse.Description</span>
+                </Template>
+                <EditTemplate Context="dsourse">
+                    <RadzenTextBox @bind-Value="dsourse.Description" Style="width:100%"></RadzenTextBox>
+                </EditTemplate>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="IncomeItemViewModel" Property="Count" Title="Количестово">
+                <Template Context="dsourse">
+                    <span>@dsourse.Count</span>
+                </Template>
+                <EditTemplate Context="dsourse">
+                    <RadzenNumeric Min="0" @bind-Value="dsourse.Count" Style="width:100%"></RadzenNumeric>
+                </EditTemplate>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="IncomeItemViewModel" Property="Price" Title="Цена">
+                <Template Context="dsourse">
+                    <span>@dsourse.Price</span>
+                </Template>
+                <EditTemplate Context="dsourse">
+                    <RadzenNumeric Min="0" @bind-Value="dsourse.Price" Style="width:100%"></RadzenNumeric>
+                </EditTemplate>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="IncomeItemViewModel" Property="Price" Title="Общий">
+                <Template Context="dsourse">
+                    <span>@(dsourse.Price * (decimal)dsourse.Count )</span>
+                </Template>
+               
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+    <RadzenButton Text="Сохранить" Click="SendIncome"></RadzenButton>
+</RadzenFieldset>
+    @code{
+        private IEnumerable<ProductViewModel> productList;
+        private IEnumerable<PlaceViewModel> places;
+        private IEnumerable<SupplierViewModel> suppliers;
+        IncomeViewModel formData = new IncomeViewModel();
+        protected async override Task OnInitializedAsync()
+        {
+            RemotePath = "/api/Unit";
+            ConfirmProperty = "Name";
+            productList = await client.GetAsync<IEnumerable<ProductViewModel>>("/api/Product");
+            places = await client.GetAsync<IEnumerable<PlaceViewModel>>("/api/Place");
+            suppliers = await client.GetAsync<IEnumerable<SupplierViewModel>>("/api/Supplier");
+
+        }
+        public override void OnCreateRow(IncomeItemViewModel entity)
+        {
+
+        }
+        public override void OnDeleteRow(IncomeItemViewModel entity)
+        {
+
+        }
+        public override void OnUpdateRow(IncomeItemViewModel entity)
+        {
+
+        }
+        void Submit(IncomeViewModel item)
+        {
+
+        }
+        async  Task SendIncome()
+        {
+            IncomeViewModel model = formData;
+            model.IncomeItems = Data;
+            await client.PostAsync<int>(model, "api/income");
+            NotificationService.Notify(NotificationSeverity.Info, "Успешно", "Успешно создано!");
+            Data.Clear();
+            Grid.Reload();
+        }
+    }

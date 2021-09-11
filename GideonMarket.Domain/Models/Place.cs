@@ -24,7 +24,7 @@ namespace GideonMarket.Entities.Models
         #region Shared Modules
         public void AddCount(int productId, double count)
         {
-            if (PlaceItems == null || !PlaceItems.Any())
+            if (!PlaceItems.Any(x=>x.ProductId == productId))
             {
                 CreateItem(productId);
             }
@@ -51,10 +51,6 @@ namespace GideonMarket.Entities.Models
         private void CreateItem(int productId)
         {
             var placeitem = new PlaceItem(Id, productId);
-            if (PlaceItems == null)
-            {
-                PlaceItems = new List<PlaceItem>();
-            }
             PlaceItems.Add(placeitem);
         }
         #endregion

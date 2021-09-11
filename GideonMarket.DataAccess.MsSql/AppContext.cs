@@ -132,6 +132,7 @@ namespace GideonMarket.DataAccess.MsSql
                 x.HasIndex(i => i.Name)
                 .IsUnique();
 
+
                 x.Property(p => p.PlaceType)
                 .HasDefaultValue(PlaceType.WareHouse);
             });
@@ -163,19 +164,20 @@ namespace GideonMarket.DataAccess.MsSql
             {
                 x.HasKey(p => p.Id);
                 x.Property(p => p.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .IsRequired();
 
                 x.Property(p => p.Description)
                 .HasMaxLength(150)
                 .IsRequired(true);
 
-                x.Property(p => p.Number)
-                .ValueGeneratedOnAdd();
-                x.HasIndex(i => i.Number)
-               .IsUnique();
+                x.Property(p => p.Number);
 
-                x.Property(x => x.RegDt);
+               // x.HasIndex(i => i.Number)
+               //.IsUnique();
+
+                x.Property(x => x.RegDt)
+                .HasDefaultValueSql("GETDATE()");
 
                 x.HasOne<Place>()
                .WithMany()
