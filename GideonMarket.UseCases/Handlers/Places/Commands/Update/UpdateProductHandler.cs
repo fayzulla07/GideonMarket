@@ -1,4 +1,5 @@
-﻿using GideonMarket.UseCases.DataAccess;
+﻿using MapsterMapper;
+using GideonMarket.UseCases.DataAccess;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;

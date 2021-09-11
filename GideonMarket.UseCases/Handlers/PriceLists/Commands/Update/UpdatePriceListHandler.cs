@@ -16,6 +16,7 @@ namespace GideonMarket.UseCases.Handlers.PriceLists.Commands
         public UpdatePriceListHandler(IAppContext appContext)
         {
             this.appContext = appContext;
+
         }
         protected async override Task Handle(UpdatePriceListRequest request, CancellationToken cancellationToken)
         {
@@ -25,6 +26,7 @@ namespace GideonMarket.UseCases.Handlers.PriceLists.Commands
                 return;
             }
             var adaptedValue = request.Adapt<PriceList>();
+
             entity.Name = adaptedValue.Name;
             entity.UpdateItem(entity.PriceItems);
             await appContext.SaveChangesAsync();

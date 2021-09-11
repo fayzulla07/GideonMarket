@@ -9,7 +9,7 @@ namespace GideonMarket.Entities.Models
     {
         public string Name { get; private set; }
         public PlaceType PlaceType { get; private set; }
-        public List<PlaceItem> PlaceItems { get; private set; }
+        public List<PlaceItem> PlaceItems { get; private set; } = new();
 
         public Place()
         {

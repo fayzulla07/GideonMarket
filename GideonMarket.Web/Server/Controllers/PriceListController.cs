@@ -58,7 +58,7 @@ namespace GideonMarket.Web.Server.Controllers
         #endregion
 
         #region PriceListItem
-        [HttpGet("Item")]
+        [HttpGet("/Item")]
         public async Task<IEnumerable<GideonMarket.UseCases.Handlers.PriceListItems.PriceListItemDto>> GetItem()
         {
             return await mediator.Send(new GetAllPriceListItemRequest());
